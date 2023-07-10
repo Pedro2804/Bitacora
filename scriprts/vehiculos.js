@@ -1,0 +1,229 @@
+function cpf(v){
+    v=v.toString();
+    v=v.replace(/([^0-9\.]+)/g,''); 
+    v=v.replace(/^[\.]/,''); 
+    v=v.replace(/[\.][\.]/g,''); 
+    v=v.replace(/\.(\d)(\d)(\d)/g,'.$1$2'); 
+    v=v.replace(/\.(\d{1,2})\./g,'.$1'); 
+    v = v.toString().split('').reverse().join('').replace(/(\d{3})/g,'$1,');    
+    v = v.split('').reverse().join('').replace(/^[\,]/,'');
+    return v;  
+}
+function display_direcciones()
+{
+    $.ajax(
+		{
+			type: "POST",
+			url: "controller/controller.php",
+			data:
+            {
+                funcion: 'get_direcciones'
+            },
+			cache: false,
+			success: function(result)
+			{
+                $('#direccion').html(result);
+			}
+		});
+}
+function display_departamentos_edit(direccion,depto)
+{
+    $.ajax(
+		{
+			type: "POST",
+			url: "controller/controller.php",
+			data:
+            {
+                funcion: 'get_departamentos',
+                direccion:direccion
+            },
+			cache: false,
+			success: function(result)
+			{
+                $('#departamento').html(result);
+                console.log(depto);
+                $('#departamento').val(depto);
+			}
+		});
+}
+
+function editar(id)
+{
+    $.ajax(
+    {
+			type: "POST",
+			url: "../controller/controller.php",
+			data:
+            {
+                funcion:'get_vehiculo',
+                id:id
+            },
+			cache: false,
+			success: function(result)
+			{
+                console.log(result);
+                var obj = JSON.parse(result);
+                var aux=obj['id_vehiculo'];
+                var num_unidad=obj['num_unidad']; 
+                var combustible=obj['tipo_combustible'];     
+                
+                $('#num_unidad').val(id);
+                $('#marca').val(num_unidad);
+                $('#tipo_combustible').val(combustible);
+			}
+		});
+}
+function display_departamentos()
+{
+    console.log('okis');
+    var direccion = $('#direccion').val();
+    $.ajax(
+		{
+			type: "POST",
+			url: "controller/controller.php",
+			data:
+            {
+                funcion: 'get_departamentos',
+                direccion:direccion
+            },
+			cache: false,
+			success: function(result)
+			{
+                $('#departamento').html(result);
+			}
+		});
+}
+function xportpdf()
+{
+    var doc = new jsPDF();
+    var specialElementHandlers = {
+        '#editor': function (element, renderer) {
+            return true;
+        }
+    };
+
+        doc.fromHTML($('#reporte_candidato').html(), 15, 15, {
+            'width': 170,
+                'elementHandlers': specialElementHandlers
+        });
+        doc.save('sample-file.pdf');
+}
+function eliminar(id)
+{
+  swal({
+    title: '¿Seguro que quiere eliminar?',
+    text: "El sello se eliminará",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    cancelButtonText: 'No',
+    confirmButtonText: 'Si'
+    }).then((result) =>
+    {
+        if (result.value)
+        {
+            $.ajax(
+		{
+			type: "POST",
+			url: "controller/controller.php",
+			data:
+            {
+                funcion:'eliminar_sello',
+                id:id
+            },
+			cache: false,
+			success: function(result)
+			{
+                swal({
+                            title:'Eliminado',
+                            type: 'success',
+                            allowOutsideClick: false,
+                            confirmButtonText: 'Aceptar',
+                            }).then(function()
+                            {
+                                document.location.href="sellos.php";
+                            });	
+			}
+		});
+        }
+    });
+}
+$(document).ready(function()
+{
+    display_direcciones();
+
+    $(document).ready(function()
+    {
+        var buttonCommon = {
+        exportOptions: {
+            format: {
+                body: function ( data, row, column, node ) {
+                    // Strip $ from salary column to make it numeric
+                    return column === 5 ?
+                        data.replace( /[$,]/g, '' ) :
+                        data;
+                }
+            }
+        }}
+        var tablePC = $('#datatables-example').DataTable(
+        {
+            "ajax":
+            {
+                "url": "../controller/controller.php",
+                "type": "POST",
+                "data":
+                {
+                    "funcion":'mostrar_vehiculos'
+                }
+            },
+            "language":
+            {
+                "url": "//cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
+            },
+            "columnDefs":
+            [{
+                 "targets": -1,
+                    "data": 0,
+                    "render": function (txt, type, full)
+                    {
+                            var id=full[0];
+                            return '<img style="cursor:pointer;" title="Editar"  data-toggle="modal" data-target="#modal_editar" width="30" height="30" src="../img/pencil.png" onclick="editar('+id+');" id=""/> <img style="cursor:pointer;" title="Eliminar" width="30" height="30" src="../img/delete.png" onclick="eliminar('+id+');" id=""/>';    
+                    }
+
+            }]
+        });
+    });
+     $( "#form_editar" ).submit(function( event ) 
+    {
+        event.preventDefault();
+		$.ajax(
+		{
+			type: "POST",
+			url: "controller/controller.php",
+			data:  $("#form_editar").serialize(),
+			cache: false,
+			success: function(result)
+			{
+				if(result==1)
+				{
+                    swal({
+                        title:'Correcto',
+                        text: "Operacion exitosa",
+                        type: 'success',
+                        allowOutsideClick: false,
+                        confirmButtonText: 'Aceptar',
+                        }).then(function()
+                            {
+                        document.location.href="../admin/autos.php";
+                    });
+                    
+				}
+				else
+				{
+                    console.log(result);
+                }
+			}
+		});
+	});
+});
