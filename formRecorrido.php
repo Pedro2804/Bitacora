@@ -34,20 +34,20 @@
                 <!--Kilometro inicial-->
                 <div class="col-md-6" style="width: 15%;">
                     <label style="font-size: 17px;">Km inicial:</label>
-                    <input type="number" name="km_inicial" min="0" style="height: 32px;" required />
+                    <input type="number" name="km_inicial<?php echo $j ?>" min="0" style="height: 32px;" required />
                 </div>
 
                 <!--Kilometro final-->
                 <div class="col-md-6" style="width: 15%;">
                     <label style="font-size: 17px;">Km final:</label>
-                    <input type="number" name="km_final" min="0" style="height: 32px;" required />
+                    <input type="number" name="km_final<?php echo $j ?>" min="0" style="height: 32px;" required />
                 </div>
 
                 <!--Salida-->
                 <div class="col-md-6" style="width: 20%;">
-                    <?php $opciones = array('Opción 1', 'Opción 2 casitas', 'Opción 3'); ?>
+                    <?php $opciones = array('Seleccione una opción','Estacionamiento', 'Opción 2 casitas', 'Opción 3'); ?>
                     <label style="font-size: 17px;">Salida:</label><br>
-                    <select name="salida">
+                    <select name="salida<?php echo $j ?>">
                         <?php
                             foreach ($opciones as $opcion) {
                                 echo '<option value="'.$opcion.'">'.$opcion.'</option>';
@@ -59,20 +59,18 @@
                 <!--Recorrido-->
                 <div class="col-md-6" style="width: 20%;">
                         <label style="font-size: 17px;">Recorrido:</label><br>
-                        <select name="destino">
+                        <select name="destino<?php echo $j ?>" onchange="listarRecorrido(this)">
                             <?php
                                 try {
                                     $pdo = Database::connect();
                                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                    $sql = "SELECT CONCAT(Nombre,' ',ApellidoPaterno,' ',ApellidoMaterno) as nombre_empleado  FROM empleado";
+                                    $sql = "SELECT * FROM Destino";
                                     $q = $pdo->prepare($sql);
                                     $q->execute(array());
                                     $data = $q->fetchall(PDO::FETCH_ASSOC);
-                                    $i = 0;
-                                    foreach($data as $row){
-                                        echo '<option value="opcion'.$i.'">'.$row['nombre_empleado'].'</option>';
-                                        $i++;
-                                    }
+                                    echo '<option value="">Seleccione una opción</option>';
+                                    foreach($data as $row)
+                                        echo '<option value="'.$row['lugar'].'">'.$row['lugar'].'</option>';
                                 }catch(PDOException $e){
                                     echo 'Error: ' . $e->getMessage();
                                 }
@@ -82,34 +80,34 @@
 
                 <div class="col-md-6" style="width: 22%;">
                     <div class="form-group form-animate-text" style="margin: 0px;">
-                        <input type="text" id="recorrido<?php echo $j ?>" oninput="listarRecorrido(this)" class="form-text" name="recorrido" required>
+                        <input type="text" id="recorrido<?php echo $j ?>" class="form-text" name="recorrido" required>
                         <span class="bar"></span><label>Nuevo recorrido</label>
                     </div>
                 </div>
 
                 <!--Boton agregar-->
                 <div class="col-md-6" style="width: 8%;">
-                    <div id="btn_agregar<?php echo $j ?>" class="btn-guardar" onclick="nuevo_recorrido()" style="background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Agregar</div>
+                    <div id="btn_agregar<?php echo $j ?>" class="btn-guardar" onclick="nuevo_recorrido(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Agregar</div>
                 </div>
             </div>
             
             <!--Lista de recorridos-->
             <div class="col-md-12">
-                <div class="col-md-6" style="width: 57%;"></div>
+                <div class="col-md-6" style="width: 70%;"></div>
                 <!--Text area-->
-                <div class="col-md-6" style="width: 35%;">
-                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos" placeholder="Recorridos" style="width: 100%; resize: none; border-style: outset;" readonly></textarea>
+                <div class="col-md-6" style="width: 22%;">
+                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos" placeholder="Recorridos" style="width: 100%; height: 80px; resize: none; border-style: outset;" readonly></textarea>
                 </div>
                 <!--Boton vaciar-->
                 <div class="col-md-6" style="width: 8%;">
-                    <div id="btn_vaciar<?php echo $j ?>" class="btn-guardar" onclick="vaciar()" style="background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Vaciar</div>
+                    <div id="btn_vaciar<?php echo $j ?>" class="btn-guardar" onclick="vaciar(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Vaciar</div>
                 </div>
             </div>
 
             <!--Botones-->
             <div id="botones" style="text-align: center; width: 200px; margin: auto; padding-top: 50px">
-                <div id="btn_ant<?php echo $j ?>" class="btn-guardar" onclick="anterior_dia(this)" style="background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer; display: inline-block; visibility: hidden;">Anterior</div>
-                <div id="btn_sig<?php echo $j ?>" class="btn-guardar" onclick="siguiente_dia(this)" style="background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer; display: inline-block;">Siguiente</div>
+                <div id="btn_ant<?php echo $j ?>" class="btn-guardar" onclick="anterior_dia(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer; display: inline-block; visibility: hidden;">Anterior</div>
+                <div id="btn_sig<?php echo $j ?>" class="btn-guardar" onclick="siguiente_dia(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer; display: inline-block;">Siguiente</div>
                 <div id="boton_guardar<?php echo $j ?>" style="display: none;">
                     <input class="btn-guardar" type="submit" value="Guardar">
                 </div>

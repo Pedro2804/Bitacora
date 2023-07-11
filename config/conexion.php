@@ -2,7 +2,7 @@
 class Database
 {
     
-    private static $dbName = 'controlvehicular';
+    private static $dbName = 'Bitacora';
 	private static $dbHost = 'localhost';
 	private static $dbUserName = 'root';
 	private static $dbPassword = 'DIFinformatica.03';

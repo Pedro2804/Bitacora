@@ -174,7 +174,7 @@
                             </div><!--END CENTRAL 2-->
 
                             <div class="col-md-12"><!--Boton siguiente-->
-                                <div id="sig_bitacora" class="btn-guardar" style="background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Siguiente</div>
+                                <div id="sig_bitacora" class="btn-guardar" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Siguiente</div>
                             </div>
 
                             <div class="col-md-12" id="resultados"></div>

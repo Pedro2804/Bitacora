@@ -56,20 +56,19 @@
     var aux = "";
 
     function listarRecorrido(seleccionado) {
-        document.getElementById("listaR"+seleccionado.id[9]).value += seleccionado.value + '\n';
+        if(seleccionado.value != "")
+            document.getElementById("listaR"+seleccionado.name[seleccionado.name.length -1]).value += seleccionado.value + '\n';
         seleccionado.value = "";
-        aux = seleccionado.id;
     }
 
-    function vaciar() {
-        document.getElementById("listaR"+aux[9]).value = "";
+    function vaciar(bntvaciar) {
+        document.getElementById("listaR"+bntvaciar.id[bntvaciar.id.length - 1]).value = "";
     }
 
-    function nuevo_recorrido() {
-        if(aux != ""){
-            var nuevo_recorrido = document.createElement("option");
-            nuevo_recorrido.value = document.getElementById(aux).value;
-            document.getElementById("dest").appendChild(nuevo_recorrido);
-
+    function nuevo_recorrido(btnNuevo) {
+        var nuevoR = document.getElementById("recorrido"+btnNuevo.id[btnNuevo.id.length - 1]);
+        if(nuevoR.value){
+            document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value += nuevoR.value + '\n';
+            nuevoR.value = "";
         }
     }
