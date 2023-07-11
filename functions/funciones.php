@@ -140,7 +140,7 @@ function nombreempl($cve)
 function datos_vehiculo($idvehiculo){
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT CONCAT(marca,' ', modelo) AS marca, placas FROM vehiculo WHERE num_unidad=?";
+    $sql = "SELECT CONCAT(marca,' ', modelo) AS marca, placas, kilometraje FROM vehiculo WHERE num_unidad=?";
     $q = $pdo->prepare($sql);
     try {
         $q->execute(array($idvehiculo));
@@ -150,7 +150,7 @@ function datos_vehiculo($idvehiculo){
             return false;
         }
         Database::disconnect();
-        $datos = [$data['marca'], $data['placas']]; 
+        $datos = [$data['marca'], $data['placas'], $data['kilometraje']]; 
         return $datos;
     } catch (PDOException $e) {
         Database::disconnect();
@@ -194,6 +194,41 @@ function get_vehiculo($id){
         $q->execute(array($id));
         $data = $q->fetch(PDO::FETCH_ASSOC);
         return json_encode($data);
+    } catch (PDOException $e) {
+        Database::disconnect();
+        return "Error: " . $e;
+    }
+}
+
+function nuevo_recorrido($lugar){
+    $aux = recorrido_repetido($lugar);
+    if($aux == false){
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "INSERT INTO Destino (lugar) VALUES (?);";
+        $q = $pdo->prepare($sql);
+        try {
+            $q->execute(array($lugar));
+            Database::disconnect();
+            return true;
+        } catch (PDOException $e) {
+            Database::disconnect();
+            return "Error: " . $e;
+        }
+    }else return false;
+}
+
+function recorrido_repetido($lugar){
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "SELECT * FROM Destino WHERE lugar = ?;";
+    $q = $pdo->prepare($sql);
+    try {
+        $q->execute(array($lugar));
+        $res = $q->fetch(PDO::FETCH_ASSOC);
+        Database::disconnect();
+        if($res) return true;
+        else return false;
     } catch (PDOException $e) {
         Database::disconnect();
         return "Error: " . $e;

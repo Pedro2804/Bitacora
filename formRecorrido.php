@@ -26,7 +26,7 @@
     <div id="<?php echo $nombreDia ?>" class="tabcontent" style="padding-top: 10px;">
 
         <!--Formulario-->
-        <form id="formulario_recorrido">
+        <form id="formulario_recorrido<?php echo $j ?>">
             <input type="hidden" name="bitacora" value="12" />
             <input type="hidden" name="dia_semana" value="<?php echo $diaSemana ?>" />
 
@@ -34,21 +34,22 @@
                 <!--Kilometro inicial-->
                 <div class="col-md-6" style="width: 15%;">
                     <label style="font-size: 17px;">Km inicial:</label>
-                    <input type="number" name="km_inicial<?php echo $j ?>" min="0" style="height: 32px;" required />
+                    <input id="km_I<?php echo $j ?>" type="number" name="km_inicial<?php echo $j ?>" min="0" style="height: 32px;" required />
                 </div>
 
                 <!--Kilometro final-->
                 <div class="col-md-6" style="width: 15%;">
                     <label style="font-size: 17px;">Km final:</label>
-                    <input type="number" name="km_final<?php echo $j ?>" min="0" style="height: 32px;" required />
+                    <input id="km_F<?php echo $j ?>" type="number" name="km_final<?php echo $j ?>" min="0" style="height: 32px;" required />
                 </div>
 
                 <!--Salida-->
                 <div class="col-md-6" style="width: 20%;">
-                    <?php $opciones = array('Seleccione una opción','Estacionamiento', 'Opción 2 casitas', 'Opción 3'); ?>
+                    <?php $opciones = array('Estacionamiento', 'Casitas', 'Opción 3'); ?>
                     <label style="font-size: 17px;">Salida:</label><br>
-                    <select name="salida<?php echo $j ?>">
+                    <select id="salida<?php echo $j ?>" name="salida<?php echo $j ?>" required>
                         <?php
+                            echo '<option value="">Seleccione una opción</option>';
                             foreach ($opciones as $opcion) {
                                 echo '<option value="'.$opcion.'">'.$opcion.'</option>';
                             }
@@ -59,7 +60,7 @@
                 <!--Recorrido-->
                 <div class="col-md-6" style="width: 20%;">
                         <label style="font-size: 17px;">Recorrido:</label><br>
-                        <select name="destino<?php echo $j ?>" onchange="listarRecorrido(this)">
+                        <select id="destino<?php echo $j ?>" name="destino<?php echo $j ?>" onchange="listarRecorrido(this)" required>
                             <?php
                                 try {
                                     $pdo = Database::connect();
@@ -68,7 +69,7 @@
                                     $q = $pdo->prepare($sql);
                                     $q->execute(array());
                                     $data = $q->fetchall(PDO::FETCH_ASSOC);
-                                    echo '<option value="">Seleccione una opción</option>';
+                                    echo '<option value="">Seleccione los destinos</option>';
                                     foreach($data as $row)
                                         echo '<option value="'.$row['lugar'].'">'.$row['lugar'].'</option>';
                                 }catch(PDOException $e){
@@ -87,7 +88,7 @@
 
                 <!--Boton agregar-->
                 <div class="col-md-6" style="width: 8%;">
-                    <div id="btn_agregar<?php echo $j ?>" class="btn-guardar" onclick="nuevo_recorrido(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Agregar</div>
+                    <div id="btn_agregar<?php echo $j ?>" class="btn-guardar" onclick="nuevoRecorrido(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Agregar</div>
                 </div>
             </div>
             
@@ -96,7 +97,7 @@
                 <div class="col-md-6" style="width: 70%;"></div>
                 <!--Text area-->
                 <div class="col-md-6" style="width: 22%;">
-                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos" placeholder="Recorridos" style="width: 100%; height: 80px; resize: none; border-style: outset;" readonly></textarea>
+                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos<?php echo $j ?>" placeholder="Recorridos" style="width: 100%; height: 80px; resize: none; border-style: outset;" readonly></textarea>
                 </div>
                 <!--Boton vaciar-->
                 <div class="col-md-6" style="width: 8%;">

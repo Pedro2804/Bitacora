@@ -7,9 +7,12 @@ if(empty($_POST))
 	exit();
 }
 
-if (isset($_POST['id'])){
+if (isset($_POST['id']))
     $vehiculo = (int)$_POST['id'];
-}
+
+if (isset($_POST['lugar']))
+    $lugar = $_POST['lugar'];
+
 
 $funcion = $_POST['funcion'];
 switch ($funcion) 
@@ -19,7 +22,7 @@ switch ($funcion)
         if ($respuesta == false) {
             echo '0';
         }else{
-            echo json_encode(array('modelo' => $respuesta[0], 'placas' => $respuesta[1]));
+            echo json_encode(array('modelo' => $respuesta[0], 'placas' => $respuesta[1], 'km' => $respuesta[2]));
         }
     break;
     case 'mostrar_vehiculos':
@@ -28,6 +31,10 @@ switch ($funcion)
 	break;
     case 'get_vehiculo':
         $respuesta=get_vehiculo($vehiculo);
+        echo $respuesta;
+	break;
+    case 'nuevo_recorrido':
+        $respuesta=nuevo_recorrido($lugar);
         echo $respuesta;
 	break;
 	case 'login':

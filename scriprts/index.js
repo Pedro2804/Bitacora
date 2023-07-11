@@ -61,6 +61,7 @@
 
                         $("#p").css("opacity", 1);
                         $("#placas").val(resultados.placas);
+                        $("#km_I0").val(resultados.km);
                     }else{
                         $("#M_m").css("opacity", 0);
                         $("#p").css("opacity", 0);
@@ -77,8 +78,8 @@
                             swal({
                                 type: 'warning',
                                 title: 'Ingrese una unidad',
-                                //timer: 4000,
-                                showConfirmButton: true});
+                                timer: 1000,
+                                showConfirmButton: false});
                                 $("#recorridos").css("display", "none");
                                 $("#sig_bitacora").css("display", "block");
                         }
@@ -118,6 +119,9 @@
                         for(i=0; i<dias_recorrido.length; i++)
                             dias_recorrido[i].disabled = true;
                         dias_recorrido[0].className += " active";
+
+                        document.getElementById('km_I0').value = resultados.km;
+
                         document.getElementById('sig_bitacora').style.display = "none";; 
                     }else{
                         swal({
@@ -135,11 +139,6 @@
             });
         }
     });
-
-    function capturar_recorridos(dia){
-        aux = document.getElementById(dia.value).querySelector("#btn_agregar0");
-        console.log($(aux));
-    }
      
     $("#form_solicitud").submit(function(event) {
         event.preventDefault();
@@ -269,6 +268,7 @@
             }
         }
     });
+
     $( "#direccion" ).change(function()
     {
         var direccion=$( "#direccion" ).val();
@@ -296,33 +296,4 @@
                 }
             }); 
     }); 
-      //$("#direccion").flexselect();
-      $('.fruit-button').click(function() {
-        var fruit = $(this).data('fruit');
-        $('#fruit-preview').append('<div class="fruit-box">' + fruit + '<span class="delete-fruit">X</span></div>');
-      });
-
-      $('#add-fruit-btn').click(function() {
-        var customFruit = $('#custom-fruit-input').val();
-        if (customFruit !== '') {
-          $('#fruit-preview').append('<div class="fruit-box">' + customFruit + '<span class="delete-fruit">X</span></div>');
-          $('#custom-fruit-input').val('');
-        }
-      });
-
-      $(document).on('click', '.delete-fruit', function() {
-        $(this).parent('.fruit-box').remove();
-      });
-
-      $('#fruit-preview').sortable(); // Enable sorting of fruit boxes
-
-      $('#print-btn').click(function() {
-        var fruits = [];
-        $('.fruit-box').each(function() {
-          fruits.push($(this).text().trim());
-        });
-        var fruitString = fruits.join(', ');
-        console.log(fruitString);
-        // You can replace the console.log() statement with your desired printing logic
-      });
 });
