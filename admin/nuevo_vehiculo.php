@@ -1,8 +1,8 @@
 <?php
-/*session_start();
-if (!isset($_SESSION['catalogo_id_usuario'])) {
-    header('Location: login.php');
-}*/
+session_start();
+if (!isset($_SESSION['usuario'])) {
+    header('Location: ../login.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -71,6 +71,7 @@ if (!isset($_SESSION['catalogo_id_usuario'])) {
     <!-- custom -->
     <link href="../css/estilos.css" rel="stylesheet">
     <script src="../scriprts/vehiculos.js"></script>
+    <script src="../scriprts/formRecorrido.js"></script>
     <!-- end: Javascript -->
 </head>
 
@@ -122,39 +123,54 @@ if (!isset($_SESSION['catalogo_id_usuario'])) {
                         <h4>Nuevo Vehiculo</h4>
                     </div>
                     <div class="col-md-12 panel-body">
-                        <form id="form_nuevo1" class="">
-                            <input type="hidden" id="funcion" name="funcion" value="guardar_vehiculo">
-                            <div class="col-md-12">
-                                <div class="col-md-6">
-                                    <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                        <input id="num_unidad" name="num_unidad" type="text" class="form-text" required>
-                                        <span class="bar"></span>
-                                        <label>Numero de unidad</label>
-                                    </div>
-
-                                    <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                        <input id="marca" name="marca" type="text" class="form-text" required>
-                                        <span class="bar"></span>
-                                        <label>Marca</label>
-                                    </div>
-                                    <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                        <input id="modelo" name="modelo" type="text" class="form-text" required>
-                                        <span class="bar"></span>
-                                        <label>Modelo</label>
-                                    </div>
-
+                        <form id="form_nuevo_auto" class="">
+                            <input type="hidden" id="funcion" name="funcion" value="nuevo_auto">
+                            <div class="col-md-6">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="num_unidad" name="num_unidad" type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" required>
+                                    <span class="bar"></span>
+                                    <label>Numero de unidad</label>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                        <input id="tipo_combustible"name="tipo_combustible" type="text" class="form-text" required>
-                                        <span class="bar"></span>
-                                        <label>Tipo de combustible</label>
-                                    </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="marca" name="marca" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                    <span class="bar"></span>
+                                    <label>Marca</label>
+                                </div>
+                            </div>
 
+                            <div class="col-md-6">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="modelo" name="modelo" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                    <span class="bar"></span>
+                                    <label>Modelo</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="placas"name="placas" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                    <span class="bar"></span>
+                                    <label>Placas</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="tipo_combustible"name="tipo_combustible" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                    <span class="bar"></span>
+                                    <label>Tipo de combustible</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="kilometrake"name="kilometraje" type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" required>
+                                    <span class="bar"></span>
+                                    <label>kilometraje</label>
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <input class="btnazul" type="submit" value="Guardar">
+                                <input class="btn-guardar" type="submit" value="Guardar">
                             </div>
                         </form>
                     </div>

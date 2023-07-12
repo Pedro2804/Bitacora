@@ -118,7 +118,7 @@ if (!isset($_SESSION['usuario'])) {
             </div>
             <div class="col-md-12 top-20 padding-0">
                 <div class="col-md-12">
-                    <a href="nuevo_sello.php"><button type="button" class="btn-guardar">Nuevo auto</button></a>
+                    <a href="nuevo_vehiculo.php"><button type="button" class="btn-guardar">Nuevo auto</button></a>
                     <!--<a href="export/ExcelReportePagos.php"><button type="button" class="btnazul">Descargar Excel</button></a>-->
                 </div>
 
@@ -134,9 +134,12 @@ if (!isset($_SESSION['usuario'])) {
                                 <table id="datatables-example" class="table table-striped table-bordered" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Id</th>
                                             <th>Numero de unidad</th>
+                                            <th>Marca </th>
+                                            <th>Modelo </th>
+                                            <th>Placas </th>
                                             <th>Combustible </th>
+                                            <th>Kilometraje </th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -157,12 +160,12 @@ if (!isset($_SESSION['usuario'])) {
                         </div>
                         <div class="col-md-12">
                             <form id="form_editar" class="">
-                                <input type="hidden" value="editar_sellos" id="funcion" name="funcion">
+                                <input type="hidden" value="editar_auto" id="funcion" name="funcion">
                                 <input type="hidden" id="id" name="id" value="0">
                                 <div class="col-md-12">
                                     <div class="col-md-12">
                                         <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                            <input id="num_unidad" name="num_unidad" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input id="num_unidad" name="num_unidad" type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" required>
                                             <span class="bar"></span>
                                             <label>Numero de unidad</label>
                                         </div>
@@ -173,7 +176,7 @@ if (!isset($_SESSION['usuario'])) {
                                             <label>Marca</label>
                                         </div>
                                         <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                            <input id="medelo" name="modelo" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input id="modelo" name="modelo" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                             <span class="bar"></span>
                                             <label>Modelo</label>
                                         </div>
@@ -187,6 +190,11 @@ if (!isset($_SESSION['usuario'])) {
                                             <input id="tipo_combustible" name="tipo_combustible" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                             <span class="bar"></span>
                                             <label>Tipo de combustible</label>
+                                        </div>
+                                        <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                            <input id="kilometraje" name="kilometraje" type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" required>
+                                            <span class="bar"></span>
+                                            <label>kilometraje</label>
                                         </div>
                                     </div>
                                 </div>

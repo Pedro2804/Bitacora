@@ -45,6 +45,18 @@ switch ($funcion)
 		$respuesta=login();
         echo $respuesta;
 	break;
+    case 'editar_auto':
+        $respuesta=editar_auto();
+        echo $respuesta;
+	break;
+    case 'eliminar_auto':
+        $respuesta=eliminar_auto();
+        echo $respuesta;
+	break;
+    case 'nuevo_auto':
+        $respuesta=nuevo_auto();
+        echo $respuesta;
+	break;
     case 'direcciones':
         $respuesta=direcciones();
         echo $respuesta;
@@ -65,20 +77,12 @@ switch ($funcion)
         $respuesta=editar_solicitudTest();
         echo $respuesta;
 	break;
-    case 'editar_solicitud':
-        $respuesta=editar_solicitud();
-        echo $respuesta;
-	break;
     case 'mostrar_solicitudes_sin_atender':
         $respuesta=mostrar_solicitudes_sin_atender();
         echo $respuesta;
 	break;
     case 'guardar_reporte':
         $respuesta=guardar_reporte();
-        echo $respuesta;
-	break;        
-    case 'eliminar_solicitud':
-        $respuesta=eliminar_solicitud();
         echo $respuesta;
 	break;        
 }

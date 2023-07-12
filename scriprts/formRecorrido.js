@@ -94,7 +94,7 @@
                         document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value += nuevoR.value + '\n';
                         swal({
                             type: 'success',
-                            title: 'Recorrido agregado con éxito',
+                            title: 'Operacion exitosa',
                             timer: 1000,
                             showConfirmButton: false
                         });
@@ -128,6 +128,4 @@
                 timer: 1000,
                 showConfirmButton: false
             });
-    }
-
-    
+    }    

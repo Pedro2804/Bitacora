@@ -71,7 +71,7 @@ if(isset($_SESSION['usuario']))
                   <i class="icons icon-arrow-down"></i>
 
                   <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                    <input id="txt_mail" type="text" class="form-text" data-error="Mail no valido" required>
+                    <input id="txt_mail" type="text" class="form-text" data-error="Usuario no valido" required>
                     <span class="bar"></span>
                     <label>Usuario</label>
                        <div class="help-block with-errors"></div>

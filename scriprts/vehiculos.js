@@ -61,15 +61,21 @@ function editar(id)
 			cache: false,
 			success: function(result)
 			{
-                console.log(result);
+                //console.log(result);
                 var obj = JSON.parse(result);
-                var aux=obj['id_vehiculo'];
-                var num_unidad=obj['num_unidad']; 
-                var combustible=obj['tipo_combustible'];     
+                var marca=obj['marca'];
+                var modelo=obj['modelo'];
+                var placas=obj['placas'];
+                var combustible=obj['tipo_combustible'];
+                var kilometraje=obj['kilometraje'];     
                 
+                $('#id').val(id);
                 $('#num_unidad').val(id);
-                $('#marca').val(num_unidad);
+                $('#marca').val(marca);
+                $('#modelo').val(modelo);
+                $('#placas').val(placas);
                 $('#tipo_combustible').val(combustible);
+                $('#kilometraje').val(kilometraje);
 			}
 		});
 }
@@ -112,46 +118,40 @@ function eliminar(id)
 {
   swal({
     title: '¿Seguro que quiere eliminar?',
-    text: "El sello se eliminará",
+    text: "El vehículo se eliminará",
     type: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33',
     cancelButtonColor: '#3085d6',
     cancelButtonText: 'No',
     confirmButtonText: 'Si'
-    }).then((result) =>
-    {
-        if (result.value)
-        {
-            $.ajax(
-		{
-			type: "POST",
-			url: "controller/controller.php",
-			data:
-            {
-                funcion:'eliminar_sello',
-                id:id
-            },
-			cache: false,
-			success: function(result)
-			{
-                swal({
-                            title:'Eliminado',
-                            type: 'success',
-                            allowOutsideClick: false,
-                            confirmButtonText: 'Aceptar',
-                            }).then(function()
-                            {
-                                document.location.href="sellos.php";
-                            });	
-			}
-		});
+    }).then((result) =>{
+        if (result){
+            $.ajax({
+                type: "POST",
+                url: "../controller/controller.php",
+                data: {funcion:'eliminar_auto', num_unidad:id},
+                cache: false,
+                success: function(result)
+                {
+                    swal({
+                        title:'Eliminado',
+                        type: 'success',
+                        timer: 1000,
+                        showConfirmButton: false
+                        //allowOutsideClick: false,
+                        //confirmButtonText: 'Aceptar',
+                    }).then(function(){document.location.href="../admin/autos.php";});//Sirve para cuando hay opciones de aceptar en el swal
+                    
+                    setTimeout(function() {document.location.href = '../admin/autos.php';}, 1100);
+                }
+		    });
         }
     });
 }
 $(document).ready(function()
 {
-    display_direcciones();
+    //display_direcciones();
 
     $(document).ready(function()
     {
@@ -172,10 +172,7 @@ $(document).ready(function()
             {
                 "url": "../controller/controller.php",
                 "type": "POST",
-                "data":
-                {
-                    "funcion":'mostrar_vehiculos'
-                }
+                "data": { "funcion":'mostrar_vehiculos' }
             },
             "language":
             {
@@ -194,35 +191,69 @@ $(document).ready(function()
             }]
         });
     });
-     $( "#form_editar" ).submit(function( event ) 
-    {
+
+    $( "#form_editar" ).submit(function( event ){
         event.preventDefault();
 		$.ajax(
 		{
 			type: "POST",
-			url: "controller/controller.php",
+			url: "../controller/controller.php",
 			data:  $("#form_editar").serialize(),
 			cache: false,
-			success: function(result)
-			{
-				if(result==1)
-				{
+			success: function(result){
+                console.log(result);
+				if(result==1){
                     swal({
                         title:'Correcto',
                         text: "Operacion exitosa",
                         type: 'success',
-                        allowOutsideClick: false,
-                        confirmButtonText: 'Aceptar',
-                        }).then(function()
-                            {
-                        document.location.href="../admin/autos.php";
-                    });
-                    
+                        //allowOutsideClick: false,
+                        timer: 1000,
+                        showConfirmButton: false
+                        //confirmButtonText: "Aceptar",
+                        }).then(function(){document.location.href="../admin/autos.php";});
+                        
+                        setTimeout(function() {
+                            document.location.href = '../admin/autos.php';
+                          }, 1100);
 				}
-				else
-				{
-                    console.log(result);
-                }
+				//else console.log(result);
+			}
+		});
+	});
+
+    $( "#form_nuevo_auto" ).submit(function( event ){
+        event.preventDefault();
+		$.ajax(
+		{
+			type: "POST",
+			url: "../controller/controller.php",
+			data:  $("#form_nuevo_auto").serialize(),
+			cache: false,
+			success: function(result){
+                console.log(result);
+				if(result==1){
+                    swal({
+                        title:'Correcto',
+                        text: "Operacion exitosa",
+                        type: 'success',
+                        //allowOutsideClick: false,
+                        timer: 1000,
+                        showConfirmButton: false
+                        //confirmButtonText: "Aceptar",
+                        }).then(function(){document.location.href="../admin/nuevo_vehiculo.php";}); 
+
+                        //$("#form_nuevo_auto")[0].reset();                  
+				}else
+                    swal({
+                        type: 'warning',
+                        title: 'Vehiculo repetido',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+
+                $("#form_nuevo_auto")[0].reset();
+				//else console.log(result);
 			}
 		});
 	});

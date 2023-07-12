@@ -181,12 +181,15 @@ function datos_vehiculo($idvehiculo){
 
 function mostrar_vehiculos(){
     $columns = array(
-        array('db' => 'id_vehiculo', 'dt' => 0),
-        array('db' => 'num_unidad', 'dt' => 1),
-        array('db' => 'tipo_combustible', 'dt' => 2)
+        array('db' => 'num_unidad', 'dt' => 0),
+        array('db' => 'marca', 'dt' => 1),
+        array('db' => 'modelo', 'dt' => 2),
+        array('db' => 'placas', 'dt' => 3),
+        array('db' => 'tipo_combustible', 'dt' => 4),
+        array('db' => 'kilometraje', 'dt' => 5)
     );
     $salida = array();
-    $pdo = new PDO('mysql:host=localhost;dbname=controlvehicular', 'root', 'DIFinformatica.03', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $pdo = new PDO('mysql:host=localhost;dbname=Bitacora', 'root', 'DIFinformatica.03', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $query = "SELECT * FROM vehiculo";
     $q = $pdo->prepare($query);
@@ -208,7 +211,7 @@ function get_vehiculo($id){
     //$id = $_POST['id'];
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $query = "SELECT * FROM vehiculo WHERE id_vehiculo=?";
+    $query = "SELECT * FROM vehiculo WHERE num_unidad=?";
     $q = $pdo->prepare($query);
     try {
         $q->execute(array($id));
@@ -221,7 +224,7 @@ function get_vehiculo($id){
 }
 
 function nuevo_recorrido($lugar){
-    $aux = recorrido_repetido($lugar);
+    $aux = repetido("Destino", "lugar", $lugar);
     if($aux == false){
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -238,10 +241,10 @@ function nuevo_recorrido($lugar){
     }else return false;
 }
 
-function recorrido_repetido($lugar){
+function repetido($tabla, $columna, $lugar){
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT * FROM Destino WHERE lugar = ?;";
+    $sql = "SELECT * FROM $tabla WHERE $columna = ?;";
     $q = $pdo->prepare($sql);
     try {
         $q->execute(array($lugar));
@@ -612,37 +615,49 @@ function editar_solicitudTest()
     
 }
 
-function editar_solicitud()
-{
-    $clave = null;
-    $descripcion = null;
-    $fecha_a = null;
-    $sql_ = null;
+function nuevo_auto(){
+    $unidad = $_POST['num_unidad'];
+    $marca = strtoupper($_POST['marca']);
+    $modelo = strtoupper($_POST['modelo']);
+    $placas = strtoupper($_POST['placas']);
+    $combustible = strtoupper($_POST['tipo_combustible']);
+    $kilometraje = $_POST['kilometraje'];
+    $sql_ = array($unidad, $marca, $modelo, $placas, $combustible, $kilometraje);
 
-    if (isset($_POST['clave_editar'])) {
-        $clave = $_POST['clave_editar'];
-    }
-    if (isset($_POST['e_descripcion_s'])) {
-        $descripcion = conver($_POST['e_descripcion_s']);
-    }
-    if ($descripcion != "") {
-        $sql_ = "DescripcionServicio='" . $descripcion . "'";
-    }
-    if (isset($_POST['fecha_a'])) {
-        $fecha_a = $_POST['fecha_a'];
-    }
-    if ($fecha_a == "no") {
-        $sql_ = "FechaAtendida=NULL, Estatus=1";
-    } else {
-        $sql_ = "FechaAtendida='" . $fecha_a . "', Estatus=2";
-    }
+    $aux = repetido("vehiculo", "num_unidad", $unidad);
+    if($aux == false){
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "INSERT INTO vehiculo (num_unidad, marca, modelo, placas, tipo_combustible, kilometraje) VALUES (?,?,?,?,?,?);";
+        $q = $pdo->prepare($sql);
+        try {
+            $q->execute($sql_);
+            Database::disconnect();
+            return true;
+        } catch (PDOException $e) {
+            Database::disconnect();
+            return "Error: " . $e;
+        }
+    }else return false;
+}
+
+function editar_auto()
+{
+    $id = $_POST['id'];
+    $unidad = $_POST['num_unidad'];
+    $marca = $_POST['marca'];
+    $modelo = $_POST['modelo'];
+    $placas = $_POST['placas'];
+    $combustible = $_POST['tipo_combustible'];
+    $sql_ = "num_unidad=$unidad, marca='$marca', modelo='$modelo', placas='$placas', tipo_combustible='$combustible'";
+
 
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "UPDATE not_solicitud SET " . $sql_ . " WHERE ClaveEntidad=?";
+    $sql = "UPDATE vehiculo SET " . $sql_ . " WHERE num_unidad=?";
     $q = $pdo->prepare($sql);
     try {
-        $q->execute(array($clave));
+        $q->execute(array($id));
         Database::disconnect();
         return true;
     } catch (PDOException $e) {
@@ -650,6 +665,26 @@ function editar_solicitud()
         return "Error: " . $e;
     }
 }
+
+function eliminar_auto() {
+    $unidad = $_POST['num_unidad'];
+
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "DELETE FROM vehiculo WHERE num_unidad=?";
+    $q = $pdo->prepare($sql);
+    try {
+        $q->execute(array($unidad));
+        Database::disconnect();
+        return true;
+    } catch (PDOException $e) {
+        Database::disconnect();
+        return "Error: " . $e;
+    }
+
+}
+
+
 function mostrar_solicitudes_sin_atender()
 {
     $f_inicio = $_POST['f_inicio'];
@@ -748,26 +783,4 @@ function guardar_reporte()
         }
     }
     return true;
-}
-
-function eliminar_solicitud () {
-    $clave = null;
-
-    if (isset($_POST['clave_borrar'])) {
-            $clave = $_POST['clave_borrar'];
-    }
-
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "DELETE FROM not_solicitud WHERE ClaveEntidad=?";
-    $q = $pdo->prepare($sql);
-    try {
-        $q->execute(array($clave));
-        Database::disconnect();
-        return true;
-    } catch (PDOException $e) {
-        Database::disconnect();
-        return "Error: " . $e;
-    }
-
 }

@@ -82,14 +82,14 @@ $fechafin = date('d-m-Y');
            <div class="col-md-12 panel-body" style="padding-bottom:30px;">
               <div class="col-md-12">
               <form id="FrmBusquedaSolicitudes" name="FrmBusquedaSolicitudes" method="post" action="">
-              		<div class="izquierdo">
+              		<!--<div class="izquierdo">
                         <div class="form-animate-radio"><label class="radio">Ver solicitudes</label>
                             <select class="form-text" id="CmbFolio" name="CmbFolio">
                                <option value="1">SIN FOLIO</option>
                                <option value="2">CON FOLIO</option>
                              </select>
                         </div>
-                    </div>
+                    </div>-->
                     <div style="clear:both"></div>
               		<div class="izquierdo" style="margin-top:10px !important;">
                     	<label>Del: </label>
@@ -105,7 +105,7 @@ $fechafin = date('d-m-Y');
                      	<input class="btn-guardar" type="submit" id="BtnBuscar" value="Buscar">
                      </div>
                     <div style="clear:both"></div>
-              		<div class="izquierdo" style="margin-top:10px!important; margin-left:37px;">
+              		<!--<div class="izquierdo" style="margin-top:10px!important; margin-left:37px;">
                     	<select class="form-text" id="CmbDireccion" name="CmbDireccion">
                            <option value="0"> - DIRECCI&Oacute;N -</option>
                            <option value="8">PRESIDENCIA</option>
@@ -126,14 +126,14 @@ $fechafin = date('d-m-Y');
                                }
                             ?>
                          </select>
-                     </div>
-                     <div class="izquierdo" style="margin-top:10px !important; margin-left:37px;">
+                     </div>-->
+                     <!--<div class="izquierdo" style="margin-top:10px !important; margin-left:37px;">
                     	<select class="form-text" id="CmbEstatus" name="CmbEstatus">
                            <option value="0"> - ESTATUS DE LA SOLICITUD -</option>
                            <option value="1">RECIBIDO</option>
                            <option value="2">ATENDIDO</option>
                          </select>
-                     </div>
+                     </div>-->
                      <div class="izquierdo" style="margin-top:10px !important; margin-left:37px;">
                         <label>Mostrar</label>
                         <select class="form-text" id="CmbMostrar" name="CmbMostrar">
