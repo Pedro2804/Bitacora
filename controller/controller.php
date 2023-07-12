@@ -18,7 +18,7 @@ $funcion = $_POST['funcion'];
 switch ($funcion) 
 {
     case 'nuevo_usuario':
-        
+        $respuesta = nuevo_usuario();
         echo $respuesta;
 	break;
     case 'vehiculo':

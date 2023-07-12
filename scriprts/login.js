@@ -13,16 +13,12 @@ $(document).ready(function()
 			cache: false,
 			success: function(result)
 			{
-				if(result==1)
-				{
+				//console.log(result);
+				if(result==1){
 					document.location.href="admin/autos.php";
-				}
-				else if(result==0)
-				{
+				}else if(result==0){
 					alert("Usuario no registrado!");
-				}
-				else if(result==2)
-				{
+				}else if(result==2){
                      swal({
                         title:'Verifica los datos',
                         text: "Contraseña o Usuario Incorrectos!",
@@ -32,11 +28,7 @@ $(document).ready(function()
                         }).then(function()
                             {
                 });
-				}
-				else
-				{
-					alert("error");
-				}
+				}else alert("error");
 			}
 		});
 	});

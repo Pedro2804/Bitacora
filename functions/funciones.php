@@ -13,7 +13,7 @@ function login()
 	$password=sha1($password);
 	$pdo = Database::connect();
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$sql = "SELECT usuario,password FROM catalogo_usuario WHERE usuario = ?";
+	$sql = "SELECT usuario,password FROM Catalogo_usuario WHERE usuario = ?";
 	$q = $pdo->prepare($sql);
 	$q->execute(array($usuario));
 	$data = $q->fetch(PDO::FETCH_ASSOC);
@@ -46,7 +46,7 @@ function nuevo_usuario(){
 
     $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO catalogo_usuario (usuario, password) VALUES (?,?);";
+        $sql = "INSERT INTO Catalogo_usuario (usuario, password) VALUES (?,?);";
         $q = $pdo->prepare($sql);
         try {
             $q->execute(array($usuario,$password));
