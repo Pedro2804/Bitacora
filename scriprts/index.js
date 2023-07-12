@@ -89,7 +89,7 @@
         
     });
 
-    $("#sig_bitacora").on("click", function(event){//js con jquery
+    $("#sig_bitacora").on("click", function(event){
         event.preventDefault();
         var unidad = document.getElementById('idVehiculo');
         var empleado = document.getElementById('empleado');
@@ -295,5 +295,5 @@
                     }
                 }
             }); 
-    }); 
+    });
 });

@@ -17,6 +17,10 @@ if (isset($_POST['lugar']))
 $funcion = $_POST['funcion'];
 switch ($funcion) 
 {
+    case 'nuevo_usuario':
+        
+        echo $respuesta;
+	break;
     case 'vehiculo':
         $respuesta = datos_vehiculo($vehiculo);
         if ($respuesta == false) {

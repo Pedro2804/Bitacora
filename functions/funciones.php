@@ -13,7 +13,7 @@ function login()
 	$password=sha1($password);
 	$pdo = Database::connect();
 	$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$sql = "SELECT id,nombre_completo,usuario,password FROM catalogo_usuarios WHERE usuario = ?";
+	$sql = "SELECT usuario,password FROM catalogo_usuario WHERE usuario = ?";
 	$q = $pdo->prepare($sql);
 	$q->execute(array($usuario));
 	$data = $q->fetch(PDO::FETCH_ASSOC);
@@ -32,12 +32,32 @@ function login()
 		Database::disconnect();
 		return 2;
 	}
-	$_SESSION['catalogo_id_usuario'] = $data['id'];
+    $_SESSION['usuario'] = $data['usuario'];
+	/*$_SESSION['catalogo_id_usuario'] = $data['id'];
 	$_SESSION['usuario'] = $data['usuario'];
-	$_SESSION['nombres']=$data['nombre_completo'];
+	$_SESSION['nombres']=$data['nombre_completo'];*/
 	Database::disconnect();
 	return true;
 }
+
+function nuevo_usuario(){
+    $usuario=$_POST['usuario'];
+    $password=sha1($_POST['pass']);
+
+    $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "INSERT INTO catalogo_usuario (usuario, password) VALUES (?,?);";
+        $q = $pdo->prepare($sql);
+        try {
+            $q->execute(array($usuario,$password));
+            Database::disconnect();
+            return true;
+        } catch (PDOException $e) {
+            Database::disconnect();
+            return "Error: " . $e;
+        }
+}
+
 function data_output($columns, $data)
 {
     $out = array();
