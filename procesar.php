@@ -9,7 +9,6 @@ $fechaFin = new DateTime($fechafin);
 $fechaFin->add(new DateInterval('P1D'));
 
 $diasTotales = ($fechaInicio->diff($fechaFin)->days);
-if($diasTotales>0){
    // Obtiene los números de día de la semana seleccionados
     $diaSemanaInicio = $fechaInicio->format('N');
     $diaSemanaFin = $fechaFin->format('N');
@@ -27,8 +26,4 @@ if($diasTotales>0){
 
     // Generar la barra de navegación con pestañas
     include 'formRecorrido.php';
-}else{
-    error_log("hola");
-
-}
 ?>

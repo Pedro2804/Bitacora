@@ -257,16 +257,22 @@
             if (xhr.readyState === 4 && xhr.status === 200) {
                 // Muestra los resultados en el contenedor de resultados
                 document.getElementById('recorridos').innerHTML = xhr.responseText;
-                openTab(document.getElementsByClassName("tablinks")[0].value);
-                document.getElementsByClassName("tablinks")[0].className += " active";
-            }/*else if(document.getElementsByClassName("tablinks").length < 1){
-                swal({
-                    type: 'error',
-                    title: 'Ingrese fecha válido',
-                    timer: 1000,
-                    showConfirmButton: false
-                });
-            }*/
+                if(document.getElementsByClassName("tablinks").length>0){
+                    openTab(document.getElementsByClassName("tablinks")[0].value);
+                    document.getElementsByClassName("tablinks")[0].className += " active";
+                }else{
+                    $('#sig_bitacora').css("display", "block");
+                    swal({
+                        type: 'error',
+                        title: 'Rango de fecha no válido',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(function() {
+                        document.location.href = 'index.php';
+                    }, 1100);
+                }
+            }
             };
              
             xhr.send('FechaDel=' + encodeURIComponent(fechaDel) + '&FechaAl=' + encodeURIComponent(fechaAl));

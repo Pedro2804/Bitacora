@@ -113,13 +113,12 @@
 
                         document.getElementById('p').style.opacity = 1;
                         document.getElementById('placas').value = resultados.placas;
-
-                        recorridos.style.display= 'block';
-                        document.getElementById('sig_bitacora').style.display = "none";
-                        openTab(dias_recorrido[0].value);
-                        for(i=0; i<dias_recorrido.length; i++)
-                            dias_recorrido[i].disabled = true;
-                        dias_recorrido[0].className += " active";
+                            recorridos.style.display= 'block';
+                            document.getElementById('sig_bitacora').style.display = "none";
+                            openTab(dias_recorrido[0].value);
+                            for(i=0; i<dias_recorrido.length; i++)
+                                dias_recorrido[i].disabled = true;
+                            dias_recorrido[0].className += " active";
 
                             document.getElementById('km_I0').value = resultados.km;
                     }else{
