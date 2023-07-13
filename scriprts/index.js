@@ -70,8 +70,8 @@
                             swal({
                             type: 'error',
                             title: 'La unidad no existe en el sistema',
-                            //timer: 4000,
-                            showConfirmButton: true});
+                            timer: 1000,
+                            showConfirmButton: false});
                             $("#recorridos").css("display", "none");
                             $("#sig_bitacora").css("display", "block");
                         }else{
@@ -127,8 +127,8 @@
                         swal({
                             type: 'error',
                             title: 'La unidad no existe en el sistema',
-                            //timer: 4000,
-                            showConfirmButton: true
+                            timer: 1000,
+                            showConfirmButton: false
                         });
                             document.getElementById('recorridos').style.display= 'none';
                             document.getElementById('sig_bitacora').style.display = 'block';
