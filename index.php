@@ -259,7 +259,7 @@
                 document.getElementById('recorridos').innerHTML = xhr.responseText;
                 openTab(document.getElementsByClassName("tablinks")[0].value);
                 document.getElementsByClassName("tablinks")[0].className += " active";
-            }/*else{
+            }/*else if(document.getElementsByClassName("tablinks").length < 1){
                 swal({
                     type: 'error',
                     title: 'Ingrese fecha válido',

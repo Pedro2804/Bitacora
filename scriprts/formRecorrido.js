@@ -11,7 +11,6 @@
         }
         document.getElementById(tabName).style.display = "block";
         document.getElementById(tabName).scrollIntoView({ behavior: 'smooth' });
-        //evt.currentTarget.className += " active";
     }
 
     function siguiente_dia(dia){
