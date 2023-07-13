@@ -117,19 +117,5 @@
         <?php $j++; ?>
     </div>
     <?php } ?>
-
-    <script>
-
-            function anterior_dia2(seleccionado) {
-                //document.getElementById("listaR").value += seleccionado.value + '\n';
-                //seleccionado.value = "";
-                alert(seleccionado.id);
-            }
-            /*$(document).ready(function() {
-                $("#recorrido<?php echo $j ?>").on("input", function(event){
-                    alert("hola");
-                });
-            });*/
-        </script>
 </body>
 </html>

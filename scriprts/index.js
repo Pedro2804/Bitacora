@@ -108,6 +108,7 @@
                 success: function(result){
                     if(result!=0){
                         var resultados = JSON.parse(result);
+                        document.getElementById('sig_bitacora').style.display = "none";
                         document.getElementById('M_m').style.opacity = 1;
                         document.getElementById('marca_modelo').value = resultados.modelo;
 
@@ -115,14 +116,21 @@
                         document.getElementById('placas').value = resultados.placas;
 
                         recorridos.style.display= 'block';
-                        openTab(dias_recorrido[0].value);
-                        for(i=0; i<dias_recorrido.length; i++)
-                            dias_recorrido[i].disabled = true;
-                        dias_recorrido[0].className += " active";
+                        if(dias_recorrido.length>0){
+                            openTab(dias_recorrido[0].value);
+                            for(i=0; i<dias_recorrido.length; i++)
+                                dias_recorrido[i].disabled = true;
+                            dias_recorrido[0].className += " active";
 
-                        document.getElementById('km_I0').value = resultados.km;
-
-                        document.getElementById('sig_bitacora').style.display = "none";; 
+                            document.getElementById('km_I0').value = resultados.km;
+                        }/*else{
+                            swal({
+                                type: 'error',
+                                title: 'Ingrese fecha válido',
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
+                        }*/
                     }else{
                         swal({
                             type: 'error',

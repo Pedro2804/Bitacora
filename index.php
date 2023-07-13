@@ -259,7 +259,14 @@
                 document.getElementById('recorridos').innerHTML = xhr.responseText;
                 openTab(document.getElementsByClassName("tablinks")[0].value);
                 document.getElementsByClassName("tablinks")[0].className += " active";
-            }
+            }/*else{
+                swal({
+                    type: 'error',
+                    title: 'Ingrese fecha válido',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+            }*/
             };
              
             xhr.send('FechaDel=' + encodeURIComponent(fechaDel) + '&FechaAl=' + encodeURIComponent(fechaAl));
