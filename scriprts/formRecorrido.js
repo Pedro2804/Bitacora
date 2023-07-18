@@ -13,6 +13,22 @@
         document.getElementById(tabName).scrollIntoView({ behavior: 'smooth' });
     }
 
+    function formVacio(checkbox) {
+        if(checkbox.checked){
+            document.getElementById("km_I"+checkbox.id[checkbox.id.length-1]).disabled = true;
+            document.getElementById("km_F"+checkbox.id[checkbox.id.length-1]).disabled = true;
+            document.getElementById("salida"+checkbox.id[checkbox.id.length-1]).disabled = true;
+            document.getElementById("destino"+checkbox.id[checkbox.id.length-1]).disabled = true;
+            document.getElementById("recorrido"+checkbox.id[checkbox.id.length-1]).disabled = true;
+         }else{
+            document.getElementById("km_I"+checkbox.id[checkbox.id.length-1]).disabled = false;
+            document.getElementById("km_F"+checkbox.id[checkbox.id.length-1]).disabled = false;
+            document.getElementById("salida"+checkbox.id[checkbox.id.length-1]).disabled = false;
+            document.getElementById("destino"+checkbox.id[checkbox.id.length-1]).disabled = false;
+            document.getElementById("recorrido"+checkbox.id[checkbox.id.length-1]).disabled = false;
+         }
+    }
+
     function siguiente_dia(dia){
         var dias_recorrido = document.getElementsByClassName("tablinks");
         var km_inicial = document.getElementById("km_I"+dia.id[dia.id.length - 1]);
@@ -20,14 +36,38 @@
         var salida = document.getElementById("salida"+dia.id[dia.id.length - 1]);
         var listaR = document.getElementById("listaR"+dia.id[dia.id.length - 1]);
         
-        if(!listaR.value)
-            document.getElementById("destino"+dia.id[dia.id.length - 1]).reportValidity();
+        if(!document.getElementById("vacio"+dia.id[dia.id.length - 1]).checked){
+            if(!listaR.value)
+                document.getElementById("destino"+dia.id[dia.id.length - 1]).reportValidity();
 
-        salida.reportValidity();
-        km_final.reportValidity();
-        km_inicial.reportValidity();
+            salida.reportValidity();
+            km_final.reportValidity();
+            km_inicial.reportValidity();
+        
+            if(km_inicial.value && km_final.value && salida.value && listaR.value){
+                var i = 0;
+                while(i<dias_recorrido.length){
+                    if(dias_recorrido[i].value == dia.parentNode.parentNode.parentNode.id){
+                        i++;
+                        break;
+                    }
+                    i++;
+                }
 
-        if(km_inicial.value && km_final.value && salida.value && listaR.value){
+                if((dias_recorrido.length-1) == i){
+                    document.getElementById('boton_guardar'+i).style.display = "block";
+                    document.getElementById(dias_recorrido[i].value).querySelector('#btn_sig'+i).style.visibility = "hidden";
+                }
+                openTab(dias_recorrido[i].value);
+                dias_recorrido[i].className += " active";
+
+                document.getElementById("km_I"+i).value = document.getElementById("km_F"+(i-1)).value;
+
+                if(i != 0){
+                    document.getElementById(dias_recorrido[i].value).querySelector('#btn_ant'+i).style.visibility = "visible";
+                }
+            }
+        }else{
             var i = 0;
             while(i<dias_recorrido.length){
                 if(dias_recorrido[i].value == dia.parentNode.parentNode.parentNode.id){
@@ -44,11 +84,11 @@
             openTab(dias_recorrido[i].value);
             dias_recorrido[i].className += " active";
 
-            document.getElementById("km_I"+i).value = document.getElementById("km_F"+(i-1)).value;
+            document.getElementById("km_I"+i).value = document.getElementById("km_I"+(i-1)).value;
 
             if(i != 0){
                 document.getElementById(dias_recorrido[i].value).querySelector('#btn_ant'+i).style.visibility = "visible";
-            }
+            }    
         }
         //listaR.readOnly = !listaR.readOnly;
     }

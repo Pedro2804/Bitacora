@@ -27,9 +27,16 @@
 
         <!--Formulario-->
         <form id="formulario_recorrido<?php echo $j ?>">
+            
             <input type="hidden" name="bitacora" value="12" />
             <input type="hidden" name="dia_semana" value="<?php echo $diaSemana ?>" />
 
+            <div class="col-md-12" style="padding-top:20px;">
+                <div class="form-group form-animate-checkbox">
+                    <input id="vacio<?php echo $j ?>" class="checkbox" onclick="formVacio(this)" type="checkbox" name="vacio" />
+                    <label>VACIO</label>
+                </div>
+            </div>
             <div class="col-md-12" style="padding-top:20px;">
                 <!--Kilometro inicial-->
                 <div class="col-md-6" style="width: 15%;">
@@ -97,7 +104,7 @@
                 <div class="col-md-6" style="width: 70%;"></div>
                 <!--Text area-->
                 <div class="col-md-6" style="width: 22%;">
-                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos<?php echo $j ?>" placeholder="Recorridos" style="width: 100%; height: 80px; resize: none; border-style: outset;" readonly></textarea>
+                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos<?php echo $j ?>" placeholder="Recorridos" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
                 </div>
                 <!--Boton vaciar-->
                 <div class="col-md-6" style="width: 8%;">

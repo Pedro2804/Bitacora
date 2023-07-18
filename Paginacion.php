@@ -100,7 +100,7 @@ else{
 	<tfoot>
 		<tr>
         <?php
-		  $pdo = Database::connect();
+		  /*$pdo = Database::connect();
 		  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		  $sql = "SELECT not_solicitud.* 
 				FROM not_solicitud
@@ -165,7 +165,7 @@ else{
 						echo $cadena;
 						echo $LigaSiguiente;
 //						echo $LigaFin;
-					}
+					}*/
 											?>
 										</div>
 				</center>

@@ -13,7 +13,7 @@
         <meta name="keyword" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="img/favicon.ico" type="image/ico" />
-        <title>Control vehicular</title>
+        <title>Bitacora</title>
 
         <!-- start: Css -->
         <link rel="stylesheet" type="text/css" href="asset/css/bootstrap.min.css">

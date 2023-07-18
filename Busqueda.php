@@ -12,7 +12,7 @@ $fechafin = date('d-m-Y');
   <meta charset="utf-8">
   <meta name="keyword" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Noticia</title>
+  <title>Bitacoras</title>
   <!-- start: Css -->
   <link rel="stylesheet" type="text/css" href="asset/css/bootstrap.min.css">
 
@@ -45,7 +45,8 @@ $fechafin = date('d-m-Y');
 	}
   function FormatoSolicitud()
     {
-          window.open("Excel_11445_1115.php?Solicitud="+$('#TxtConsec').val());
+          //window.open("Bitacora.php?Solicitud="+$('#TxtConsec').val());
+          window.open("Bitacora.php");
 	}
   </script>
   <script src="scriprts/sweetalert2.min.js"></script>
