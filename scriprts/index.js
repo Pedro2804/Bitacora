@@ -44,6 +44,10 @@
 
     });
 
+    $("#N_operador").on("change", function(event){
+
+    });
+    
     $("#idVehiculo").on("change", function(event){ //jQuery
         event.preventDefault();
         var idVehiculo = $(this).val();

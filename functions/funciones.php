@@ -306,8 +306,8 @@ function guardar_solicitud()
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Construir la consulta SQL y el array de parámetros dinámicamente
-    $sql = "INSERT INTO bitacora (vehiculo, empleado, periodo_de, periodo_al";
-    $params = array($idVehiculo, $empleado, $fechalDel, $fechalAl);
+    $sql = "INSERT INTO bitacora (operador, NoUnidad, periodo_de, periodo_al";
+    $params = array($empleado, $idVehiculo, $fechalDel, $fechalAl);
 
     if (!empty($fechaCarga)) {
         $sql .= ", fecha_carga";

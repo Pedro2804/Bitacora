@@ -61,6 +61,7 @@
                 if((dias_recorrido.length-1) == i){
                     document.getElementById('boton_guardar'+i).style.display = "block";
                     document.getElementById(dias_recorrido[i].value).querySelector('#btn_sig'+i).style.visibility = "hidden";
+                    document.getElementById(dias_recorrido[i].value).querySelector('#destino'+i).required = false;
                 }
                 openTab(dias_recorrido[i].value);
                 dias_recorrido[i].className += " active";
@@ -84,6 +85,7 @@
             if((dias_recorrido.length-1) == i){
                 document.getElementById('boton_guardar'+i).style.display = "block";
                 document.getElementById(dias_recorrido[i].value).querySelector('#btn_sig'+i).style.visibility = "hidden";
+                document.getElementById(dias_recorrido[i].value).querySelector('#destino'+i).required = false;
             }
             openTab(dias_recorrido[i].value);
             dias_recorrido[i].className += " active";
@@ -171,4 +173,25 @@
                 timer: 1000,
                 showConfirmButton: false
             });
-    }    
+    }
+
+    function Nbitacora(guardar) {
+        $.ajax({
+            type: "POST",
+            url: "controller/controller.php",
+            data: $("#form_solicitud").serialize(),
+            cache: false,
+            success: function(result) {
+                console.log(result);
+                if (result == 1) {
+                    swal({
+                        type: 'success',
+                        title: 'Solicitud Generada',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    $("#form_solicitud")[0].reset();
+                }
+            }
+        });
+    }

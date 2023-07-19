@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- librerias para jquery-->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
+    <!-- mensajes de swal-->
+    <link rel="stylesheet" type="text/css" href="style/sweetalert2.min.css">
+    <script src="scriprts/sweetalert2.min.js"></script>
 </head>
 <body>
     <div class="tab">
@@ -88,7 +95,7 @@
 
                 <div class="col-md-6" style="width: 22%;">
                     <div class="form-group form-animate-text" style="margin: 0px;">
-                        <input type="text" id="recorrido<?php echo $j ?>" class="form-text" name="recorrido" required>
+                        <input type="text" id="recorrido<?php echo $j ?>" class="form-text" name="recorrido">
                         <span class="bar"></span><label>Nuevo recorrido</label>
                     </div>
                 </div>
@@ -117,7 +124,7 @@
                 <div id="btn_ant<?php echo $j ?>" class="btn-guardar" onclick="anterior_dia(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer; display: inline-block; visibility: hidden;">Anterior</div>
                 <div id="btn_sig<?php echo $j ?>" class="btn-guardar" onclick="siguiente_dia(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer; display: inline-block;">Siguiente</div>
                 <div id="boton_guardar<?php echo $j ?>" style="display: none;">
-                    <input class="btn-guardar" type="submit" value="Guardar">
+                    <input id="btn_guardar<?php echo $j ?>" class="btn-guardar" type="button" onclick="Nbitacora(this)" value="Guardar">
                 </div>
             </div>
         </form>
@@ -125,4 +132,5 @@
     </div>
     <?php } ?>
 </body>
+<script src="scriprts/nueva_bitacora.js"></script>
 </html>

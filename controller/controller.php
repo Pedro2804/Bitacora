@@ -57,12 +57,12 @@ switch ($funcion)
         $respuesta=nuevo_auto();
         echo $respuesta;
 	break;
-    case 'direcciones':
-        $respuesta=direcciones();
-        echo $respuesta;
-	break;
     case 'guardar_solicitud':   
         $respuesta=guardar_solicitud();
+        echo $respuesta;
+	break;
+    case 'direcciones':
+        $respuesta=direcciones();
         echo $respuesta;
 	break;
     case 'filtrar_deptos':

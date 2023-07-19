@@ -69,10 +69,10 @@
                         <form class="cmxform" id="form_solicitud" method="get" action="">
                             <input type="hidden" value="guardar_solicitud" id="funcion" name="funcion">
                             <div class="col-md-12" style="margin-top:40px !important;"><!--CENTRAL 0-->
-                                <div class="col-md-6" style="width: 50%;"><!--IZQUIERDA 1-->
+                                <div class="col-md-6" style="width: 30%;"><!--IZQUIERDA 1-->
                                     <!--OPERADOR-->
                                     <div class="form-group form-animate-text">
-                                        <input list="idE" type="text" class="form-text" id="empleado" name="empleado" required>
+                                        <input list="idE" type="text" class="form-text" id="N_operador" name="N_operador" required>
                                         <datalist id="idE">
                                             <?php
                                                 try {
@@ -91,6 +91,12 @@
                                         </datalist>
                                         <span class="bar"></span>
                                         <label>Operador*</label>
+                                    </div>
+                                </div><!--IZQUIERDA 1-->
+                                <div class="col-md-6" style="width: 20%;"><!--IZQUIERDA 1-->
+                                    <div class="form-group form-animate-text" id="N_C" style="opacity: 1;">
+                                        <input type="text" class="form-text" id="numero_control" name="numero_control">
+                                        <span class="bar"></span><label>Numero de control</label>
                                     </div>
                                 </div><!--IZQUIERDA 1-->
                                 <!--PERIODO DEL-->
@@ -135,7 +141,7 @@
                                         </datalist>
                                         <script>
                                             var datos = <?php echo json_encode($datos_js); ?>;
-                                            console.log(datos);
+                                            //console.log(datos);
                                         </script>
                                         <span class="bar"></span><label>Unidad de resguardo*</label>
                                     </div>
@@ -268,9 +274,15 @@
             if (xhr.readyState === 4 && xhr.status === 200) {
                 // Muestra los resultados en el contenedor de resultados
                 document.getElementById('recorridos').innerHTML = xhr.responseText;
-                if(document.getElementsByClassName("tablinks").length>0){
+                if(document.getElementsByClassName("tablinks").length>1){
                     openTab(document.getElementsByClassName("tablinks")[0].value);
                     document.getElementsByClassName("tablinks")[0].className += " active";
+                }else if(document.getElementsByClassName("tablinks").length==1){
+                    document.getElementById("boton_guardar0").style.display = "block";
+                    document.getElementById("btn_sig0").style.display = "none";
+                    openTab(document.getElementsByClassName("tablinks")[0].value);
+                    document.getElementsByClassName("tablinks")[0].className += " active"
+                    document.getElementById("destino0").required = false;
                 }else{
                     $('#sig_bitacora').css("display", "block");
                     swal({
