@@ -44,14 +44,6 @@
 
     });
 
-    $("#idVehiculo").on("input", function (event) {
-        if(event.key != 'Backspace'){
-            this.value = this.value.replace(/\D/g, '');
-            //if(this.value.length>5)
-                $(this).val(datos[$(this).val()]);
-        }
-    });
-
     $("#idVehiculo").on("change", function(event){ //jQuery
         event.preventDefault();
         var idVehiculo = $(this).val();
