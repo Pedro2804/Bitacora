@@ -20,12 +20,16 @@
             document.getElementById("salida"+checkbox.id[checkbox.id.length-1]).disabled = true;
             document.getElementById("destino"+checkbox.id[checkbox.id.length-1]).disabled = true;
             document.getElementById("recorrido"+checkbox.id[checkbox.id.length-1]).disabled = true;
+            document.getElementById("btn_vaciar"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "none";
+            document.getElementById("btn_agregar"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "none";
          }else{
             document.getElementById("km_I"+checkbox.id[checkbox.id.length-1]).disabled = false;
             document.getElementById("km_F"+checkbox.id[checkbox.id.length-1]).disabled = false;
             document.getElementById("salida"+checkbox.id[checkbox.id.length-1]).disabled = false;
             document.getElementById("destino"+checkbox.id[checkbox.id.length-1]).disabled = false;
             document.getElementById("recorrido"+checkbox.id[checkbox.id.length-1]).disabled = false;
+            document.getElementById("btn_vaciar"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "auto";
+            document.getElementById("btn_agregar"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "auto";
          }
     }
 

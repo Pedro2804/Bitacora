@@ -115,17 +115,28 @@
                                                 try {
                                                     $pdo = Database::connect();
                                                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                                    $sql = "SELECT num_unidad  FROM vehiculo";
+                                                    $sql = "SELECT id_vehiculo,num_unidad  FROM vehiculo";
                                                     $q = $pdo->prepare($sql);
                                                     $q->execute(array());
                                                     $data = $q->fetchall(PDO::FETCH_ASSOC);
+                                                    $datos = array();
                                                     foreach($data as $row)
-                                                        echo '<option value="'.$row['num_unidad'].'"></option>';
+                                                        $datos[$row['id_vehiculo']] = $row['num_unidad'];
+                                                        
+                                                    foreach($data as $row)
+                                                        echo '<option value="'.$row['id_vehiculo'].'">'.$row['num_unidad'].'</option>';
+
+                                                    $datos_js = $datos;
+                                                    
                                                 }catch(PDOException $e){
                                                     echo 'Error: ' . $e->getMessage();
                                                 }
                                             ?>
                                         </datalist>
+                                        <script>
+                                            var datos = <?php echo json_encode($datos_js); ?>;
+                                            console.log(datos);
+                                        </script>
                                         <span class="bar"></span><label>Unidad de resguardo*</label>
                                     </div>
                                 </div>

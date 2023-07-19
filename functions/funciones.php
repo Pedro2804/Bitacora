@@ -160,7 +160,7 @@ function nombreempl($cve)
 function datos_vehiculo($idvehiculo){
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT CONCAT(marca,' ', modelo) AS marca, placas, kilometraje FROM vehiculo WHERE num_unidad=?";
+    $sql = "SELECT CONCAT(marca,' ', modelo) AS marca, placas, kilometraje FROM vehiculo WHERE id_vehiculo=?";
     $q = $pdo->prepare($sql);
     try {
         $q->execute(array($idvehiculo));
