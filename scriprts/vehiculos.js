@@ -70,7 +70,7 @@ function editar(id)
                 var kilometraje=obj['kilometraje'];     
                 
                 $('#id').val(id);
-                $('#num_unidad').val(id);
+                $('#num_unidad').val(obj['num_unidad']);
                 $('#marca').val(marca);
                 $('#modelo').val(modelo);
                 $('#placas').val(placas);
@@ -213,9 +213,7 @@ $(document).ready(function()
                         //confirmButtonText: "Aceptar",
                         }).then(function(){document.location.href="../admin/autos.php";});
                         
-                        setTimeout(function() {
-                            document.location.href = '../admin/autos.php';
-                          }, 1100);
+                        setTimeout(function() {document.location.href = '../admin/autos.php';}, 1100);
 				}
 				//else console.log(result);
 			}

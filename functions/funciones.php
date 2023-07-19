@@ -181,12 +181,22 @@ function datos_vehiculo($idvehiculo){
 
 function mostrar_vehiculos(){
     $columns = array(
-        array('db' => 'num_unidad', 'dt' => 0),
-        array('db' => 'marca', 'dt' => 1),
-        array('db' => 'modelo', 'dt' => 2),
-        array('db' => 'placas', 'dt' => 3),
-        array('db' => 'tipo_combustible', 'dt' => 4),
-        array('db' => 'kilometraje', 'dt' => 5)
+        array('db' => 'id_vehiculo', 'dt' => 0),
+        array('db' => 'num_unidad', 'dt' => 1),
+        array('db' => 'marca', 'dt' => 2),
+        array('db' => 'modelo', 'dt' => 3),
+        array('db' => 'tipo', 'dt' => 4),
+        array('db' => 'placas', 'dt' => 5),
+        array('db' => 'NoSerie', 'dt' => 6),
+        array('db' => 'tipo_combustible', 'dt' => 7),
+        array('db' => 'kilometraje', 'dt' => 8),
+        array('db' => 'transmision', 'dt' => 9),
+        /*array('db' => 'auto_direccion', 'dt' => 10),
+        array('db' => 'direccion', 'dt' => 11),
+        array('db' => 'estado', 'dt' => 13),
+        array('db' => 'logo', 'dt' => 14),*/
+        array('db' => 'ubicacion', 'dt' => 10),
+        array('db' => 'resguardante', 'dt' => 11)
     );
     $salida = array();
     $pdo = new PDO('mysql:host=localhost;dbname=Bitacora', 'root', 'DIFinformatica.03', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -211,7 +221,7 @@ function get_vehiculo($id){
     //$id = $_POST['id'];
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $query = "SELECT * FROM vehiculo WHERE num_unidad=?";
+    $query = "SELECT * FROM vehiculo WHERE id_vehiculo=?";
     $q = $pdo->prepare($query);
     try {
         $q->execute(array($id));
@@ -649,12 +659,13 @@ function editar_auto()
     $modelo = $_POST['modelo'];
     $placas = $_POST['placas'];
     $combustible = $_POST['tipo_combustible'];
-    $sql_ = "num_unidad=$unidad, marca='$marca', modelo='$modelo', placas='$placas', tipo_combustible='$combustible'";
+    $kilometraje = $_POST['kilometraje'];
+    $sql_ = "num_unidad='$unidad', marca='$marca', modelo='$modelo', placas='$placas', tipo_combustible='$combustible', kilometraje='$kilometraje'";
 
 
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "UPDATE vehiculo SET " . $sql_ . " WHERE num_unidad=?";
+    $sql = "UPDATE vehiculo SET " . $sql_ . " WHERE id_vehiculo=?";
     $q = $pdo->prepare($sql);
     try {
         $q->execute(array($id));

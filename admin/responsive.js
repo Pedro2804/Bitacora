@@ -1,9 +1,10 @@
 function ajustarMargenSiguiente() {
     var cssmenu = document.getElementById('cssmenu');
     var logodif = document.getElementById('logodif');
-    var margenSuperior = cssmenu.offsetHeight + logodif.offsetHeight;
+    var cerrar = document.getElementById('cerrarmenu');
+    var margenSuperior = cssmenu.offsetHeight + logodif.offsetHeight + cerrar.offsetHeight;
   
-    var barra_superior = document.getElementById('barra_superior');
+    var barra_superior = document.getElementById('prin_admin');
     barra_superior.style.marginTop = margenSuperior + 'px';
   }
 

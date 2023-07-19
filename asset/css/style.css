@@ -1944,7 +1944,7 @@ ul li a:focus {
 #left-menu{
 }
 #left-menu .left-bg {
-  background: url('../img/left-bg.png');
+  background: url('../../img/banermenu.png');
   background-repeat: repeat-x;
   height: 100px;
   left: 0;

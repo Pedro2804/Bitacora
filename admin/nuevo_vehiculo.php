@@ -94,7 +94,7 @@ if (!isset($_SESSION['usuario'])) {
     <!-- start: Header -->
     <nav class="navbar navbar-default header navbar-fixed-top" id="barra_superior" style="margin-top: 139px; background: #172e5c !important;">
         <div class="col-md-12 nav-wrapper">
-            <div class="navbar-header" style="width:100%;">
+            <div id="cerrarmenu" class="navbar-header" style="width:100%;">
                 <div class="opener-left-menu is-open" style="background: #172e5c !important;">
                     <span class="top"></span>
                     <span class="middle"></span>
@@ -104,7 +104,7 @@ if (!isset($_SESSION['usuario'])) {
         </div>
     </nav>
     <!-- end: Header -->
-    <div class="container-fluid mimin-wrapper" style="margin-top: 185px;">
+    <div id="prin_admin" class="container-fluid mimin-wrapper">
         <!-- start:Left Menu -->
         <?php include 'menu.php'; ?>
         <!-- end: Left Menu -->
