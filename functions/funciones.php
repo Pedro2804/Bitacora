@@ -682,7 +682,7 @@ function eliminar_auto() {
 
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "DELETE FROM vehiculo WHERE num_unidad=?";
+    $sql = "DELETE FROM vehiculo WHERE id_vehiculo=?";
     $q = $pdo->prepare($sql);
     try {
         $q->execute(array($unidad));
