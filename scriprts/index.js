@@ -97,7 +97,7 @@
     $("#sig_bitacora").on("click", function(event){
         event.preventDefault();
         var unidad = document.getElementById('idVehiculo');
-        var empleado = document.getElementById('Noperador');
+        var empleado = document.getElementById('N_operador');
         var recorridos = document.getElementById('recorridos');
         var dias_recorrido = document.getElementsByClassName("tablinks");
         unidad.reportValidity();
