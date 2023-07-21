@@ -283,7 +283,7 @@ function repetido($tabla, $columna, $lugar){
     }
 }
 
-function guardar_solicitud()
+function guardar_bitacora()
 {
 
     $empleado = null;
@@ -295,8 +295,8 @@ function guardar_solicitud()
     $folio = null;
 
 
-    if (isset($_POST['empleado'])) {
-        $empleado = $_POST['empleado'];
+    if (isset($_POST['numero_control'])) {
+        $empleado = $_POST['numero_control'];
     }
     if (isset($_POST['idVehiculo'])) {
         $idVehiculo = $_POST['idVehiculo'];
@@ -336,8 +336,9 @@ function guardar_solicitud()
         $sql .= ", monto";
         $params[] = $monto;
     }
-
-    $sql .= ") VALUES (?, ?, ?, ?";
+    date_default_timezone_set('America/Mexico_City');
+    $params[] = date('Y-m-d',  strtotime(date('d-m-Y')));
+    $sql .= ",fecha_recibido) VALUES (?, ?, ?, ?";
 
     for ($i = 0; $i < count($params) - 4; $i++) {
         $sql .= ", ?";
@@ -356,6 +357,70 @@ function guardar_solicitud()
         return "Error: " . $e;
     }
 }
+
+function guardar_recorrido()
+{
+    $dia = null;
+    $k_i = null;
+    $k_f = null;
+    $salida = null;
+    $lista_rec = "hola";
+
+    if (!isset($_POST['vacio'])) {
+        if (isset($_POST['dia_semana'])) {
+            $dia = $_POST['dia_semana'];
+        }
+        if (isset($_POST['salida'])) {
+            $salida = $_POST['salida'];
+        }
+        if (isset($_POST['listaRecorridos'])) {
+            $lista_rec = $_POST['listaRecorridos'];
+        }
+        if (isset($_POST['km_inicial'])) {
+            $k_i = $_POST['km_inicial'];
+        }
+        if (isset($_POST['km_final'])) {
+            $k_f = $_POST['km_final'];
+        }
+    
+        $id_bitacora = bitacora();
+        
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+        // Construir la consulta SQL y el array de parámetros dinámicamente
+        $sql = "INSERT INTO recorrido (dia_semana, salida, recorrido, km_inicial, km_final, bitacora) VALUES (?, ?, ?, ?, ?, ?);";
+        $params = array($dia, $salida, $lista_rec, $k_i, $k_f, $id_bitacora);
+    
+        $q = $pdo->prepare($sql);
+    
+        try {
+            $q->execute($params);
+            Database::disconnect();
+            return true;
+        } catch (PDOException $e) {
+            Database::disconnect();
+            return "Error: " . $e;
+        }
+    }
+}
+
+function bitacora(){
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "SELECT MAX(id_bitacora) AS id FROM bitacora;";
+    $q = $pdo->prepare($sql);
+    try {
+        $q->execute();
+        $res = $q->fetch(PDO::FETCH_ASSOC);
+        Database::disconnect();
+        return $res['id'];
+    } catch (PDOException $e) {
+        Database::disconnect();
+        return "Error: " . $e;
+    }
+}
+
 function filtrar_deptos()
 {
     $direccion = $_POST['direccion'];

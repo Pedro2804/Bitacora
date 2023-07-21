@@ -116,7 +116,7 @@
 
     function listarRecorrido(seleccionado) {
         if(seleccionado.value != "")
-            document.getElementById("listaR"+seleccionado.name[seleccionado.name.length -1]).value += seleccionado.value + '\n';
+            document.getElementById("listaR"+seleccionado.id[seleccionado.id.length -1]).value += seleccionado.value + '\n';
         seleccionado.value = "";
     }
 
@@ -143,8 +143,6 @@
                             timer: 1000,
                             showConfirmButton: false
                         });
-
-                        
 
                         var nuevaOpcion = document.createElement('option');
                         nuevaOpcion.value = nuevoR.value;
@@ -175,23 +173,89 @@
             });
     }
 
-    function Nbitacora(guardar) {
-        $.ajax({
-            type: "POST",
-            url: "controller/controller.php",
-            data: $("#form_solicitud").serialize(),
-            cache: false,
-            success: function(result) {
-                console.log(result);
-                if (result == 1) {
-                    swal({
-                        type: 'success',
-                        title: 'Solicitud Generada',
-                        timer: 1500,
-                        showConfirmButton: false
+    function Nbitacora(dia) {
+        var dias_recorrido = document.getElementsByClassName("tablinks");
+        var km_inicial = document.getElementById("km_I"+dia.id[dia.id.length - 1]);
+        var km_final = document.getElementById("km_F"+dia.id[dia.id.length - 1]);
+        var salida = document.getElementById("salida"+dia.id[dia.id.length - 1]);
+        var listaR = document.getElementById("listaR"+dia.id[dia.id.length - 1]);
+
+        if(!document.getElementById("vacio"+dia.id[dia.id.length - 1]).checked){
+            if(!listaR.value)
+                document.getElementById("destino"+dia.id[dia.id.length - 1]).reportValidity();
+
+            salida.reportValidity();
+            km_final.reportValidity();
+            km_inicial.reportValidity();
+
+            if(km_inicial.value && km_final.value && salida.value && listaR.value){
+                $.ajax({
+                    type: "POST",
+                    url: "controller/controller.php",
+                    data: $("#form_solicitud").serialize(),
+                    cache: false,
+                    success: function(result) {
+                        console.log(result);
+                        if (result == 1) {
+                            swal({
+                                type: 'success',
+                                title: 'Solicitud Generada',
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
+                            //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+                        }
+                    }
+                });
+
+                var i = 0;
+                while (i < dias_recorrido.length) {
+                    document.getElementById("listaR"+i).disabled = false;
+                    $.ajax({
+                        type: "POST",
+                        url: "controller/controller.php",
+                        data: $("#formulario_recorrido"+i).serialize(),
+                        cache: false,
+                        //success: function(result) {
+                            //console.log(result);
+                            /*if (result == 1) {
+                                swal({
+                                    type: 'success',
+                                    title: 'Solicitud Generada',
+                                    timer: 1000,
+                                    showConfirmButton: false
+                                });
+                                setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+                            }*/
+                        //}
                     });
-                    $("#form_solicitud")[0].reset();
+                    i++;
                 }
+                setTimeout(function() { document.location.href = 'index.php'; }, 1100);
             }
-        });
+        }else if(dias_recorrido.length == 1){//verica si solo se va a registrar un dia y que no este vacio el formulario
+            swal({
+                type: 'warning',
+                title: 'El recorrido no debe estar vacío',
+                timer: 1000,
+                showConfirmButton: false
+            });
+            //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+        }else if(dias_recorrido.length > 1){ //verifica si hay mas de un dia y por lo menos 1 debe reistrarse
+            var i = 0;
+            var aux = true;
+            while (i < dias_recorrido.length) {
+                if(!document.getElementById("vacio"+i).checked){aux = false; break;}
+                i++;
+            }
+
+            if(aux == true){
+                swal({
+                    type: 'warning',
+                    title: 'Favor de llenar un formulario',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+            }
+        }
     }

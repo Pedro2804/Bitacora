@@ -67,7 +67,7 @@
                 <div class="col-md-12 panel-body" style="padding-bottom:30px;">
                     <div class="col-md-12">
                         <form class="cmxform" id="form_solicitud" method="get" action="">
-                            <input type="hidden" value="guardar_solicitud" id="funcion" name="funcion">
+                            <input type="hidden" value="guardar_bitacora" id="funcion" name="funcion">
                             <div class="col-md-12" style="margin-top:40px !important;"><!--CENTRAL 0-->
                                 <!--Numero de control 1-->
                                 <div class="col-md-6" style="width: 18%;">

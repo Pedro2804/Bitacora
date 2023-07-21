@@ -54,8 +54,12 @@ switch ($funcion)
         $respuesta=nuevo_auto();
         echo $respuesta;
 	break;
-    case 'guardar_solicitud':   
-        $respuesta=guardar_solicitud();
+    case 'guardar_bitacora':   
+        $respuesta=guardar_bitacora();
+        echo $respuesta;
+	break;
+    case 'guardar_recorrido':   
+        $respuesta=guardar_recorrido();
         echo $respuesta;
 	break;
     case 'nombre_empleado':

@@ -33,10 +33,11 @@
     <div id="<?php echo $nombreDia ?>" class="tabcontent" style="padding-top: 10px;">
 
         <!--Formulario-->
-        <form id="formulario_recorrido<?php echo $j ?>">
+        <form id="formulario_recorrido<?php echo $j ?>" method="get" action="">
             
-            <input type="hidden" name="bitacora" value="12" />
-            <input type="hidden" name="dia_semana" value="<?php echo $diaSemana ?>" />
+            <input type="hidden" value="guardar_recorrido" id="funcion" name="funcion">
+            <!--<input type="hidden" name="bitacora" value="12" />-->
+            <input type="hidden" name="dia_semana" value="<?php echo $nombreDia ?>" />
 
             <div class="col-md-12" style="padding-top:20px;">
                 <div class="form-group form-animate-checkbox">
@@ -48,20 +49,20 @@
                 <!--Kilometro inicial-->
                 <div class="col-md-6" style="width: 15%;">
                     <label style="font-size: 17px;">Km inicial:</label>
-                    <input id="km_I<?php echo $j ?>" type="number" name="km_inicial<?php echo $j ?>" min="0" style="height: 32px;" required />
+                    <input id="km_I<?php echo $j ?>" type="number" name="km_inicial" min="0" style="height: 32px;" required />
                 </div>
 
                 <!--Kilometro final-->
                 <div class="col-md-6" style="width: 15%;">
                     <label style="font-size: 17px;">Km final:</label>
-                    <input id="km_F<?php echo $j ?>" type="number" name="km_final<?php echo $j ?>" min="0" style="height: 32px;" required />
+                    <input id="km_F<?php echo $j ?>" type="number" name="km_final" min="0" style="height: 32px;" required />
                 </div>
 
                 <!--Salida-->
                 <div class="col-md-6" style="width: 20%;">
                     <?php $opciones = array('Estacionamiento', 'Casitas', 'Opción 3'); ?>
                     <label style="font-size: 17px;">Salida:</label><br>
-                    <select id="salida<?php echo $j ?>" name="salida<?php echo $j ?>" required>
+                    <select id="salida<?php echo $j ?>" name="salida" required>
                         <?php
                             echo '<option value="">Seleccione una opción</option>';
                             foreach ($opciones as $opcion) {
@@ -74,7 +75,7 @@
                 <!--Recorrido-->
                 <div class="col-md-6" style="width: 20%;">
                         <label style="font-size: 17px;">Recorrido:</label><br>
-                        <select id="destino<?php echo $j ?>" name="destino<?php echo $j ?>" onchange="listarRecorrido(this)" required>
+                        <select id="destino<?php echo $j ?>" name="destino" onchange="listarRecorrido(this)" required>
                             <?php
                                 try {
                                     $pdo = Database::connect();
@@ -111,7 +112,7 @@
                 <div class="col-md-6" style="width: 70%;"></div>
                 <!--Text area-->
                 <div class="col-md-6" style="width: 22%;">
-                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos<?php echo $j ?>" placeholder="Recorridos" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
+                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos" placeholder="Recorridos" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
                 </div>
                 <!--Boton vaciar-->
                 <div class="col-md-6" style="width: 8%;">
