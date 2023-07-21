@@ -12,7 +12,7 @@ $objPHPExcel = $objReader->load("Bitacora.xlsx");
 
 include 'config/conexion.php';
 
-//if(!empty($_GET['Solicitud'])) $Solicitudes = explode(",", $_GET['Solicitud']);
+if(!empty($_GET['id'])) $Solicitud =$_GET['id'];
 
 /********************************************************
 *														*
@@ -20,7 +20,7 @@ include 'config/conexion.php';
 *														*
 *********************************************************/	
 
-/*$nomb = 'Solicitudes_'.date('d');
+$nomb = 'Solicitudes_'.date('d');
 
 switch (date('m')){
 		case 1: $nomb .= 'Ene'; break;
@@ -35,7 +35,7 @@ switch (date('m')){
 		case 10: $nomb .= 'Oct'; break;
 		case 11: $nomb .= 'Nov'; break;
 		case 12: $nomb .= 'Dic'; break;
-		}*/
+		}
 
 //temp sheet copy 2 times
 
@@ -49,33 +49,40 @@ switch (date('m')){
 
 $HojaIndex = 0;
 $num = 1;
-$objPHPExcel->getActiveSheet()->setCellValue('C6', 'pedro');
-$objPHPExcel->getActiveSheet()->setCellValue('K6', '1234567890');
-$objPHPExcel->getActiveSheet()->setCellValue('N6', 'VW/2020');
-/*foreach ($Solicitudes as $Solicitud):
+//foreach ($Solicitud as $Bitacora):
 	$objPHPExcel->setActiveSheetIndex($HojaIndex);
 	try {
    
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT DATE_FORMAT(FechaDocumento,'%d-%m-%Y') AS FechaDocumento, direccion_cat.Nombre as Direccion, IFNULL(REPLACE(departamento_cat.Nombre,'DEPARTAMENTO DE ',''),IFNULL(OtroDepartamento,'')) AS Depto, NivelUrgencia, Red, 
+
+		$sql = "SELECT bitacora.*, recorrido.*, empleado.*,	CONCAT(Nombre,' ',ApellidoPaterno, ' ', ApellidoMaterno) AS empleado, vehiculo.*,
+		CONCAT(marca,' ',modelo) AS marca
+		FROM bitacora
+		INNER JOIN recorrido ON bitacora.id_bitacora = recorrido.bitacora
+		INNER JOIN empleado ON bitacora.operador = empleado.NumeroControl
+		INNER JOIN vehiculo ON bitacora.NoUnidad = vehiculo.Num_Unidad
+		WHERE id_bitacora = $Solicitud;";
+
+        /*$sql = "SELECT DATE_FORMAT(FechaDocumento,'%d-%m-%Y') AS FechaDocumento, direccion_cat.Nombre as Direccion, IFNULL(REPLACE(departamento_cat.Nombre,'DEPARTAMENTO DE ',''),IFNULL(OtroDepartamento,'')) AS Depto, NivelUrgencia, Red, 
 						Mantenimiento, Telefonia, Formateo, Comunicacion, Impresora, Asistencia, Otro, DescripcionProblema,
 						IFNULL(Solicita, 'NOMBRE Y FIRMA') AS Solicita, IFNULL(VoBo, 'NOMBRE Y FIRMA') AS VoBo, IFNULL(Recibe, 'NOMBRE Y FIRMA') AS Recibe, IFNULL(Entrega , 'NOMBRE Y FIRMA') AS Entrega,
 						LPAD(Folio,4,'0') AS Folio_
 				FROM not_solicitud
 				INNER JOIN direccion_cat ON direccion_cat.ClaveEntidad = not_solicitud.CveEntDireccion
 				LEFT OUTER JOIN departamento_cat ON departamento_cat.ClaveEntidad = not_solicitud.CveEntDepartamento
-				WHERE not_solicitud.ClaveEntidad = ".$Solicitud. " ORDER BY FechaRecibida DESC, Folio DESC ";
+				WHERE not_solicitud.ClaveEntidad = ".$Solicitud. " ORDER BY FechaRecibida DESC, Folio DESC ";*/
         $q = $pdo->prepare($sql);
         $q->execute(array());
         $data = $q->fetchall(PDO::FETCH_ASSOC);		   
 		   foreach($data as $MostrarFila):
-				$objPHPExcel->getActiveSheet()->setCellValue('H8', $MostrarFila['FechaDocumento']);
-				$objPHPExcel->getActiveSheet()->setCellValue('H9', '="'.$MostrarFila['Folio_'].'"');
-				$objPHPExcel->getActiveSheet()->setCellValue('D12', ($MostrarFila['Direccion']));
-				$objPHPExcel->getActiveSheet()->setCellValue('D13', ($MostrarFila['Depto']));
+				$objPHPExcel->getActiveSheet()->setCellValue('C6', $MostrarFila['empleado']);
+				$objPHPExcel->getActiveSheet()->setCellValue('K6', $MostrarFila['operador']);
+				$objPHPExcel->getActiveSheet()->setCellValue('N6', ($MostrarFila['marca']));
+				$objPHPExcel->getActiveSheet()->setCellValue('F7', ($MostrarFila['NoUnidad']));
+				$objPHPExcel->getActiveSheet()->setCellValue('N7', ($MostrarFila['placas']));
 				
-				if($MostrarFila['NivelUrgencia']==1) $objPHPExcel->getActiveSheet()->setCellValue('C15', 'X');
+				/*if($MostrarFila['NivelUrgencia']==1) $objPHPExcel->getActiveSheet()->setCellValue('C15', 'X');
 				elseif($MostrarFila['NivelUrgencia']==2) $objPHPExcel->getActiveSheet()->setCellValue('E15', 'X');
 				else $objPHPExcel->getActiveSheet()->setCellValue('G15', 'X');
 				
@@ -92,15 +99,15 @@ $objPHPExcel->getActiveSheet()->setCellValue('N6', 'VW/2020');
 				$objPHPExcel->getActiveSheet()->setCellValue('B49', utf8_encode($MostrarFila['Solicita']));
 
 				$objPHPExcel->getActiveSheet()->setCellValue('F52', utf8_encode($MostrarFila['Recibe']));
-				$objPHPExcel->getActiveSheet()->setCellValue('B52', utf8_encode($MostrarFila['Entrega']));
+				$objPHPExcel->getActiveSheet()->setCellValue('B52', utf8_encode($MostrarFila['Entrega']));*/
 			endforeach;	
 			$HojaIndex++;
 			$num++;
 		
 		
-		$objPHPExcel->getActiveSheet()->getPageSetup()->setPrintArea("A1:I60");
+		$objPHPExcel->getActiveSheet()->getPageSetup()->setPrintArea("A1:O32");
 		
-		$objPHPExcel->getActiveSheet()->getPageMargins()->setTop(0.39)->setBottom(0.39);
+		/*$objPHPExcel->getActiveSheet()->getPageMargins()->setTop(0.39)->setBottom(0.39);
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
 
@@ -109,11 +116,7 @@ $objPHPExcel->getActiveSheet()->setCellValue('N6', 'VW/2020');
 		$objDrawing6->setPath('img/banner.jpg');
 		$objDrawing6->setHeight(1100);
 		$objPHPExcel->getActiveSheet()->getHeaderFooter()->addImage($objDrawing6, PHPExcel_Worksheet_HeaderFooter::IMAGE_HEADER_LEFT);
-		$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&G&');
-		
-		
-
-		
+		$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&G&');*/
     }
      catch(PDOException $e)
     {
@@ -124,7 +127,7 @@ $objPHPExcel->getActiveSheet()->setCellValue('N6', 'VW/2020');
 	
 	
 
-endforeach;*/
+//endforeach;
 	
 //$nomb .='.xlsx';
 $nomb ='PRUEBA.xlsx';

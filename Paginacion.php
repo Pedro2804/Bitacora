@@ -18,23 +18,22 @@ else{
 	$condicion = '';
 	
 	
-	if(isset($_POST["CmbFolio"]) and $_POST["CmbFolio"]==1) $condicion.=" AND Folio IS NULL";  else $condicion.=" AND Folio IS NOT NULL";
-	if(isset($_POST['FechaDel'])) $condicion.=" AND FechaRecibida BETWEEN '".date('Y-m-d', strtotime($_POST['FechaDel']))."' AND '".date('Y-m-d', strtotime($_POST['FechaAl']))."'";
-	if(isset($_POST["CmbDireccion"]) and $_POST["CmbDireccion"]<>0) $condicion.=" AND not_solicitud.CveEntDireccion = ".$_POST["CmbDireccion"];
-	if(isset($_POST["CmbEstatus"]) and $_POST["CmbEstatus"]<>0) $condicion.=" AND not_solicitud.Estatus = ".$_POST["CmbEstatus"];
+	//if(isset($_POST["CmbFolio"]) and $_POST["CmbFolio"]==1) $condicion.=" AND Folio IS NULL";  else $condicion.=" AND Folio IS NOT NULL";
+	if(isset($_POST['FechaDel'])) $condicion.=" AND fecha_recibido BETWEEN '".date('Y-m-d', strtotime($_POST['FechaDel']))."' AND '".date('Y-m-d', strtotime($_POST['FechaAl']))."'";
+	//if(isset($_POST["CmbDireccion"]) and $_POST["CmbDireccion"]<>0) $condicion.=" AND not_solicitud.CveEntDireccion = ".$_POST["CmbDireccion"];
+	//if(isset($_POST["CmbEstatus"]) and $_POST["CmbEstatus"]<>0) $condicion.=" AND not_solicitud.Estatus = ".$_POST["CmbEstatus"];
 ?>
 <div align="right"><a href="javascript:;" onClick="FormatoSolicitud()" style="cursor:pointer">Solicitud de mantenimiento</a></div>
 <table class="newspaper-b" width="100%">
 	<thead>
 		<tr>
-			<th width="5%">FOLIO</th>
-            <th width="7%">FECHA RECIBIDO</th>
-            <th width="15%">DIRECCI&Oacute;N</th>
-			<th width="19%">DEPARTAMENTO</th>
-            <th width="8%">TIPO DE PROBLEMA</th>
-			<th width="22%">DESCRIPCI&Oacute;N DEL PROBLEMA</th>
-            <th width="12%">SOLICITA</th>
-			<th width="7%">FECHA DE ATENCI&Oacute;N</th>
+			<!--<th width="5%">FOLIO</th>-->
+			<th width="5%">ID</th>
+            <th width="10%">FECHA RECIBIDO</th>
+            <th width="40%">OPERADOR</th>
+			<th width="15%">NUMERO DE CONTROL</th>
+            <th width="15%">UNIDAD DE RESGUARDO</th>
+			<th width="5%">IMPRIMIR</th>
             <th width="5%">EDITAR</th>
 			<th width="5%">ELIMINAR</th>
 		</tr>
@@ -44,14 +43,18 @@ else{
 	try {
           $pdo = Database::connect();
           $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-          $sql = "SELECT not_solicitud.*, DATE_FORMAT(FechaRecibida,'%d-%m-%Y') AS FechaRecibido_, DATE_FORMAT(FechaAtendida,'%d-%m-%Y') AS FechaAtendida_,  
+		  $sql="SELECT bitacora.*, DATE_FORMAT(fecha_recibido,'%d-%m-%Y') AS FechaRecibida, empleado.*, CONCAT(Nombre,' ',ApellidoPaterno, ' ', ApellidoMaterno)
+		  		AS empleado FROM bitacora INNER JOIN empleado ON bitacora.operador = empleado.NumeroControl
+				ORDER BY fecha_recibido DESC, Folio DESC LIMIT $RegistrosAEmpezar,$RegistrosAMostrar";
+
+          /*$sql = "SELECT not_solicitud.*, DATE_FORMAT(FechaRecibida,'%d-%m-%Y') AS FechaRecibido_, DATE_FORMAT(FechaAtendida,'%d-%m-%Y') AS FechaAtendida_,  
 		  				 direccion_cat.Nombre AS Direccion, IFNULL(departamento_cat.Nombre,IFNULL(OtroDepartamento,'')) as Departamento,
 						 CASE not_solicitud.Estatus WHEN 1 THEN 'RECIBIDO' ELSE 'ATENDIDO' END AS EstatusSolicitud, LPAD(Folio,4,'0') AS Folio_
 		  			FROM not_solicitud
 					INNER JOIN direccion_cat ON direccion_cat.ClaveEntidad = not_solicitud.CveEntDireccion
 					LEFT OUTER JOIN departamento_cat ON departamento_cat.ClaveEntidad = not_solicitud.CveEntDepartamento
 					WHERE 1 $condicion
-					ORDER BY FechaRecibida DESC, Folio DESC LIMIT $RegistrosAEmpezar,$RegistrosAMostrar";
+					ORDER BY FechaRecibida DESC, Folio DESC LIMIT $RegistrosAEmpezar,$RegistrosAMostrar";*/
 		  $q = $pdo->prepare($sql);
           $q->execute(array());
 		  $filas = $q->rowCount();
@@ -62,7 +65,7 @@ else{
 		  	 
 		  	 $data = $q->fetchall(PDO::FETCH_ASSOC);
 			  foreach($data as $Solicitud):
-			  	 if($CveSolicitudes=='') $CveSolicitudes = $Solicitud['ClaveEntidad'];
+			  	 /*if($CveSolicitudes=='') $CveSolicitudes = $Solicitud['ClaveEntidad'];
 				 else $CveSolicitudes .= ','.$Solicitud['ClaveEntidad'];
 			  	 $tipoproblema = '';
 				 if($Solicitud['Red']==1): $tipoproblema = 'RED'; endif;
@@ -72,19 +75,17 @@ else{
 				 if($Solicitud['Comunicacion']==1): if($tipoproblema =='') $tipoproblema = 'COMUNICACION'; else $tipoproblema .= ', COMUNICACION'; endif;
 				 if($Solicitud['Impresora']==1): if($tipoproblema =='') $tipoproblema = 'IMPRESORA'; else $tipoproblema .= ', IMPRESORA'; endif;
 				 if($Solicitud['Asistencia']==1): if($tipoproblema =='') $tipoproblema = 'ASISTENCIA'; else $tipoproblema .= ', ASISTENCIA'; endif;
-				 if($Solicitud['Otro']==1): if($tipoproblema =='') $tipoproblema = 'OTRO'; else $tipoproblema .= ', OTRO'; endif;
+				 if($Solicitud['Otro']==1): if($tipoproblema =='') $tipoproblema = 'OTRO'; else $tipoproblema .= ', OTRO'; endif;*/
 
 				 echo '<tr>
-					<td>'.$Solicitud['Folio_'].'</td>
-					<td>'.$Solicitud['FechaRecibido_'].'</td>
-					<td>'.utf8_encode($Solicitud['Direccion']).'</td>
-					<td>'.($Solicitud['Departamento']).'</td>
-					<td>'.utf8_encode($tipoproblema).'</td>
-					<td>'.utf8_encode($Solicitud['DescripcionProblema']).'</td>
-					<td>'.$Solicitud['Solicita'].'</td>
-					<td>'.$Solicitud['FechaAtendida_'].'</td>
-					<td><a href="editarSolicitud.php?id='.$Solicitud['ClaveEntidad'].'"><img src="img/lapiz.png" style="cursor:pointer" title="Editar Solicitud"></a></td>
-					<td><a href="eliminarSolicitud.php?id='.$Solicitud['ClaveEntidad'].'"><img src="img/basura.png" style="cursor:pointer" title="Eliminar Solicitud"></a></td>
+					<td>'.$Solicitud['id_bitacora'].'</td>
+					<td>'.$Solicitud['FechaRecibida'].'</td>
+					<td>'.$Solicitud['empleado'].'</td>
+					<td>'.$Solicitud['operador'].'</td>
+					<td>'.$Solicitud['NoUnidad'].'</td>
+					<td><a href="Imp_Bitacora.php?id='.$Solicitud['id_bitacora'].'"><img src="img/impresora.png" width="45" height="45" style="cursor:pointer" title="Imprimir Solicitud"></a></td>
+					<td><a href="editarSolicitud.php?id='.$Solicitud['id_bitacora'].'"><img src="img/lapiz.png" style="cursor:pointer" title="Editar Solicitud"></a></td>
+					<td><a href="eliminarSolicitud.php?id='.$Solicitud['id_bitacora'].'"><img src="img/basura.png" style="cursor:pointer" title="Eliminar Solicitud"></a></td>
 
 				</tr>';
 		  endforeach;
@@ -100,10 +101,10 @@ else{
 	<tfoot>
 		<tr>
         <?php
-		  /*$pdo = Database::connect();
+		  $pdo = Database::connect();
 		  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		  $sql = "SELECT not_solicitud.* 
-				FROM not_solicitud
+		  $sql = "SELECT bitacora.* 
+				FROM bitacora
 				WHERE 1 $condicion";
 		  $q = $pdo->prepare($sql);
 		  $q->execute(array());
@@ -165,7 +166,7 @@ else{
 						echo $cadena;
 						echo $LigaSiguiente;
 //						echo $LigaFin;
-					}*/
+					}
 											?>
 										</div>
 				</center>
