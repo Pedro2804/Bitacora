@@ -88,14 +88,13 @@
     $("#idVehiculo").on("change", function(event){ //jQuery
         event.preventDefault();
         var idVehiculo = $("#idVehiculo").val();
-
         $.ajax({
                 method: "POST",
                 url: "controller/controller.php",
                 data: {id: idVehiculo, funcion: "vehiculo"},
                 cache: false,
                 success: function(result){
-                    console.log(result);
+                    //console.log(result);
                     if(result!=0){
                         var resultados = JSON.parse(result);
                         $("#M_m").css("opacity", 1);

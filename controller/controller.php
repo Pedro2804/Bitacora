@@ -8,7 +8,7 @@ if(empty($_POST))
 }
 
 if (isset($_POST['id']))
-    $vehiculo = (int)$_POST['id'];
+    $vehiculo = $_POST['id'];
 
 if (isset($_POST['lugar']))
     $lugar = $_POST['lugar'];

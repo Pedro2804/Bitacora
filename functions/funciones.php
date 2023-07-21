@@ -173,61 +173,24 @@ function nombreempl(){
 }*/
 
 function datos_vehiculo($idvehiculo){
-    print($idvehiculo);
     $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $lista = id();
-    $i = 0;
-    while ($i < count($lista)) {
-        //print($lista[$i].",");
-        if(strcmp($lista[$i],$idvehiculo)==0){
-            //print($lista[$i]." ".$idvehiculo);
-            break;
-        }
-        $i++;
-    }
-    if($i < count($lista)){    
-        $sql = "SELECT CONCAT(marca,' ', modelo) AS marca, placas, kilometraje FROM vehiculo WHERE id_vehiculo = ?";
-        $q = $pdo->prepare($sql);
-        //print($lista[$idvehiculo]);
-        try {
-            $q->execute(array($lista[$i]));
-            $data = $q->fetch(PDO::FETCH_ASSOC);
-            if ($data == null) {
-                Database::disconnect();
-                return false;
-            }
-            Database::disconnect();
-            $datos = [$data['marca'], $data['placas'], $data['kilometraje']]; 
-            return $datos;
-        } catch (PDOException $e) {
-            Database::disconnect();
-            return false;
-            //return "Error: " . $e;
-        }
-    } else return false;
-}
-
-function id(){
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT num_unidad FROM vehiculo";
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);  
+    $sql = "SELECT CONCAT(marca,' ', modelo) AS marca, placas, kilometraje FROM vehiculo WHERE num_unidad = ?";
     $q = $pdo->prepare($sql);
     try {
-        $q->execute();
-        $data = $q->fetchall(PDO::FETCH_ASSOC);
-        $datos = array();
-        $i = 0;
-        foreach ($data as $aux) {
-            $datos[$i] = $aux['num_unidad'];
-            $i++;
+        $q->execute(array($idvehiculo));
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        if ($data == null) {
+            Database::disconnect();
+            return false;
         }
         Database::disconnect();
+        $datos = [$data['marca'], $data['placas'], $data['kilometraje']]; 
         return $datos;
     } catch (PDOException $e) {
         Database::disconnect();
         return false;
-        //return "Error: " . $e;
+            //return "Error: " . $e;
     }
 }
 

@@ -70,7 +70,7 @@
                             <input type="hidden" value="guardar_solicitud" id="funcion" name="funcion">
                             <div class="col-md-12" style="margin-top:40px !important;"><!--CENTRAL 0-->
                                 <!--Numero de control 1-->
-                                <div class="col-md-6" style="width: 15%;">
+                                <div class="col-md-6" style="width: 18%;">
                                     <div class="form-group form-animate-text" id="N_C">
                                         <input list="idE" type="text" class="form-text" id="numero_control" name="numero_control" required>
                                         <datalist id="idE">
@@ -92,7 +92,7 @@
                                         <span class="bar"></span><label>Numero de control*</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6" style="width: 35%;"><!--IZQUIERDA 1-->
+                                <div class="col-md-6" style="width: 32%;"><!--IZQUIERDA 1-->
                                     <!--OPERADOR-->
                                     <div class="form-group form-animate-text" id="N_O" style="opacity: 0;">
                                         <input type="text" class="form-text" id="N_operador" name="N_operador">
