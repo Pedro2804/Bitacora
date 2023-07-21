@@ -1,5 +1,6 @@
 <?php
 include '../config/conexion.php';
+include '../config/conexion2.php';
 session_start();
 if (empty($_POST)) {
     echo 'error_post';
@@ -136,14 +137,14 @@ function clavedepto($depto)
         return "Error: " . $e;
     }
 }
-function nombreempl($cve)
-{
+function nombreempl(){
+    $control = $_POST['control'];
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT CONCAT(nombre,' ',ApellidoPaterno,' ',ApellidoMaterno) as nombre_empleado  FROM EMPLEADO WHERE ClaveEntidad=?";
+    $sql = "SELECT CONCAT(nombre,' ',ApellidoPaterno,' ',ApellidoMaterno) as nombre_empleado  FROM empleado WHERE NumeroControl=?";
     $q = $pdo->prepare($sql);
     try {
-        $q->execute(array($cve));
+        $q->execute(array($control));
         $data = $q->fetch(PDO::FETCH_ASSOC);
         if ($data == null) {
             Database::disconnect();
@@ -153,24 +154,75 @@ function nombreempl($cve)
         return $data['nombre_empleado'];
     } catch (PDOException $e) {
         Database::disconnect();
-        return "Error: " . $e;
+        return false;
+        //return "Error: " . $e;
     }
 }
 
+/*function datos_vehiculo($idvehiculo){
+	$con = new conexion("localhost", "root", "Bitacora", "DIFinformatica.03");
+	$con->conectar();
+    $result = $con->consultas("marca, modelo, placas, kilometraje", "vehiculo", "WHERE num_unidad = $idvehiculo");
+    $data = mysqli_fetch_array($result);
+    $data = mysqli_fetch_array($result);
+    if($data != null){
+        $datos = [$data['marca']." ".$data['modelo'], $data['placas'], $data['kilometraje']]; 
+        $con->cerrar();
+        return $datos;
+    }else { $con->cerrar(); return false;}
+}*/
+
 function datos_vehiculo($idvehiculo){
+    print($idvehiculo);
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT CONCAT(marca,' ', modelo) AS marca, placas, kilometraje FROM vehiculo WHERE id_vehiculo=?";
-    $q = $pdo->prepare($sql);
-    try {
-        $q->execute(array($idvehiculo));
-        $data = $q->fetch(PDO::FETCH_ASSOC);
-        if ($data == null) {
+    $lista = id();
+    $i = 0;
+    while ($i < count($lista)) {
+        //print($lista[$i].",");
+        if(strcmp($lista[$i],$idvehiculo)==0){
+            //print($lista[$i]." ".$idvehiculo);
+            break;
+        }
+        $i++;
+    }
+    if($i < count($lista)){    
+        $sql = "SELECT CONCAT(marca,' ', modelo) AS marca, placas, kilometraje FROM vehiculo WHERE id_vehiculo = ?";
+        $q = $pdo->prepare($sql);
+        //print($lista[$idvehiculo]);
+        try {
+            $q->execute(array($lista[$i]));
+            $data = $q->fetch(PDO::FETCH_ASSOC);
+            if ($data == null) {
+                Database::disconnect();
+                return false;
+            }
+            Database::disconnect();
+            $datos = [$data['marca'], $data['placas'], $data['kilometraje']]; 
+            return $datos;
+        } catch (PDOException $e) {
             Database::disconnect();
             return false;
+            //return "Error: " . $e;
+        }
+    } else return false;
+}
+
+function id(){
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "SELECT num_unidad FROM vehiculo";
+    $q = $pdo->prepare($sql);
+    try {
+        $q->execute();
+        $data = $q->fetchall(PDO::FETCH_ASSOC);
+        $datos = array();
+        $i = 0;
+        foreach ($data as $aux) {
+            $datos[$i] = $aux['num_unidad'];
+            $i++;
         }
         Database::disconnect();
-        $datos = [$data['marca'], $data['placas'], $data['kilometraje']]; 
         return $datos;
     } catch (PDOException $e) {
         Database::disconnect();
@@ -593,7 +645,7 @@ function editar_solicitudTest()
         if ($entrega == 0) {
             $entrega = null;
         } else {
-            $resultentrega = nombreempl($entrega);
+            $resultentrega = nombreempl();
             $entrega = conver($resultentrega);
             $sql_ .= "Entrega='".$entrega."', ";
         }

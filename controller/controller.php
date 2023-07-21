@@ -23,11 +23,8 @@ switch ($funcion)
 	break;
     case 'vehiculo':
         $respuesta = datos_vehiculo($vehiculo);
-        if ($respuesta == false) {
-            echo '0';
-        }else{
-            echo json_encode(array('modelo' => $respuesta[0], 'placas' => $respuesta[1], 'km' => $respuesta[2]));
-        }
+        if ($respuesta == false) echo '0';
+        else echo json_encode(array('modelo' => $respuesta[0], 'placas' => $respuesta[1], 'km' => $respuesta[2]));
     break;
     case 'mostrar_vehiculos':
         $respuesta=mostrar_vehiculos();
@@ -60,6 +57,11 @@ switch ($funcion)
     case 'guardar_solicitud':   
         $respuesta=guardar_solicitud();
         echo $respuesta;
+	break;
+    case 'nombre_empleado':
+        $respuesta=nombreempl();
+        if ($respuesta == false) echo '0';
+        else echo json_encode($respuesta);
 	break;
     case 'direcciones':
         $respuesta=direcciones();

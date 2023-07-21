@@ -69,36 +69,38 @@
                         <form class="cmxform" id="form_solicitud" method="get" action="">
                             <input type="hidden" value="guardar_solicitud" id="funcion" name="funcion">
                             <div class="col-md-12" style="margin-top:40px !important;"><!--CENTRAL 0-->
-                                <div class="col-md-6" style="width: 30%;"><!--IZQUIERDA 1-->
-                                    <!--OPERADOR-->
-                                    <div class="form-group form-animate-text">
-                                        <input list="idE" type="text" class="form-text" id="N_operador" name="N_operador" required>
+                                <!--Numero de control 1-->
+                                <div class="col-md-6" style="width: 15%;">
+                                    <div class="form-group form-animate-text" id="N_C">
+                                        <input list="idE" type="text" class="form-text" id="numero_control" name="numero_control" required>
                                         <datalist id="idE">
                                             <?php
                                                 try {
                                                     $pdo = Database::connect();
                                                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                                    $sql = "SELECT CONCAT(Nombre,' ',ApellidoPaterno,' ',ApellidoMaterno) as nombre_empleado  FROM empleado";
+                                                    $sql = "SELECT NumeroControl  FROM empleado";
                                                     $q = $pdo->prepare($sql);
                                                     $q->execute(array());
                                                     $data = $q->fetchall(PDO::FETCH_ASSOC);
                                                     foreach($data as $row)
-                                                        echo '<option value="'.$row['nombre_empleado'].'"></option>';
+                                                        echo '<option value="'.$row['NumeroControl'].'"></option>';
                                                 }catch(PDOException $e){
                                                     echo 'Error: ' . $e->getMessage();
                                                 }
                                             ?>
                                         </datalist>
+                                        <span class="bar"></span><label>Numero de control*</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="width: 35%;"><!--IZQUIERDA 1-->
+                                    <!--OPERADOR-->
+                                    <div class="form-group form-animate-text" id="N_O" style="opacity: 0;">
+                                        <input type="text" class="form-text" id="N_operador" name="N_operador">
                                         <span class="bar"></span>
-                                        <label>Operador*</label>
+                                        <label>Operador</label>
                                     </div>
                                 </div><!--IZQUIERDA 1-->
-                                <div class="col-md-6" style="width: 20%;"><!--IZQUIERDA 1-->
-                                    <div class="form-group form-animate-text" id="N_C" style="opacity: 1;">
-                                        <input type="text" class="form-text" id="numero_control" name="numero_control">
-                                        <span class="bar"></span><label>Numero de control</label>
-                                    </div>
-                                </div><!--IZQUIERDA 1-->
+                                
                                 <!--PERIODO DEL-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <label>Del: </label>
@@ -121,28 +123,19 @@
                                                 try {
                                                     $pdo = Database::connect();
                                                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                                    $sql = "SELECT id_vehiculo,num_unidad  FROM vehiculo";
+                                                    $sql = "SELECT num_unidad  FROM vehiculo";
                                                     $q = $pdo->prepare($sql);
                                                     $q->execute(array());
                                                     $data = $q->fetchall(PDO::FETCH_ASSOC);
-                                                    $datos = array();
-                                                    foreach($data as $row)
-                                                        $datos[$row['id_vehiculo']] = $row['num_unidad'];
                                                         
                                                     foreach($data as $row)
-                                                        echo '<option value="'.$row['id_vehiculo'].'">'.$row['num_unidad'].'</option>';
-
-                                                    $datos_js = $datos;
+                                                        echo '<option value="'.$row['num_unidad'].'"></option>';
                                                     
                                                 }catch(PDOException $e){
                                                     echo 'Error: ' . $e->getMessage();
                                                 }
                                             ?>
                                         </datalist>
-                                        <script>
-                                            var datos = <?php echo json_encode($datos_js); ?>;
-                                            //console.log(datos);
-                                        </script>
                                         <span class="bar"></span><label>Unidad de resguardo*</label>
                                     </div>
                                 </div>
