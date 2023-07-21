@@ -23,7 +23,7 @@ else{
 	//if(isset($_POST["CmbDireccion"]) and $_POST["CmbDireccion"]<>0) $condicion.=" AND not_solicitud.CveEntDireccion = ".$_POST["CmbDireccion"];
 	//if(isset($_POST["CmbEstatus"]) and $_POST["CmbEstatus"]<>0) $condicion.=" AND not_solicitud.Estatus = ".$_POST["CmbEstatus"];
 ?>
-<div align="right"><a href="javascript:;" onClick="FormatoSolicitud()" style="cursor:pointer">Solicitud de mantenimiento</a></div>
+<!--<div align="right"><a href="javascript:;" onClick="FormatoSolicitud()" style="cursor:pointer">Solicitud de mantenimiento</a></div>-->
 <table class="newspaper-b" width="100%">
 	<thead>
 		<tr>
@@ -45,6 +45,7 @@ else{
           $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		  $sql="SELECT bitacora.*, DATE_FORMAT(fecha_recibido,'%d-%m-%Y') AS FechaRecibida, empleado.*, CONCAT(Nombre,' ',ApellidoPaterno, ' ', ApellidoMaterno)
 		  		AS empleado FROM bitacora INNER JOIN empleado ON bitacora.operador = empleado.NumeroControl
+				WHERE 1 $condicion
 				ORDER BY fecha_recibido DESC, Folio DESC LIMIT $RegistrosAEmpezar,$RegistrosAMostrar";
 
           /*$sql = "SELECT not_solicitud.*, DATE_FORMAT(FechaRecibida,'%d-%m-%Y') AS FechaRecibido_, DATE_FORMAT(FechaAtendida,'%d-%m-%Y') AS FechaAtendida_,  

@@ -72,6 +72,12 @@ if (!isset($_SESSION['usuario'])) {
     <link href="../css/estilos.css" rel="stylesheet">
     <script src="../scriprts/vehiculos.js"></script>
     <!-- end: Javascript -->
+    <link rel="icon" href="../img/favicon.ico" type="image/ico" />
+    <!-- Apple Touch Icons -->    
+    <link rel="apple-touch-icon" href="../img/favicon.ico">
+    <link rel="apple-touch-icon" sizes="72x72" href="../img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="114x114" href="../img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="144x144" href="../img/favicon.ico" /> 
 </head>
 
 <body id="mimin" class="dashboard">
