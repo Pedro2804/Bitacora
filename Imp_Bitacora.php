@@ -111,7 +111,7 @@ $num = 1;
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
 
-		$objDrawing6 = new PHPExcel_Worksheet_HeaderFooterDrawing();
+		/*$objDrawing6 = new PHPExcel_Worksheet_HeaderFooterDrawing();
 		$objDrawing6->setName('header');
 		$objDrawing6->setPath('img/banner.jpg');
 		$objDrawing6->setHeight(1100);
