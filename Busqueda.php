@@ -1,6 +1,7 @@
 <?php
 include 'config/conexion.php';
 
+date_default_timezone_set('America/Mexico_City');
 $fechainicio = date('d-m-Y',strtotime ('-6 day', strtotime(date('d-m-Y')))); 
 $fechafin = date('d-m-Y');
 

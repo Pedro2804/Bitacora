@@ -24,7 +24,7 @@ switch ($funcion)
     case 'vehiculo':
         $respuesta = datos_vehiculo($vehiculo);
         if ($respuesta == false) echo '0';
-        else echo json_encode(array('modelo' => $respuesta[0], 'placas' => $respuesta[1], 'km' => $respuesta[2]));
+        else echo json_encode(array('modelo' => $respuesta[0], 'placas' => $respuesta[1], 'km' => $respuesta[2], 'comb' => $respuesta[3]));
     break;
     case 'mostrar_vehiculos':
         $respuesta=mostrar_vehiculos();

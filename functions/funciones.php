@@ -175,7 +175,7 @@ function nombreempl(){
 function datos_vehiculo($idvehiculo){
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);  
-    $sql = "SELECT CONCAT(marca,' ', modelo) AS marca, placas, kilometraje FROM vehiculo WHERE num_unidad = ?";
+    $sql = "SELECT CONCAT(marca,' ', modelo) AS marca, placas, kilometraje, tipo_combustible FROM vehiculo WHERE num_unidad = ?";
     $q = $pdo->prepare($sql);
     try {
         $q->execute(array($idvehiculo));
@@ -185,7 +185,7 @@ function datos_vehiculo($idvehiculo){
             return false;
         }
         Database::disconnect();
-        $datos = [$data['marca'], $data['placas'], $data['kilometraje']]; 
+        $datos = [$data['marca'], $data['placas'], $data['kilometraje'], $data['tipo_combustible']]; 
         return $datos;
     } catch (PDOException $e) {
         Database::disconnect();
@@ -290,6 +290,8 @@ function guardar_bitacora()
     $idVehiculo = null;
     $fechalDel = null;
     $fechalAl = null;
+    $combustible = null;
+    $vale = null;
     $fechaCarga = null;
     $monto = null;
     $folio = null;
@@ -306,6 +308,12 @@ function guardar_bitacora()
     }
     if (isset($_POST['FechaAl'])) {
         $fechalAl = date('Y-m-d', strtotime($_POST['FechaAl']));
+    }
+    if (isset($_POST['tipo_combustible']) && !empty($_POST['tipo_combustible'])) {
+        $combustible = $_POST['tipo_combustible'];
+    }
+    if (isset($_POST['cada_vale']) && !empty($_POST['cada_vale'])) {
+        $vale = $_POST['cada_vale'];
     }
     if (isset($_POST['fecha_carga']) && !empty($_POST['fecha_carga'])) {
         $fechaCarga = $_POST['fecha_carga'];
@@ -324,6 +332,14 @@ function guardar_bitacora()
     $sql = "INSERT INTO bitacora (operador, NoUnidad, periodo_de, periodo_al";
     $params = array($empleado, $idVehiculo, $fechalDel, $fechalAl);
 
+    if (!empty($combustible)) {
+        $sql .= ", combustible";
+        $params[] = $combustible;
+    }
+    if (!empty($vale)) {
+        $sql .= ", cada_vale";
+        $params[] = $vale;
+    }
     if (!empty($fechaCarga)) {
         $sql .= ", fecha_carga";
         $params[] = $fechaCarga;

@@ -96,7 +96,7 @@
 
                 <div class="col-md-6" style="width: 22%;">
                     <div class="form-group form-animate-text" style="margin: 0px;">
-                        <input type="text" id="recorrido<?php echo $j ?>" class="form-text" name="recorrido">
+                        <input type="text" oninput="this.value = this.value.toUpperCase()" id="recorrido<?php echo $j ?>" class="form-text" name="recorrido">
                         <span class="bar"></span><label>Nuevo recorrido</label>
                     </div>
                 </div>

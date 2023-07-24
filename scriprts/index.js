@@ -88,7 +88,8 @@
     $("#idVehiculo").on("change", function(event){ //jQuery
         event.preventDefault();
         var idVehiculo = $("#idVehiculo").val();
-        $.ajax({
+        if(idVehiculo!=''){
+            $.ajax({
                 method: "POST",
                 url: "controller/controller.php",
                 data: {id: idVehiculo, funcion: "vehiculo"},
@@ -102,32 +103,39 @@
 
                         $("#p").css("opacity", 1);
                         $("#placas").val(resultados.placas);
+                        $("#comb").css("opacity", 1);
+                        $("#combustible").val(resultados.comb);
                         $("#km_I0").val(resultados.km);
                     }else{
                         $("#M_m").css("opacity", 0);
                         $("#p").css("opacity", 0);
+                        $("#comb").css("opacity", 0);
 
-                        if (idVehiculo != ""){
-                            $("#idVehiculo").val("");
-                            swal({
+                        $("#idVehiculo").val("");
+                        swal({
                             type: 'error',
                             title: 'La unidad no existe en el sistema',
                             timer: 1000,
-                            showConfirmButton: false});
-                            $("#recorridos").css("display", "none");
-                            $("#sig_bitacora").css("display", "block");
-                        }else{
-                            swal({
-                                type: 'warning',
-                                title: 'Ingrese una unidad',
-                                timer: 1000,
-                                showConfirmButton: false});
-                                $("#recorridos").css("display", "none");
-                                $("#sig_bitacora").css("display", "block");
-                        }
+                            showConfirmButton: false
+                        });
+                        $("#recorridos").css("display", "none");
+                        $("#sig_bitacora").css("display", "block");
                     }
                 }
-        });        
+            }); 
+        }else{
+            $("#M_m").css("opacity", 0);
+            $("#p").css("opacity", 0);
+            $("#comb").css("opacity", 0);
+            $("#recorridos").css("display", "none");
+            $("#sig_bitacora").css("display", "block");
+            swal({
+                type: 'warning',
+                title: 'Ingrese una unidad',
+                timer: 1000,
+                showConfirmButton: false
+            }); 
+        }      
     });
 
     $("#sig_bitacora").on("click", function(event){
@@ -155,6 +163,8 @@
 
                         document.getElementById('p').style.opacity = 1;
                         document.getElementById('placas').value = resultados.placas;
+                        document.getElementById('comb').style.opacity = 1;
+                        document.getElementById('combustible').value = resultados.comb;
                             recorridos.style.display= 'block';
                             document.getElementById('sig_bitacora').style.display = "none";
                             openTab(dias_recorrido[0].value);
@@ -174,6 +184,7 @@
                             document.getElementById('sig_bitacora').style.display = 'block';
                             document.getElementById('M_m').style.opacity = 0;
                             document.getElementById('p').style.opacity = 0;
+                            document.getElementById('comb').style.opacity = 0;
                     }
                 }
             });

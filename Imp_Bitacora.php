@@ -20,22 +20,37 @@ if(!empty($_GET['id'])) $Solicitud =$_GET['id'];
 *														*
 *********************************************************/	
 
-$nomb = 'Solicitudes_'.date('d');
+date_default_timezone_set('America/Mexico_City');
+$nomb = 'Bitacora_'.date('d');
 
 switch (date('m')){
-		case 1: $nomb .= 'Ene'; break;
-		case 2: $nomb .= 'Feb'; break;
-		case 3: $nomb .= 'Mar'; break;
-		case 4: $nomb .= 'Abr'; break;
-		case 5: $nomb .= 'May'; break;
-		case 6: $nomb .= 'Jun'; break;
-		case 7: $nomb .= 'Jul'; break;
-		case 8: $nomb .= 'Ago'; break;
-		case 9: $nomb .= 'Sep'; break;
-		case 10: $nomb .= 'Oct'; break;
-		case 11: $nomb .= 'Nov'; break;
-		case 12: $nomb .= 'Dic'; break;
-		}
+		case 1: $nomb .= 'Ene_'; break;
+		case 2: $nomb .= 'Feb_'; break;
+		case 3: $nomb .= 'Mar_'; break;
+		case 4: $nomb .= 'Abr_'; break;
+		case 5: $nomb .= 'May_'; break;
+		case 6: $nomb .= 'Jun_'; break;
+		case 7: $nomb .= 'Jul_'; break;
+		case 8: $nomb .= 'Ago_'; break;
+		case 9: $nomb .= 'Sep_'; break;
+		case 10: $nomb .= 'Oct_'; break;
+		case 11: $nomb .= 'Nov_'; break;
+		case 12: $nomb .= 'Dic_'; break;
+}
+
+$meses = array(
+	1 => 'Enero',
+	2 =>'Febrero',
+	3 =>'Marzo',
+	4 =>'Abril',
+	5 =>'Mayo',
+	6 =>'Junio',
+	7 =>'Julio',
+	8 =>'Agosto',
+	9 =>'Septiembre',
+	10 =>'Octubre',
+	11 =>'Noviembre',
+	12 =>'Diciembre');
 
 //temp sheet copy 2 times
 
@@ -56,10 +71,9 @@ $num = 1;
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-		$sql = "SELECT bitacora.*, recorrido.*, empleado.*,	CONCAT(Nombre,' ',ApellidoPaterno, ' ', ApellidoMaterno) AS empleado, vehiculo.*,
+		$sql = "SELECT bitacora.*,CONCAT(folio,' $',monto) AS folio,empleado.*,CONCAT(Nombre,' ',ApellidoPaterno, ' ', ApellidoMaterno) AS empleado,vehiculo.*,
 		CONCAT(marca,' ',modelo) AS marca
 		FROM bitacora
-		INNER JOIN recorrido ON bitacora.id_bitacora = recorrido.bitacora
 		INNER JOIN empleado ON bitacora.operador = empleado.NumeroControl
 		INNER JOIN vehiculo ON bitacora.NoUnidad = vehiculo.Num_Unidad
 		WHERE id_bitacora = $Solicitud;";
@@ -77,30 +91,61 @@ $num = 1;
         $data = $q->fetchall(PDO::FETCH_ASSOC);		   
 		   foreach($data as $MostrarFila):
 				$objPHPExcel->getActiveSheet()->setCellValue('C6', $MostrarFila['empleado']);
-				$objPHPExcel->getActiveSheet()->setCellValue('K6', $MostrarFila['operador']);
-				$objPHPExcel->getActiveSheet()->setCellValue('N6', ($MostrarFila['marca']));
-				$objPHPExcel->getActiveSheet()->setCellValue('F7', ($MostrarFila['NoUnidad']));
-				$objPHPExcel->getActiveSheet()->setCellValue('N7', ($MostrarFila['placas']));
-				
-				/*if($MostrarFila['NivelUrgencia']==1) $objPHPExcel->getActiveSheet()->setCellValue('C15', 'X');
-				elseif($MostrarFila['NivelUrgencia']==2) $objPHPExcel->getActiveSheet()->setCellValue('E15', 'X');
-				else $objPHPExcel->getActiveSheet()->setCellValue('G15', 'X');
-				
-				if($MostrarFila['Red']==1) $objPHPExcel->getActiveSheet()->setCellValue('C26', 'X');
-				if($MostrarFila['Mantenimiento']==1) $objPHPExcel->getActiveSheet()->setCellValue('C27', 'X');
-				if($MostrarFila['Telefonia']==1) $objPHPExcel->getActiveSheet()->setCellValue('C28', 'X');
-				if($MostrarFila['Formateo']==1) $objPHPExcel->getActiveSheet()->setCellValue('C29', 'X');
-				if($MostrarFila['Comunicacion']==1) $objPHPExcel->getActiveSheet()->setCellValue('C30', 'X');
-				if($MostrarFila['Impresora']==1) $objPHPExcel->getActiveSheet()->setCellValue('F26', 'X');
-				if($MostrarFila['Asistencia']==1) $objPHPExcel->getActiveSheet()->setCellValue('F27', 'X');
-				if($MostrarFila['Otro']==1) $objPHPExcel->getActiveSheet()->setCellValue('G27', 'X');
-				
-				$objPHPExcel->getActiveSheet()->setCellValue('F28', utf8_encode($MostrarFila['DescripcionProblema']));
-				$objPHPExcel->getActiveSheet()->setCellValue('B49', utf8_encode($MostrarFila['Solicita']));
+				$objPHPExcel->getActiveSheet()->setCellValueExplicit('K6', $MostrarFila['operador']);
+				$objPHPExcel->getActiveSheet()->setCellValue('N6', $MostrarFila['marca']);
+				$objPHPExcel->getActiveSheet()->setCellValueExplicit('F7', $MostrarFila['NoUnidad']);
+				$objPHPExcel->getActiveSheet()->setCellValue('N7', $MostrarFila['placas']);
 
-				$objPHPExcel->getActiveSheet()->setCellValue('F52', utf8_encode($MostrarFila['Recibe']));
-				$objPHPExcel->getActiveSheet()->setCellValue('B52', utf8_encode($MostrarFila['Entrega']));*/
-			endforeach;	
+				$de = new DateTime($MostrarFila['periodo_de']);
+				$al = new DateTime($MostrarFila['periodo_al']);
+				if(date('n', strtotime($MostrarFila['periodo_de'])) == date('n', strtotime($MostrarFila['periodo_al'])))
+					$objPHPExcel->getActiveSheet()->setCellValue('B8', $meses[$de->format('n')]);
+				else
+					$objPHPExcel->getActiveSheet()->setCellValue('B8', $meses[$de->format('n')].'-'.$meses[$al->format('n')]);
+				
+
+				$objPHPExcel->getActiveSheet()->setCellValueExplicit('L8', $MostrarFila['folio']);
+				$objPHPExcel->getActiveSheet()->setCellValue('D9', $de->format('d'));
+				$objPHPExcel->getActiveSheet()->setCellValue('F9', $al->format('d'));
+
+				if(date('Y', strtotime($MostrarFila['periodo_de'])) == date('Y', strtotime($MostrarFila['periodo_al'])))
+					$objPHPExcel->getActiveSheet()->setCellValue('H9', $de->format('Y'));
+				else
+					$objPHPExcel->getActiveSheet()->setCellValue('H9', $de->format('Y').'-'.$al->format('Y'));
+				
+				$objPHPExcel->getActiveSheet()->setCellValue('L9', $MostrarFila['cada_vale']);
+
+				$fecha_carga = new DateTime($MostrarFila['fecha_carga']);
+				$objPHPExcel->getActiveSheet()->setCellValue('D10', $fecha_carga->format('d').' de '.$meses[$fecha_carga->format('n')].' de '.$fecha_carga->format('Y'));
+				
+				switch ($MostrarFila['tipo_combustible']) {
+					case 'gasolina':
+						$objPHPExcel->getActiveSheet()->setCellValue('M10', "X");
+						break;
+					case 'diesel':
+						$objPHPExcel->getActiveSheet()->setCellValue('O10', "X");
+					break;
+					case 'gas':
+						$objPHPExcel->getActiveSheet()->setCellValue('K10', "GAS");
+					break;
+					case 'no aplica':
+						$objPHPExcel->getActiveSheet()->setCellValue('K10', "N/A");
+					break;
+				}
+			endforeach;
+
+			$pdo = Database::connect();
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+			$sql = "SELECT * FROM recorrido	WHERE bitacora = $Solicitud;";
+			$q = $pdo->prepare($sql);
+			$q->execute(array());
+			$data = $q->fetchall(PDO::FETCH_ASSOC);
+
+			foreach($data as $MostrarFila):
+
+			endforeach;
+
 			$HojaIndex++;
 			$num++;
 		
@@ -109,14 +154,14 @@ $num = 1;
 		
 		/*$objPHPExcel->getActiveSheet()->getPageMargins()->setTop(0.39)->setBottom(0.39);
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
-		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);*/
 
-		/*$objDrawing6 = new PHPExcel_Worksheet_HeaderFooterDrawing();
+		$objDrawing6 = new PHPExcel_Worksheet_HeaderFooterDrawing();
 		$objDrawing6->setName('header');
 		$objDrawing6->setPath('img/banner.jpg');
 		$objDrawing6->setHeight(1100);
 		$objPHPExcel->getActiveSheet()->getHeaderFooter()->addImage($objDrawing6, PHPExcel_Worksheet_HeaderFooter::IMAGE_HEADER_LEFT);
-		$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&G&');*/
+		$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&G&');
     }
      catch(PDOException $e)
     {
@@ -129,8 +174,7 @@ $num = 1;
 
 //endforeach;
 	
-//$nomb .='.xlsx';
-$nomb ='PRUEBA.xlsx';
+$nomb .='.xlsx';
 header('Content-Type: application/vnd.ms-excel');
 header('Content-Disposition: attachment;filename="'.$nomb.'"');
 header('Cache-Control: max-age=0');

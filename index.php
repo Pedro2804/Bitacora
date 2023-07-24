@@ -115,7 +115,7 @@
                             
                             <div class="col-md-12" style="margin-top:40px !important;"><!--CENTRAL 1-->
                                 <!--UNIDAD DE RESGUARDO-->
-                                <div class="col-md-6" style="width: 33%;">
+                                <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="U_r">
                                         <input list="idV" type="text" class="form-text" id="idVehiculo" name="idVehiculo" required>
                                         <datalist id="idV">
@@ -141,24 +141,49 @@
                                 </div>
 
                                 <!--MARCA/MODELO-->
-                                <div class="col-md-6" style="width: 33%;">
+                                <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="M_m" style="opacity: 0;">
                                         <input type="text" class="form-text" id="marca_modelo" name="marca_modelo">
                                         <span class="bar"></span><label>Marca/Modelo</label>
                                     </div>
                                 </div>
                                 <!--PLACAS-->
-                                <div class="col-md-6" style="width: 33%;">
+                                <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="p" style="opacity: 0;">
                                         <input type="text" class="form-text" id="placas" name="placas">
                                         <span class="bar"></span><label>Placas</label>
                                     </div>
                                 </div>
+                                <!--TIPO DE COMBUSTIBLE-->
+                                <div class="col-md-6" style="width: 25%;">
+                                    <div class="form-group form-animate-text" id="comb" style="opacity: 0;">
+                                        <input type="text" class="form-text" id="combustible" name="combustible">
+                                        <span class="bar"></span><label>Tipo de combustible</label>
+                                    </div>
+                                </div>
                             </div><!--END CENTRAL 1-->
                                 
                             <div class="col-md-12" style="margin-top:40px !important;"> <!--CENTRAL 2-->
+                                <!--TIPO DE COMBUSTIBLE-->
+                                <div class="col-md-6" style="width: 20%;">
+                                    <div class="form-group form-animate-text" id="T_c">
+                                        <input type="text" class="form-text" oninput="this.value = this.value.toUpperCase()" id="tipo_comb" name="tipo_combustible">
+                                        <span class="bar"></span>
+                                        <label>Combustible</label>
+                                    </div>
+                                </div>
+
+                                <!--CADA VALE-->
+                                <div class="col-md-6" style="width: 20%;">
+                                    <div class="form-group form-animate-text" id="C_v">
+                                        <input type="text" class="form-text" id="vale" name="cada_vale">
+                                        <span class="bar"></span>
+                                        <label>Cada vale</label>
+                                    </div>
+                                </div>
+
                                 <!--FECHA CARGA-->
-                                <div class="col-md-6" style="width: 33%;">
+                                <div class="col-md-6" style="width: 20%;">
                                     <div class="form-group form-animate-text" id="F_c">
                                         <input type="text" class="form-text" id="fecha_r" name="fecha_carga">
                                         <span class="bar"></span>
@@ -167,7 +192,7 @@
                                 </div>
 
                                 <!--FOLIO-->
-                                <div class="col-md-6" style="width: 33%;">
+                                <div class="col-md-6" style="width: 20%;">
                                     <div class="form-group form-animate-text" id="fol">
                                         <input type="text" class="form-text" id="folio" name="folio">
                                         <span class="bar"></span><label>FOLIO</label>
@@ -175,9 +200,9 @@
                                 </div>
 
                                 <!--MONTO-->
-                                <div class="col-md-6" style="width: 33%;">
+                                <div class="col-md-6" style="width: 20%;">
                                     <div class="form-group form-animate-text" id="mont">
-                                        <input type="text" class="form-text" inputmode='numeric' pattern='\d*' id="monto" name="monto">
+                                        <input type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" id="monto" name="monto">
                                         <span class="bar"></span><label>MONTO</label>
                                     </div>
                                 </div>
