@@ -4,7 +4,6 @@ set_time_limit(550);
 /** Incluir la libreria PHPExcel */
 include ('libexportar/PHPExcel.php');
 require_once 'libexportar/PHPExcel/IOFactory.php';
-require_once 'libexportar/PHPExcel/Style/Border.php';
 require_once 'libexportar/PHPExcel/Cell/AdvancedValueBinder.php';
 
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
@@ -94,7 +93,7 @@ $num = 1;
 				$objPHPExcel->getActiveSheet()->setCellValue('C6', $MostrarFila['empleado']);
 				$objPHPExcel->getActiveSheet()->setCellValueExplicit('K6', $MostrarFila['operador']);
 				$objPHPExcel->getActiveSheet()->setCellValue('N6', $MostrarFila['marca']);
-				$objPHPExcel->getActiveSheet()->setCellValueExplicit('F7', $MostrarFila['NoUnidad']);
+				$objPHPExcel->getActiveSheet()->setCellValueExplicit('E7', $MostrarFila['NoUnidad']);
 				$objPHPExcel->getActiveSheet()->setCellValue('N7', $MostrarFila['placas']);
 
 				$de = new DateTime($MostrarFila['periodo_de']);
@@ -176,19 +175,12 @@ $num = 1;
 				}
 				$objPHPExcel->getActiveSheet()->setCellValue('H'.$i, $MostrarFila['salida']);
 				$objPHPExcel->getActiveSheet()->setCellValue('J'.$i, $MostrarFila['km_inicial']);
+				$objPHPExcel->getActiveSheet()->getColumnDimensions('K'.$i)->setAttribute;
 				$objPHPExcel->getActiveSheet()->setCellValue('K'.$i, $MostrarFila['recorrido']);
-				$objPHPExcel->getActiveSheet()->setCellValue('N'.$i, $MostrarFila['km_final']);
-				$objPHPExcel->getActiveSheet()->setCellValue('O'.$i, $MostrarFila['km_final']-$MostrarFila['km_inicial']);
-				$borderStyle = [
-					'borders' => [
-						'allBorders' => [
-							'borderStyle' => Border::BORDER_THIN, // Grosor del borde
-							'color' => ['argb' => '000000'], // Color del borde (negro en este caso)
-						],
-					],
-				];
 				
-				$sheet->getStyle('A1')->applyFromArray($borderStyle);
+				$objPHPExcel->getActiveSheet()->setCellValue('N'.$i, $MostrarFila['km_final']);
+				$objPHPExcel->getActiveSheet()->setCellValue('O'.$i, $MostrarFila['km_final']-$MostrarFila['km_inicial']);				
+				
 				$i++;
 			endforeach;
 
@@ -198,7 +190,8 @@ $num = 1;
 		
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setPrintArea("A1:O32");
 		
-		/*$objPHPExcel->getActiveSheet()->getPageMargins()->setTop(0.39)->setBottom(0.39);
+		/*$objPHPExcel->getActiveSheet()->getPageMargins()->setTop(2.00)->setBottom(2.00);
+		$objPHPExcel->getActiveSheet()->getPageMargins()->setLeft(1.00)->setRight(1.00);
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);*/
 
