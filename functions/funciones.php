@@ -380,7 +380,7 @@ function guardar_recorrido()
     $k_i = null;
     $k_f = null;
     $salida = null;
-    $lista_rec = "hola";
+    $lista_rec = null;
 
     if (!isset($_POST['vacio'])) {
         if (isset($_POST['dia_semana'])) {

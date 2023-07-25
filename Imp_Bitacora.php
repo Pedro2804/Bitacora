@@ -4,6 +4,7 @@ set_time_limit(550);
 /** Incluir la libreria PHPExcel */
 include ('libexportar/PHPExcel.php');
 require_once 'libexportar/PHPExcel/IOFactory.php';
+require_once 'libexportar/PHPExcel/Style/Border.php';
 require_once 'libexportar/PHPExcel/Cell/AdvancedValueBinder.php';
 
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
@@ -142,8 +143,53 @@ $num = 1;
 			$q->execute(array());
 			$data = $q->fetchall(PDO::FETCH_ASSOC);
 
+			$i = 13;
 			foreach($data as $MostrarFila):
-
+				$dia = explode(" ",$MostrarFila['dia_semana']);
+				if($dia[1]<10) (string)$dia[1] = '0'.(string)$dia[1];
+				switch ($dia[0]) {
+					case 'Lunes':
+						$objPHPExcel->getActiveSheet()->setCellValueExplicit('A'.$i, $dia[1]);
+					break;
+					case 'Martes':
+						$objPHPExcel->getActiveSheet()->setCellValueExplicit('B'.$i, $dia[1]);
+					break;
+					case 'Miércoles':
+						$objPHPExcel->getActiveSheet()->setCellValueExplicit('C'.$i, $dia[1]);
+					break;
+					case 'Jueves':
+						$objPHPExcel->getActiveSheet()->setCellValueExplicit('D'.$i, $dia[1]);
+					break;
+					case 'Viernes':
+						$objPHPExcel->getActiveSheet()->setCellValueExplicit('E'.$i, $dia[1]);
+					break;
+					case 'Sábado':
+						$objPHPExcel->getActiveSheet()->setCellValueExplicit('F'.$i, $dia[1]);
+					break;
+					case 'Domingo':
+						$objPHPExcel->getActiveSheet()->setCellValueExplicit('G'.$i, $dia[1]);
+					break;
+					
+					default:
+						# code...
+						break;
+				}
+				$objPHPExcel->getActiveSheet()->setCellValue('H'.$i, $MostrarFila['salida']);
+				$objPHPExcel->getActiveSheet()->setCellValue('J'.$i, $MostrarFila['km_inicial']);
+				$objPHPExcel->getActiveSheet()->setCellValue('K'.$i, $MostrarFila['recorrido']);
+				$objPHPExcel->getActiveSheet()->setCellValue('N'.$i, $MostrarFila['km_final']);
+				$objPHPExcel->getActiveSheet()->setCellValue('O'.$i, $MostrarFila['km_final']-$MostrarFila['km_inicial']);
+				$borderStyle = [
+					'borders' => [
+						'allBorders' => [
+							'borderStyle' => Border::BORDER_THIN, // Grosor del borde
+							'color' => ['argb' => '000000'], // Color del borde (negro en este caso)
+						],
+					],
+				];
+				
+				$sheet->getStyle('A1')->applyFromArray($borderStyle);
+				$i++;
 			endforeach;
 
 			$HojaIndex++;
