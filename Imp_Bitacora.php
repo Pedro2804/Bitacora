@@ -143,6 +143,7 @@ $num = 1;
 			$data = $q->fetchall(PDO::FETCH_ASSOC);
 
 			$i = 13;
+			$km_total = 0;
 			foreach($data as $MostrarFila):
 				$dia = explode(" ",$MostrarFila['dia_semana']);
 				if($dia[1]<10) (string)$dia[1] = '0'.(string)$dia[1];
@@ -173,27 +174,44 @@ $num = 1;
 						# code...
 						break;
 				}
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':'.'O'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':'.'O'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
 				$objPHPExcel->getActiveSheet()->setCellValue('H'.$i, $MostrarFila['salida']);
 				$objPHPExcel->getActiveSheet()->setCellValue('J'.$i, $MostrarFila['km_inicial']);
-				$objPHPExcel->getActiveSheet()->getColumnDimensions('K'.$i)->setAttribute;
+				
 				$objPHPExcel->getActiveSheet()->setCellValue('K'.$i, $MostrarFila['recorrido']);
 				
+				
+				if(strlen($MostrarFila['recorrido'])>35){
+					$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setWrapText(true);
+					//$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+					$objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(26);
+				}
+				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+				
 				$objPHPExcel->getActiveSheet()->setCellValue('N'.$i, $MostrarFila['km_final']);
-				$objPHPExcel->getActiveSheet()->setCellValue('O'.$i, $MostrarFila['km_final']-$MostrarFila['km_inicial']);				
+				$objPHPExcel->getActiveSheet()->setCellValue('O'.$i, $MostrarFila['km_final']-$MostrarFila['km_inicial']);
+				
+				$km_total += $MostrarFila['km_final']-$MostrarFila['km_inicial'];
 				
 				$i++;
 			endforeach;
+
+			$objPHPExcel->getActiveSheet()->setCellValue('O24', $km_total);
 
 			$HojaIndex++;
 			$num++;
 		
 		
-		$objPHPExcel->getActiveSheet()->getPageSetup()->setPrintArea("A1:O32");
+		$objPHPExcel->getActiveSheet()->getPageSetup()->setPrintArea("A1:O34");
 		
-		/*$objPHPExcel->getActiveSheet()->getPageMargins()->setTop(2.00)->setBottom(2.00);
-		$objPHPExcel->getActiveSheet()->getPageMargins()->setLeft(1.00)->setRight(1.00);
+		//$objPHPExcel->getActiveSheet()->getPageMargins()->setTop(2.00)->setBottom(2.00);
+		//$objPHPExcel->getActiveSheet()->getPageMargins()->setLeft(0.80)->setRight(0.70);
+		
+		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
-		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);*/
 
 		$objDrawing6 = new PHPExcel_Worksheet_HeaderFooterDrawing();
 		$objDrawing6->setName('header');

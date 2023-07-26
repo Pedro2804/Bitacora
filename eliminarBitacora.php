@@ -38,7 +38,7 @@
     <h4 class="Titulos">¿ELIMINAR?</h4>
      
     <h4>
-        ¿Eliminar la solicitud?
+        ¿Eliminar la bitacora?
     </h4>
 
     <form method="post">
@@ -46,7 +46,7 @@
                 class="button" value="Eliminar" />
     </form>
     <br>
-        <form action="busqueda.php">
+    <form action="Busqueda.php">
         <input class="btn-guardar" type="submit" value="Cancelar" />
     </form>
 </body>
@@ -65,13 +65,13 @@
 
             $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "DELETE FROM not_solicitud WHERE ClaveEntidad=$id";
+        $sql = "DELETE FROM bitacora WHERE id_bitacora=$id";
             $q = $pdo->prepare($sql);
             try {
                 $q->execute(array($sql));
                 Database::disconnect();
                 echo "<br><br>ELIMINADO<br><br>";
-                echo('<a href="busqueda.php" style="font-size: 20px; text-decoration: none">Regresar</a>');
+                echo('<a href="Busqueda.php" style="font-size: 20px; text-decoration: none">Regresar</a>');
                 return true;
             } catch (PDOException $e) {
                 Database::disconnect();
