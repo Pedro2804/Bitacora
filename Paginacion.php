@@ -48,14 +48,6 @@ else{
 				WHERE 1 $condicion
 				ORDER BY fecha_recibido DESC, Folio DESC LIMIT $RegistrosAEmpezar,$RegistrosAMostrar";
 
-          /*$sql = "SELECT not_solicitud.*, DATE_FORMAT(FechaRecibida,'%d-%m-%Y') AS FechaRecibido_, DATE_FORMAT(FechaAtendida,'%d-%m-%Y') AS FechaAtendida_,  
-		  				 direccion_cat.Nombre AS Direccion, IFNULL(departamento_cat.Nombre,IFNULL(OtroDepartamento,'')) as Departamento,
-						 CASE not_solicitud.Estatus WHEN 1 THEN 'RECIBIDO' ELSE 'ATENDIDO' END AS EstatusSolicitud, LPAD(Folio,4,'0') AS Folio_
-		  			FROM not_solicitud
-					INNER JOIN direccion_cat ON direccion_cat.ClaveEntidad = not_solicitud.CveEntDireccion
-					LEFT OUTER JOIN departamento_cat ON departamento_cat.ClaveEntidad = not_solicitud.CveEntDepartamento
-					WHERE 1 $condicion
-					ORDER BY FechaRecibida DESC, Folio DESC LIMIT $RegistrosAEmpezar,$RegistrosAMostrar";*/
 		  $q = $pdo->prepare($sql);
           $q->execute(array());
 		  $filas = $q->rowCount();
@@ -66,18 +58,6 @@ else{
 		  	 
 		  	 $data = $q->fetchall(PDO::FETCH_ASSOC);
 			  foreach($data as $Solicitud):
-			  	 /*if($CveSolicitudes=='') $CveSolicitudes = $Solicitud['ClaveEntidad'];
-				 else $CveSolicitudes .= ','.$Solicitud['ClaveEntidad'];
-			  	 $tipoproblema = '';
-				 if($Solicitud['Red']==1): $tipoproblema = 'RED'; endif;
-				 if($Solicitud['Mantenimiento']==1): if($tipoproblema =='') $tipoproblema = 'MANTENIMIENTO'; else $tipoproblema .= ', MANTENIMIENTO'; endif;
-				 if($Solicitud['Telefonia']==1): if($tipoproblema =='') $tipoproblema = 'TELEFONIA'; else $tipoproblema .= ', TELEFONIA'; endif;
-				 if($Solicitud['Formateo']==1): if($tipoproblema =='') $tipoproblema = 'FORMATEO'; else $tipoproblema .= ', FORMATEO'; endif;
-				 if($Solicitud['Comunicacion']==1): if($tipoproblema =='') $tipoproblema = 'COMUNICACION'; else $tipoproblema .= ', COMUNICACION'; endif;
-				 if($Solicitud['Impresora']==1): if($tipoproblema =='') $tipoproblema = 'IMPRESORA'; else $tipoproblema .= ', IMPRESORA'; endif;
-				 if($Solicitud['Asistencia']==1): if($tipoproblema =='') $tipoproblema = 'ASISTENCIA'; else $tipoproblema .= ', ASISTENCIA'; endif;
-				 if($Solicitud['Otro']==1): if($tipoproblema =='') $tipoproblema = 'OTRO'; else $tipoproblema .= ', OTRO'; endif;*/
-
 				 echo '<tr>
 					<td>'.$Solicitud['id_bitacora'].'</td>
 					<td>'.$Solicitud['FechaRecibida'].'</td>
@@ -86,7 +66,7 @@ else{
 					<td>'.$Solicitud['NoUnidad'].'</td>
 					<td><a href="Imp_Bitacora.php?id='.$Solicitud['id_bitacora'].'"><img src="img/impresora.png" width="45" height="45" style="cursor:pointer" title="Imprimir Solicitud"></a></td>
 					<td><a href="editarSolicitud.php?id='.$Solicitud['id_bitacora'].'"><img src="img/lapiz.png" style="cursor:pointer" title="Editar Solicitud"></a></td>
-					<td><a href="eliminarBitacora.php?id='.$Solicitud['id_bitacora'].'"><img src="img/basura.png" style="cursor:pointer" title="Eliminar Bitacora"></a></td>
+					<td><img src="img/basura.png" style="cursor:pointer" onclick="eliminar('+$Solicitud['id_bitacora']+');" title="Eliminar Bitacora"></td>
 
 				</tr>';
 		  endforeach;

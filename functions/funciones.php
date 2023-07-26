@@ -1,6 +1,5 @@
 <?php
 include '../config/conexion.php';
-include '../config/conexion2.php';
 session_start();
 if (empty($_POST)) {
     echo 'error_post';
@@ -76,28 +75,7 @@ function data_output($columns, $data)
     }
     return $out;
 }
-function direcciones()
-{
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "select ClaveEntidad, Nombre from direccion_cat where Estatus = 1 order by Nombre";
-    $q = $pdo->prepare($sql);
-    try {
-        $q->execute(array());
-        $data = $q->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($data as $row) {
-            $nw['id'] = $row['ClaveEntidad'];
-            $nw['nomb'] = $row['Nombre'];
-            $nombres[] = $nw;
-        }
-        $json = json_encode($nombres);
-        Database::disconnect();
-        return $json;
-    } catch (PDOException $e) {
-        Database::disconnect();
-        return "Erro: : " . $e;
-    }
-}
+
 function normaliza($cadena)
 {
     $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
@@ -116,26 +94,6 @@ function conver($var)
     $texto = trim(strtoupper(str_replace($no_permitidas, $permitidas, $var)));
     $texto = iconv("UTF-8", "ISO-8859-1//IGNORE", $texto);
     return $texto;
-}
-function clavedepto($depto)
-{
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT ClaveEntidad FROM departamento_cat WHERE Nombre = '" . $depto . "'";
-    $q = $pdo->prepare($sql);
-    try {
-        $q->execute(array());
-        $data = $q->fetch(PDO::FETCH_ASSOC);
-        if ($data == null) {
-            Database::disconnect();
-            return false;
-        }
-        Database::disconnect();
-        return $data['ClaveEntidad'];
-    } catch (PDOException $e) {
-        Database::disconnect();
-        return "Error: " . $e;
-    }
 }
 function nombreempl(){
     $control = $_POST['control'];
@@ -158,19 +116,6 @@ function nombreempl(){
         //return "Error: " . $e;
     }
 }
-
-/*function datos_vehiculo($idvehiculo){
-	$con = new conexion("localhost", "root", "Bitacora", "DIFinformatica.03");
-	$con->conectar();
-    $result = $con->consultas("marca, modelo, placas, kilometraje", "vehiculo", "WHERE num_unidad = $idvehiculo");
-    $data = mysqli_fetch_array($result);
-    $data = mysqli_fetch_array($result);
-    if($data != null){
-        $datos = [$data['marca']." ".$data['modelo'], $data['placas'], $data['kilometraje']]; 
-        $con->cerrar();
-        return $datos;
-    }else { $con->cerrar(); return false;}
-}*/
 
 function datos_vehiculo($idvehiculo){
     $pdo = Database::connect();
@@ -437,62 +382,7 @@ function bitacora(){
     }
 }
 
-function filtrar_deptos()
-{
-    $direccion = $_POST['direccion'];
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "select ClaveEntidad, Nombre from departamento_cat where Estatus = 1 AND CveEntDireccion=? order by Nombre";
-    $q = $pdo->prepare($sql);
-    try {
-        $q->execute(array($direccion));
-        $data = $q->fetchall(PDO::FETCH_ASSOC);
-        if ($data == null) {
-            Database::disconnect();
-            return false;
-        }
-        $cadena = "";
-        foreach ($data as $row) {
-            $cadena .= '<option value="' . $row['Nombre'] . '"></option>';
-        }
-        Database::disconnect();
-        return $cadena;
-    } catch (PDOException $e) {
-        Database::disconnect();
-        return "Error: " . $e;
-    }
-}
-function mostrar_solicitudes()
-{
-    $f_inicio = $_POST['f_inicio'];
-    $f_final = $_POST['f_final'];
-    $columns = array(
-        array('db' => 'Folio', 'dt' => 0),
-        array('db' => 'DescripcionProblema', 'dt' => 1),
-        array('db' => 'DescripcionServicio',  'dt' => 2),
-        array('db' => 'area',  'dt' => 3),
-        array('db' => 'FechaRecibida', 'dt' => 4),
-        array('db' => 'FechaAtendida', 'dt' => 5),
-        array('db' => 'Estatus', 'dt' => 6),
-        array('db' => 'ClaveEntidad', 'dt' => 7)
-    );
-    $salida = array();
-    $pdo = database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $query = "SELECT Folio,DescripcionProblema,DescripcionServicio,IFNULL((SELECT Nombre FROM departamento_cat WHERE ClaveEntidad=CveEntDepartamento),IFNULL(OtroDepartamento,(SELECT Nombre FROM direccion_cat WHERE ClaveEntidad=CveEntDireccion))) as area,FechaRecibida,FechaAtendida,CASE WHEN Estatus = 1 THEN 'RECIBIDO' WHEN Estatus = 2 THEN 'ATENDIDO' END AS Estatus,ClaveEntidad FROM not_solicitud WHERE FechaRecibida BETWEEN ? AND ? AND Folio IS NULL ORDER BY FechaRecibida";
-    $q = $pdo->prepare($query);
-    try {
-        $q->execute(array($f_inicio, $f_final));
-        $data = $q->fetchAll(PDO::FETCH_ASSOC);
-        $salida['data'] = data_output($columns, $data);
-        $json = json_encode($salida, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
-        Database::disconnect();
-        return $json;
-    } catch (PDOException $e) {
-        Database::disconnect();
-        return "Error: " . $e;
-    }
-}
+
 function editar_solicitudTest()
 {
 
@@ -789,105 +679,4 @@ function eliminar_auto() {
         return "Error: " . $e;
     }
 
-}
-
-
-function mostrar_solicitudes_sin_atender()
-{
-    $f_inicio = $_POST['f_inicio'];
-    $f_final = $_POST['f_final'];
-    $columns = array(
-        array('db' => 'Folio', 'dt' => 0),
-        array('db' => 'DescripcionProblema', 'dt' => 1),
-        array('db' => 'DescripcionServicio',  'dt' => 2),
-        array('db' => 'area',  'dt' => 3),
-        array('db' => 'FechaRecibida', 'dt' => 4),
-        array('db' => 'FechaAtendida', 'dt' => 5),
-        array('db' => 'Estatus', 'dt' => 6),
-        array('db' => 'ClaveEntidad', 'dt' => 7)
-    );
-    $salida = array();
-    $pdo = database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $query = "SELECT Folio,DescripcionProblema,DescripcionServicio,IFNULL((SELECT Nombre FROM departamento_cat WHERE ClaveEntidad=CveEntDepartamento),IFNULL(OtroDepartamento,(SELECT Nombre FROM direccion_cat WHERE ClaveEntidad=CveEntDireccion))) as area,FechaRecibida,FechaAtendida,CASE WHEN Estatus = 1 THEN 'RECIBIDO' WHEN Estatus = 2 THEN 'ATENDIDO' END AS Estatus,ClaveEntidad 
-FROM not_solicitud 
-WHERE (Folio IS NOT NULL AND FechaAtendida BETWEEN ? AND ? AND Estatus=1) OR (Folio IS NOT NULL AND FechaAtendida IS NULL AND Estatus=1) ORDER BY FechaRecibida";
-
-    $q = $pdo->prepare($query);
-    try {
-        $q->execute(array($f_inicio, $f_final));
-        $data = $q->fetchAll(PDO::FETCH_ASSOC);
-        $salida['data'] = data_output($columns, $data);
-        $json = json_encode($salida, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
-        Database::disconnect();
-        return $json;
-    } catch (PDOException $e) {
-        Database::disconnect();
-        return "Error: " . $e;
-    }
-}
-function guardar_reporte()
-{
-    $id_reporte = 0;
-    $f_inicio = $_POST['fecha_inicio'];
-    $f_final = $_POST['fecha_final'];
-    $claves_solicitud = $_POST['claves_solicitud'];
-    $claves_solicitud_sa = $_POST['claves_solicitud_sa'];
-    $folio_inicial = $_POST['folios_g'];
-    $doc_respalda = $_POST['doc_respalda'];
-    $observaciones = null;
-    $elaboro = 'elaboro';
-
-    $array_solicitudes = explode(",", $claves_solicitud);
-    $total_solicitudes = sizeof($array_solicitudes);
-    unset($array_solicitudes[$total_solicitudes - 1]);
-    $array_solicitudes = array_unique($array_solicitudes);
-    $total_solicitudes = sizeof($array_solicitudes);
-
-    $array_solicitudes_sa = explode(",", $claves_solicitud_sa);
-    $total_solicitudes_sa = sizeof($array_solicitudes_sa);
-    unset($array_solicitudes_sa[$total_solicitudes_sa - 1]);
-    $total_solicitudes_sa = sizeof($array_solicitudes_sa);
-
-
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "INSERT INTO not_reporte (PeriodoDel,PeriodoAl,DocumentoRespalda,Observaciones,Elaboro) VALUES (?,?,?,?,?);";
-    $q = $pdo->prepare($sql);
-    try {
-        $q->execute(array($f_inicio, $f_final, $doc_respalda, $observaciones, 'MARCO ANTONIO SANCHEZ RAMIREZ'));
-        $id_reporte = $pdo->lastInsertId();
-        Database::disconnect();
-    } catch (PDOException $e) {
-        Database::disconnect();
-        return "Error: " . $e;
-    }
-    foreach ($array_solicitudes as $solicitud) {
-        $pdo = Database::connect();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "UPDATE not_solicitud SET Folio=?,CveEntReporte=? WHERE ClaveEntidad=?;";
-        $q = $pdo->prepare($sql);
-        try {
-            $q->execute(array($folio_inicial, $id_reporte, $solicitud));
-            Database::disconnect();
-        } catch (PDOException $e) {
-            Database::disconnect();
-            return "Error: " . $e;
-        }
-        $folio_inicial++;
-    }
-    foreach ($array_solicitudes_sa as $solicitud_sa) {
-        $pdo = Database::connect();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "UPDATE not_solicitud SET CveEntReporteAtendida=? WHERE ClaveEntidad=?;";
-        $q = $pdo->prepare($sql);
-        try {
-            $q->execute(array($id_reporte, $solicitud_sa));
-            Database::disconnect();
-        } catch (PDOException $e) {
-            Database::disconnect();
-            return "Error: " . $e;
-        }
-    }
-    return true;
 }

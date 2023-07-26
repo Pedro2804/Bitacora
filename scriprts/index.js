@@ -20,29 +20,6 @@
     $.datepicker.setDefaults($.datepicker.regional['es']);
     
     $(document).off('.datepicker.data-api');
-    $('#fecha_r').datepicker();
-    $('#fecha_d').datepicker(); 
-    
-     $.ajax
-    ({
-        type: "POST",
-        url: "controller/controller.php",
-        data:
-        {
-            funcion:'direcciones'
-        },
-        cache: false,
-        success: function(result)
-        {
-            var obj = JSON.parse(result);
-            var i=0;
-        }
-    });
-
-    $( "#departamento" ).change(function()
-    {
-
-    });
 
     $("#numero_control").on("change", function(event){
         event.preventDefault();
@@ -318,69 +295,5 @@
                 }
             }); 
         }
-    });
-
-    $( "#fecha_r" ).change(function()
-    {
-        var fecha=$('#fecha_r').val();
-        $('#fecha_d').val(fecha);
-    });
-     $( "#fecha_d" ).change(function()
-    {
-        var fecha_r=$('#fecha_r').val();
-        var fecha_d=$('#fecha_d').val();
-        
-        var f_r = new Date(fecha_r);
-        var f_d = new Date(fecha_d); 
-        var resultado = f_r.getTime() >= f_d.getTime();
-        if(resultado==false)
-        {
-            var fecha=$('#fecha_r').val();
-            $('#fecha_d').val(fecha);
-            if(fecha=="")
-            {
-                swal(
-                  'Elija una fecha de recibido',
-                  'Antes de llenar este campo debe elegir una fecha de recibido.',
-                  'info'
-                    );
-            }
-            else
-            {
-                swal(
-                  'Fecha no valida',
-                  'La fecha del documento debe ser menor a la de recibido',
-                  'info'
-                    );
-            }
-        }
-    });
-
-    $( "#direccion" ).change(function()
-    {
-        var direccion=$( "#direccion" ).val();
-        $.ajax
-            ({
-                type: "POST",
-                url: "controller/controller.php",
-                data:
-                {
-                    funcion:'filtrar_deptos',
-                    direccion:direccion
-                },
-                cache: false,
-                success: function(result)
-                {
-                    $( "#departamento" ).val('');
-                    if(result!=0)
-                    {
-                       $( "#dep" ).html(result);
-                    }
-                    else
-                    {
-                        $( "#dep" ).html('<option value="PRESIDENCIA"></option>');
-                    }
-                }
-            }); 
     });
 });

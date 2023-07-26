@@ -1,5 +1,5 @@
 <?php
-//header("Content-Type: text/html;charset=utf-8");
+header("Content-Type: text/html;charset=utf-8");
 include '../functions/funciones.php';
 if(empty($_POST))
 {
@@ -67,29 +67,9 @@ switch ($funcion)
         if ($respuesta == false) echo '0';
         else echo json_encode($respuesta);
 	break;
-    case 'direcciones':
-        $respuesta=direcciones();
-        echo $respuesta;
-	break;
-    case 'filtrar_deptos':
-        $respuesta=filtrar_deptos();
-        echo $respuesta;
-	break;
-    case 'mostrar_solicitudes':
-        $respuesta=mostrar_solicitudes();
-        echo $respuesta;
-	break;
     case 'editar_solicitudTest':
         $respuesta=editar_solicitudTest();
         echo $respuesta;
-	break;
-    case 'mostrar_solicitudes_sin_atender':
-        $respuesta=mostrar_solicitudes_sin_atender();
-        echo $respuesta;
-	break;
-    case 'guardar_reporte':
-        $respuesta=guardar_reporte();
-        echo $respuesta;
-	break;        
+	break;       
 }
 ?> 

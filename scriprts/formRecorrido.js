@@ -49,28 +49,37 @@
             km_inicial.reportValidity();
         
             if(km_inicial.value && km_final.value && salida.value && listaR.value){
-                var i = 0;
-                while(i<dias_recorrido.length){
-                    if(dias_recorrido[i].value == dia.parentNode.parentNode.parentNode.id){
+               
+                if(parseInt(km_inicial.value)<parseInt(km_final.value)){
+                    var i = 0;
+                    while(i<dias_recorrido.length){
+                        if(dias_recorrido[i].value == dia.parentNode.parentNode.parentNode.id){
+                            i++;
+                            break;
+                        }
                         i++;
-                        break;
                     }
-                    i++;
-                }
 
-                if((dias_recorrido.length-1) == i){
-                    document.getElementById('boton_guardar'+i).style.display = "block";
-                    document.getElementById(dias_recorrido[i].value).querySelector('#btn_sig'+i).style.visibility = "hidden";
-                    document.getElementById(dias_recorrido[i].value).querySelector('#destino'+i).required = false;
-                }
-                openTab(dias_recorrido[i].value);
-                dias_recorrido[i].className += " active";
+                    if((dias_recorrido.length-1) == i){
+                        document.getElementById('boton_guardar'+i).style.display = "block";
+                        document.getElementById(dias_recorrido[i].value).querySelector('#btn_sig'+i).style.visibility = "hidden";
+                        document.getElementById(dias_recorrido[i].value).querySelector('#destino'+i).required = false;
+                    }
+                    openTab(dias_recorrido[i].value);
+                    dias_recorrido[i].className += " active";
 
-                document.getElementById("km_I"+i).value = document.getElementById("km_F"+(i-1)).value;
+                    document.getElementById("km_I"+i).value = document.getElementById("km_F"+(i-1)).value;
 
-                if(i != 0){
-                    document.getElementById(dias_recorrido[i].value).querySelector('#btn_ant'+i).style.visibility = "visible";
-                }
+                    if(i != 0){
+                        document.getElementById(dias_recorrido[i].value).querySelector('#btn_ant'+i).style.visibility = "visible";
+                    }
+                }else
+                    swal({
+                        type: 'warning',
+                        title: 'El KM inicial no puede ser mayor al KM final',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
             }
         }else{
             var i = 0;

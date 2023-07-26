@@ -44,8 +44,7 @@ $fechafin = date('d-m-Y');
 		}
 		});
 	}
-  function FormatoSolicitud()
-    {
+  function FormatoSolicitud(){
           //window.open("Bitacora.php?Solicitud="+$('#TxtConsec').val());
           window.open("Bitacora.php");
 	}
@@ -62,7 +61,7 @@ $fechafin = date('d-m-Y');
     <link rel="apple-touch-icon" sizes="72x72" href="img/favicon.ico" />
     <link rel="apple-touch-icon" sizes="114x114" href="img/favicon.ico" />
     <link rel="apple-touch-icon" sizes="144x144" href="img/favicon.ico" /> 
-    <script src="scriprts/index.js"></script>
+    
 </head>
 	<body id="mimin" class="dashboard">
 	<div class="jumbotron">
