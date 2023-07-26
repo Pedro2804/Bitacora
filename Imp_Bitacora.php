@@ -7,7 +7,7 @@ require_once 'libexportar/PHPExcel/IOFactory.php';
 require_once 'libexportar/PHPExcel/Cell/AdvancedValueBinder.php';
 
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
-$objPHPExcel = $objReader->load("Bitacora.xlsx");
+$objPHPExcel = $objReader->load("Bitacora2.xlsx");
 
 
 include 'config/conexion.php';
@@ -21,7 +21,7 @@ if(!empty($_GET['id'])) $Solicitud =$_GET['id'];
 *********************************************************/	
 
 date_default_timezone_set('America/Mexico_City');
-$nomb = 'Bitacora_'.date('d');
+$nomb = 'Bitacora2_'.date('d');
 
 switch (date('m')){
 		case 1: $nomb .= 'Ene_'; break;
@@ -179,25 +179,26 @@ $num = 1;
 
 				$objPHPExcel->getActiveSheet()->setCellValue('H'.$i, $MostrarFila['salida']);
 				$objPHPExcel->getActiveSheet()->setCellValue('J'.$i, $MostrarFila['km_inicial']);
-								
+				$objPHPExcel->getActiveSheet()->setCellValue('K'.$i, $MostrarFila['recorrido']);	
 				$objPHPExcel->getActiveSheet()->setCellValue('N'.$i, $MostrarFila['km_final']);
 				$objPHPExcel->getActiveSheet()->setCellValue('O'.$i, $MostrarFila['km_final']-$MostrarFila['km_inicial']);
 				
 				$km_total += $MostrarFila['km_final']-$MostrarFila['km_inicial'];
 
-				$objPHPExcel->getActiveSheet()->setCellValue('K'.$i, $MostrarFila['recorrido']);
-				
 				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+
 				if(strlen($MostrarFila['recorrido'])>35){
-					$objPHPExcel->getActiveSheet()->unmergeCells('H'.$i.':I'.$i);
+					/*$objPHPExcel->getActiveSheet()->unmergeCells('H'.$i.':I'.$i);
 					$objPHPExcel->getActiveSheet()->unmergeCells('K'.$i.':M'.$i);
 					$objPHPExcel->getActiveSheet()->unmergeCells('H'.($i+1).':I'.($i+1));
-					$objPHPExcel->getActiveSheet()->unmergeCells('K'.($i+1).':M'.($i+1));
+					$objPHPExcel->getActiveSheet()->unmergeCells('K'.($i+1).':M'.($i+1));*/
 
-					for($j=65; $j<72; $j++)
+					for($j=65; $j<72; $j++){
 						$objPHPExcel->getActiveSheet()->mergeCells(chr($j).$i.':'.chr($j).($i+1));
-					
+						$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).($i+1))->getBorders()
+						->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					}
 					$objPHPExcel->getActiveSheet()->mergeCells('H'.$i.':I'.($i+1));
 					$objPHPExcel->getActiveSheet()->mergeCells('J'.$i.':J'.($i+1));	
 					$objPHPExcel->getActiveSheet()->mergeCells('K'.$i.':M'.($i+1));
@@ -206,11 +207,18 @@ $num = 1;
 
 					$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setWrapText(true);
 					//$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+
+
+					$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':O'.($i+1))->getBorders()
+					->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 					
 					$i+=2;
 					//$objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(26);
-				}else
+				}else{
+					$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':O'.$i)->getBorders()
+					->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 					$i++;
+				}
 			endforeach;
 
 			$objPHPExcel->getActiveSheet()->setCellValue('O27', $km_total);
