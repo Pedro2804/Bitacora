@@ -5,8 +5,7 @@ if (empty($_POST)) {
     echo 'error_post';
     exit();
 }
-function login()
-{
+function login(){
     $usuario=$_POST['usuario'];
     $password=$_POST['pass'];
     $pass_sn=$password;
@@ -17,18 +16,15 @@ function login()
 	$q = $pdo->prepare($sql);
 	$q->execute(array($usuario));
 	$data = $q->fetch(PDO::FETCH_ASSOC);
-	if($data == null)
-	{
+	if($data == null)	{
 		Database::disconnect(); 
 		return 0;
 	}
-	if($usuario != $data['usuario'])
-	{
+	if($usuario != $data['usuario']){
 		Database::disconnect();
 		return 0;
 	}
-	if($data['password'] != $password)
-	{
+	if($data['password'] != $password){
 		Database::disconnect();
 		return 2;
 	}
@@ -58,8 +54,7 @@ function nuevo_usuario(){
         }
 }
 
-function data_output($columns, $data)
-{
+function data_output($columns, $data){
     $out = array();
     for ($i = 0, $ien = count($data); $i < $ien; $i++) {
         $row = array();
@@ -76,8 +71,7 @@ function data_output($columns, $data)
     return $out;
 }
 
-function normaliza($cadena)
-{
+function normaliza($cadena){
     $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ
 ßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
     $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuy
@@ -87,8 +81,7 @@ bsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
     $cadena = strtolower($cadena);
     return utf8_encode($cadena);
 }
-function conver($var)
-{
+function conver($var){
     $no_permitidas = array(">", "<", '"', "|", "°", "¬", "!", "#", "$", "%", "&", "=", "?", "¡", "'", "¿", "¨", "*", "~", "{", "[", "^", "]", "}", "`", "_", "'", "´", "’", "‘", "á", "é", "í", "ó", "ú", "Á", "É", "Í", "Ó", "Ú", "ñ", "À", "Ã", "Ì", "Ò", "Ù", "Ã™", "Ã ", "Ã¨", "Ã¬", "Ã²", "Ã¹", "ç", "Ç", "Ã¢", "ê", "Ã®", "Ã´", "Ã»", "Ã‚", "ÃŠ", "ÃŽ", "Ã”", "Ã›", "ü", "Ã¶", "Ã–", "Ã¯", "Ã¤", "«", "Ò", "Ã", "Ã„", "Ã‹");
     $permitidas = array("", "", '', "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "Ñ", "N", "A", "E", "I", "O", "U", "a", "e", "i", "o", "u", "c", "C", "a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "u", "o", "O", "i", "a", "e", "U", "I", "A", "E");
     $texto = trim(strtoupper(str_replace($no_permitidas, $permitidas, $var)));
@@ -228,8 +221,7 @@ function repetido($tabla, $columna, $lugar){
     }
 }
 
-function guardar_bitacora()
-{
+function guardar_bitacora(){
 
     $empleado = null;
     $idVehiculo = null;
@@ -319,8 +311,7 @@ function guardar_bitacora()
     }
 }
 
-function guardar_recorrido()
-{
+function guardar_recorrido(){
     $dia = null;
     $k_i = null;
     $k_f = null;
@@ -383,8 +374,7 @@ function bitacora(){
 }
 
 
-function editar_solicitudTest()
-{
+function editar_solicitudTest(){
 
     $clave = null;
     $fecha_recibo = null;
@@ -637,8 +627,7 @@ function nuevo_auto(){
     }else return false;
 }
 
-function editar_auto()
-{
+function editar_auto(){
     $id = $_POST['id'];
     $unidad = $_POST['num_unidad'];
     $marca = $_POST['marca'];
@@ -672,6 +661,23 @@ function eliminar_auto() {
     $q = $pdo->prepare($sql);
     try {
         $q->execute(array($unidad));
+        Database::disconnect();
+        return true;
+    } catch (PDOException $e) {
+        Database::disconnect();
+        return "Error: " . $e;
+    }
+}
+
+function eliminar_bitacora() {
+    $id = $_POST['id_bitacora'];
+
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "DELETE FROM bitacora WHERE id_bitacora=?";
+    $q = $pdo->prepare($sql);
+    try {
+        $q->execute(array($id));
         Database::disconnect();
         return true;
     } catch (PDOException $e) {

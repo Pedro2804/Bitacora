@@ -9,46 +9,8 @@ function cpf(v){
     v = v.split('').reverse().join('').replace(/^[\,]/,'');
     return v;  
 }
-function display_direcciones()
-{
-    $.ajax(
-		{
-			type: "POST",
-			url: "controller/controller.php",
-			data:
-            {
-                funcion: 'get_direcciones'
-            },
-			cache: false,
-			success: function(result)
-			{
-                $('#direccion').html(result);
-			}
-		});
-}
-function display_departamentos_edit(direccion,depto)
-{
-    $.ajax(
-		{
-			type: "POST",
-			url: "controller/controller.php",
-			data:
-            {
-                funcion: 'get_departamentos',
-                direccion:direccion
-            },
-			cache: false,
-			success: function(result)
-			{
-                $('#departamento').html(result);
-                console.log(depto);
-                $('#departamento').val(depto);
-			}
-		});
-}
 
-function editar(id)
-{
+function editar(id){
     $.ajax(
     {
 			type: "POST",
@@ -79,28 +41,8 @@ function editar(id)
 			}
 		});
 }
-function display_departamentos()
-{
-    console.log('okis');
-    var direccion = $('#direccion').val();
-    $.ajax(
-		{
-			type: "POST",
-			url: "controller/controller.php",
-			data:
-            {
-                funcion: 'get_departamentos',
-                direccion:direccion
-            },
-			cache: false,
-			success: function(result)
-			{
-                $('#departamento').html(result);
-			}
-		});
-}
-function xportpdf()
-{
+
+function xportpdf(){
     var doc = new jsPDF();
     var specialElementHandlers = {
         '#editor': function (element, renderer) {
@@ -114,8 +56,8 @@ function xportpdf()
         });
         doc.save('sample-file.pdf');
 }
-function eliminar(id)
-{
+
+function eliminar(id){
   swal({
     title: '¿Seguro que quiere eliminar?',
     text: "El vehículo se eliminará",
@@ -132,8 +74,7 @@ function eliminar(id)
                 url: "../controller/controller.php",
                 data: {funcion:'eliminar_auto', num_unidad:id},
                 cache: false,
-                success: function(result)
-                {
+                success: function(result){
                     swal({
                         title:'Eliminado',
                         type: 'success',
@@ -149,25 +90,59 @@ function eliminar(id)
         }
     });
 }
-$(document).ready(function()
-{
+
+function eliminar_bitacora(id){
+  swal({
+    title: '¿Seguro que quiere eliminar?',
+    text: "La bitacora se eliminará",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    cancelButtonText: 'No',
+    confirmButtonText: 'Si'
+    }).then((result) =>{
+        if (result){
+            $.ajax({
+                type: "POST",
+                url: "../controller/controller.php",
+                data: {funcion:'eliminar_bitacora', id_bitacora:id},
+                cache: false,
+                success: function(result){
+                    console.log(result);
+                    swal({
+                        title:'Eliminado',
+                        type: 'success',
+                        timer: 1000,
+                        showConfirmButton: false
+                        //allowOutsideClick: false,
+                        //confirmButtonText: 'Aceptar',
+                    }).then(function(){document.location.href="../admin/Busqueda.php";});//Sirve para cuando hay opciones de aceptar en el swal
+                    
+                    setTimeout(function() {document.location.href = '../admin/Busqueda.php';}, 1100);
+                }
+		    });
+        }
+    });
+}
+
+$(document).ready(function(){
     //display_direcciones();
 
-    $(document).ready(function()
-    {
+    $(document).ready(function(){ //estaba antes...
         var buttonCommon = {
-        exportOptions: {
-            format: {
-                body: function ( data, row, column, node ) {
-                    // Strip $ from salary column to make it numeric
-                    return column === 5 ?
-                        data.replace( /[$,]/g, '' ) :
-                        data;
+            exportOptions: {
+                format: {
+                    body: function ( data, row, column, node ) {
+                        // Strip $ from salary column to make it numeric
+                        return column === 5 ?
+                            data.replace( /[$,]/g, '' ) :
+                            data;
+                    }
                 }
             }
-        }}
-        var tablePC = $('#datatables-example').DataTable(
-        {
+        }
+        var tablePC = $('#datatables-example').DataTable({
             "ajax":
             {
                 "url": "../controller/controller.php",
@@ -194,8 +169,7 @@ $(document).ready(function()
 
     $( "#form_editar" ).submit(function( event ){
         event.preventDefault();
-		$.ajax(
-		{
+		$.ajax({
 			type: "POST",
 			url: "../controller/controller.php",
 			data:  $("#form_editar").serialize(),
@@ -222,8 +196,7 @@ $(document).ready(function()
 
     $( "#form_nuevo_auto" ).submit(function( event ){
         event.preventDefault();
-		$.ajax(
-		{
+		$.ajax({
 			type: "POST",
 			url: "../controller/controller.php",
 			data:  $("#form_nuevo_auto").serialize(),

@@ -34,14 +34,6 @@ switch ($funcion)
         $respuesta=get_vehiculo($vehiculo);
         echo $respuesta;
 	break;
-    case 'nuevo_recorrido':
-        $respuesta=nuevo_recorrido($lugar);
-        echo $respuesta;
-	break;
-	case 'login':
-		$respuesta=login();
-        echo $respuesta;
-	break;
     case 'editar_auto':
         $respuesta=editar_auto();
         echo $respuesta;
@@ -54,12 +46,24 @@ switch ($funcion)
         $respuesta=nuevo_auto();
         echo $respuesta;
 	break;
+	case 'login':
+		$respuesta=login();
+        echo $respuesta;
+	break;
     case 'guardar_bitacora':   
         $respuesta=guardar_bitacora();
         echo $respuesta;
 	break;
     case 'guardar_recorrido':   
         $respuesta=guardar_recorrido();
+        echo $respuesta;
+	break;
+    case 'eliminar_bitacora':   
+        $respuesta=eliminar_bitacora();
+        echo $respuesta;
+	break;
+    case 'nuevo_recorrido':
+        $respuesta=nuevo_recorrido($lugar);
         echo $respuesta;
 	break;
     case 'nombre_empleado':
