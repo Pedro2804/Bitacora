@@ -93,7 +93,7 @@ $num = 1;
 				$objPHPExcel->getActiveSheet()->setCellValue('C6', $MostrarFila['empleado']);
 				$objPHPExcel->getActiveSheet()->setCellValueExplicit('K6', $MostrarFila['operador']);
 				$objPHPExcel->getActiveSheet()->setCellValue('N6', $MostrarFila['marca']);
-				$objPHPExcel->getActiveSheet()->setCellValueExplicit('E7', $MostrarFila['NoUnidad']);
+				$objPHPExcel->getActiveSheet()->setCellValueExplicit('F7', $MostrarFila['NoUnidad']);
 				$objPHPExcel->getActiveSheet()->setCellValue('N7', $MostrarFila['placas']);
 
 				$de = new DateTime($MostrarFila['periodo_de']);
@@ -116,7 +116,7 @@ $num = 1;
 				$objPHPExcel->getActiveSheet()->setCellValue('L9', $MostrarFila['cada_vale']);
 
 				$fecha_carga = new DateTime($MostrarFila['fecha_carga']);
-				$objPHPExcel->getActiveSheet()->setCellValue('D10', $fecha_carga->format('d').' de '.$meses[$fecha_carga->format('n')].' de '.$fecha_carga->format('Y'));
+				$objPHPExcel->getActiveSheet()->setCellValue('E10', $fecha_carga->format('d').' de '.$meses[$fecha_carga->format('n')].' de '.$fecha_carga->format('Y'));
 				
 				switch ($MostrarFila['tipo_combustible']) {
 					case 'gasolina':
@@ -179,27 +179,41 @@ $num = 1;
 
 				$objPHPExcel->getActiveSheet()->setCellValue('H'.$i, $MostrarFila['salida']);
 				$objPHPExcel->getActiveSheet()->setCellValue('J'.$i, $MostrarFila['km_inicial']);
-				
-				$objPHPExcel->getActiveSheet()->setCellValue('K'.$i, $MostrarFila['recorrido']);
-				
-				
-				if(strlen($MostrarFila['recorrido'])>35){
-					$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setWrapText(true);
-					//$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
-					$objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(26);
-				}
-				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
-				
+								
 				$objPHPExcel->getActiveSheet()->setCellValue('N'.$i, $MostrarFila['km_final']);
 				$objPHPExcel->getActiveSheet()->setCellValue('O'.$i, $MostrarFila['km_final']-$MostrarFila['km_inicial']);
 				
 				$km_total += $MostrarFila['km_final']-$MostrarFila['km_inicial'];
+
+				$objPHPExcel->getActiveSheet()->setCellValue('K'.$i, $MostrarFila['recorrido']);
 				
-				$i++;
+				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+				if(strlen($MostrarFila['recorrido'])>35){
+					$objPHPExcel->getActiveSheet()->unmergeCells('H'.$i.':I'.$i);
+					$objPHPExcel->getActiveSheet()->unmergeCells('K'.$i.':M'.$i);
+					$objPHPExcel->getActiveSheet()->unmergeCells('H'.($i+1).':I'.($i+1));
+					$objPHPExcel->getActiveSheet()->unmergeCells('K'.($i+1).':M'.($i+1));
+
+					for($j=65; $j<72; $j++)
+						$objPHPExcel->getActiveSheet()->mergeCells(chr($j).$i.':'.chr($j).($i+1));
+					
+					$objPHPExcel->getActiveSheet()->mergeCells('H'.$i.':I'.($i+1));
+					$objPHPExcel->getActiveSheet()->mergeCells('J'.$i.':J'.($i+1));	
+					$objPHPExcel->getActiveSheet()->mergeCells('K'.$i.':M'.($i+1));
+					$objPHPExcel->getActiveSheet()->mergeCells('N'.$i.':N'.($i+1));
+					$objPHPExcel->getActiveSheet()->mergeCells('O'.$i.':O'.($i+1));
+
+					$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setWrapText(true);
+					//$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+					
+					$i+=2;
+					//$objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(26);
+				}else
+					$i++;
 			endforeach;
 
-			$objPHPExcel->getActiveSheet()->setCellValue('O24', $km_total);
+			$objPHPExcel->getActiveSheet()->setCellValue('O27', $km_total);
 
 			$HojaIndex++;
 			$num++;
@@ -213,12 +227,12 @@ $num = 1;
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
 
-		$objDrawing6 = new PHPExcel_Worksheet_HeaderFooterDrawing();
+		/*$objDrawing6 = new PHPExcel_Worksheet_HeaderFooterDrawing();
 		$objDrawing6->setName('header');
-		$objDrawing6->setPath('img/banner.jpg');
-		$objDrawing6->setHeight(1100);
+		$objDrawing6->setPath('img/prueba.jpg');
+		$objDrawing6->setWidth(700);
 		$objPHPExcel->getActiveSheet()->getHeaderFooter()->addImage($objDrawing6, PHPExcel_Worksheet_HeaderFooter::IMAGE_HEADER_LEFT);
-		$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&G&');
+		$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&G&');*/
     }
      catch(PDOException $e)
     {
