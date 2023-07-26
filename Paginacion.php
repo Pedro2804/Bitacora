@@ -86,7 +86,7 @@ else{
 					<td>'.$Solicitud['NoUnidad'].'</td>
 					<td><a href="Imp_Bitacora.php?id='.$Solicitud['id_bitacora'].'"><img src="img/impresora.png" width="45" height="45" style="cursor:pointer" title="Imprimir Solicitud"></a></td>
 					<td><a href="editarSolicitud.php?id='.$Solicitud['id_bitacora'].'"><img src="img/lapiz.png" style="cursor:pointer" title="Editar Solicitud"></a></td>
-					<td><a href="eliminarBitacora.php?id='.$Solicitud['id_bitacora'].'"><img src="img/basura.png" style="cursor:pointer" title="Eliminar Solicitud"></a></td>
+					<td><a href="eliminarBitacora.php?id='.$Solicitud['id_bitacora'].'"><img src="img/basura.png" style="cursor:pointer" title="Eliminar Bitacora"></a></td>
 
 				</tr>';
 		  endforeach;
