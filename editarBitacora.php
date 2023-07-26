@@ -6,38 +6,43 @@ $id = $_GET['id'];
 <?php
 
 //DECLARACIÓN DE VALORES PARA AUTOCOMPLETADO
-$urgencia='';
+$combustible='';
+$vale='';
+$folio='';
+$monto='';
 
 //CONEXIÓN BD
 $pdo = Database::connect();
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$sql = "SELECT DescripcionProblema, Red, Mantenimiento, Telefonia, Formateo, Comunicacion, Impresora, Asistencia, Otro, Solicita, VoBo, Entrega, Recibe from not_solicitud where ClaveEntidad=$id";
+$sql = "SELECT bitacora.*, DATE_FORMAT(periodo_de,'%d-%m-%Y') AS fecha_de,DATE_FORMAT(periodo_al,'%d-%m-%Y') AS fecha_al,
+empleado.*, CONCAT(nombre,' ',ApellidoPaterno,' ',ApellidoMaterno) as nom_empleado, vehiculo.*,CONCAT(marca,' ', modelo) AS marca FROM bitacora
+INNER JOIN empleado ON bitacora.operador
+INNER JOIN vehiculo ON bitacora.NoUnidad
+where id_bitacora=?";
 $q = $pdo->prepare($sql);
 //OBTENCIÓN DE VALORES PARA AUTOCOMPLETADO DE TIPO
 try
 {
-    $q->execute(array());
-    $data = $q->fetchall(PDO::FETCH_ASSOC);
+    $q->execute(array($id));
+    $data = $q->fetchAll(PDO::FETCH_ASSOC);
     foreach($data as $Solicitud):
-      
-      $categoria=array(
+    $num_control=$Solicitud['operador'];
+    $nombre=$Solicitud['nom_empleado'];
+    $fecha_del=$Solicitud['fecha_de'];
+    $fecha_al=$Solicitud['fecha_al'];
+    $NoUnidad=$Solicitud['NoUnidad'];
+    $marca=$Solicitud['marca'];
+    $placas=$Solicitud['placas'];
+    $tipo_comb=$Solicitud['tipo_combustible'];
 
-        $Solicitud['Red'],
-        $Solicitud['Mantenimiento'],
-        $Solicitud['Telefonia'],
-        $Solicitud['Formateo'],
-        $Solicitud['Comunicacion'],
-        $Solicitud['Impresora'],
-        $Solicitud['Asistencia'],
-        $Solicitud['Otro'],
-
-      );
-      $descripcion=$Solicitud['DescripcionProblema'];
-      $solicita=$Solicitud['Solicita'];
-      $vobo=$Solicitud['VoBo'];
-      $entrega=$Solicitud['Entrega'];
-      $recibe=$Solicitud['Recibe'];
-
+    if($Solicitud['combustible'])
+      $combustible=$Solicitud['combustible'];
+    if($Solicitud['cada_vale'])
+      $vale=$Solicitud['cada_vale'];
+    if($Solicitud['folio'])
+      $folio=$Solicitud['folio'];
+    if($Solicitud['monto'])
+      $monto=$Solicitud['monto'];
     endforeach;
 
 } 
@@ -46,37 +51,34 @@ catch (PDOException $e)
 echo 'Error: ' . $e->getMessage();
 
 }
-
-
 ?>
 
 <?php 
 //QUE DIOS ME PERDONE POR ESTE SPAGHETTI DE CÓDIGO
-//OBTENER VALORES DE 
+//OBTENER VALORES DE :(
   try {
-    $nombreDepto="";
-    $nombreDireccion="";
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT not_solicitud.*, DATE_FORMAT(FechaRecibida,'%d-%m-%Y') AS FechaRecibido_, DATE_FORMAT(FechaAtendida,'%d-%m-%Y') AS FechaAtendida_,  
+    $sql = "SELECT * FROM recorrido WHERE bitacora = ?";
+    //POR SI TE LLEGA A SERVIR ESTE TIPO DE CONSULTAS :) soy el nuevo que lo quito :)
+    /*$sql = "SELECT not_solicitud.*, DATE_FORMAT(FechaRecibida,'%d-%m-%Y') AS FechaRecibido_, DATE_FORMAT(FechaAtendida,'%d-%m-%Y') AS FechaAtendida_,  
                 direccion_cat.Nombre AS Direccion, IFNULL(departamento_cat.Nombre,IFNULL(OtroDepartamento,'')) as Departamento,
                 CASE not_solicitud.Estatus WHEN 1 THEN 'RECIBIDO' ELSE 'ATENDIDO' END AS EstatusSolicitud, LPAD(Folio,4,'0') AS Folio_
                 FROM not_solicitud
               INNER JOIN direccion_cat ON direccion_cat.ClaveEntidad = not_solicitud.CveEntDireccion
               LEFT OUTER JOIN departamento_cat ON departamento_cat.ClaveEntidad = not_solicitud.CveEntDepartamento
-              WHERE 1 AND not_solicitud.ClaveEntidad=".$id."";
-          $q = $pdo->prepare($sql);
-          $q->execute(array());
-          $filas = $q->rowCount();
-          $CveSolicitudes = '';
-          $data = $q->fetchall(PDO::FETCH_ASSOC);
-			    foreach($data as $Solicitud):
-            $urgencia=$Solicitud['NivelUrgencia'];
-            $nombreDireccion=$Solicitud['Direccion'] ;
-            $numeroDireccion=$Solicitud['CveEntDireccion'];
-            $nombreDepartamento=($Solicitud['Departamento']);
-            $numeroDepartamento=$Solicitud['CveEntDepartamento'];
-          endforeach;
+              WHERE 1 AND not_solicitud.ClaveEntidad=".$id."";*/ //POR SI TE LLEGA A SERVIR ESTE TIPO DE CONSULTAS :)
+      $q = $pdo->prepare($sql);
+      $q->execute(array($id));
+      $filas = $q->rowCount();
+      $data = $q->fetchall(PDO::FETCH_ASSOC);
+			/*foreach($data as $Solicitud):
+        $urgencia=$Solicitud['NivelUrgencia'];
+        $nombreDireccion=$Solicitud['Direccion'] ;
+        $numeroDireccion=$Solicitud['CveEntDireccion'];
+        $nombreDepartamento=($Solicitud['Departamento']);
+        $numeroDepartamento=$Solicitud['CveEntDepartamento'];
+      endforeach;*/
     }catch(PDOException $e)
     {
        echo 'Error: ' . $e->getMessage();
@@ -89,7 +91,7 @@ echo 'Error: ' . $e->getMessage();
   <meta charset="utf-8">
   <meta name="keyword" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Noticia</title>
+  <title>Editar Bitacora</title>
 
   <!-- start: Css -->
   <link rel="stylesheet" type="text/css" href="asset/css/bootstrap.min.css">
@@ -119,28 +121,31 @@ echo 'Error: ' . $e->getMessage();
         <img src="img/logodifblanco.png" class="logo_dif">
     </div>
     <div id='cssmenu'>  
-      <ul>
-        <li><a href='index.php'>Nueva Solicitud</a></li>
-        <li><a href='busqueda.php'>Ver Solicitudes</a></li>
-        <li><a href='busquedanoticia.php'>Ver Noticia</a></li>
-        <li><a href='nueva_noticia.php'>NUEVA NOTICIA</a></li>
-        <li class='active'><a href='#'>EDITAR SOLICITUD</a></li>
-      </ul>
+            <ul>
+                <li><a href='index.php'>Nueva Bitacora</a></li>
+                <li><a href='Busqueda.php'>Ver Bitacoras</a></li>
+                <!--<li><a href='busquedanoticia.php'>Ver Noticia</a></li>
+                <li><a href='nueva_noticia.php'>NUEVA NOTICIA</a></li>-->
+                <li><a href='admin/autos.php'>ADMINISTRADOR</a></li>
+                <li class='active'><a href='index.php'>Editar Bitacora</a></li>
+            </ul>
+        </div> 
     </div> 
                 <div class="col-md-10" style="width: 100%;">
                   <div class="col-md-12 panel">
                     <div class="col-md-12 panel-heading">
-                      <h4 class="Titulos">EDITAR SOLICITUD DE MANTENIMIENTO</h4>
+                      <h4 class="Titulos">EDITAR BITACORA</h4>
                     </div>
                     <div class="col-md-12 panel-body" style="padding-bottom:30px;">
                       <div class="col-md-12">
+
                         <form class="cmxform" id="form_solicitudEditar" method="get" action="">
                             <input type="hidden" value="editar_solicitudTest" id="funcion" name="funcion">
                         <?php echo '<input type="hidden" id="clave_editar" name="clave_editar" value="'.$id.'">' ?> 
                           <div class="col-md-6">
                             <div class="form-group form-animate-text" style="margin-top:40px !important;">
                           
-                            <!-- EL SARGAZO ESTÁ ACABANDO CON LAS COSTAS MEXICANAS  -->
+                            <!-- EL SARGAZO ESTÁ ACABANDO CON LAS COSTAS MEXICANAS  --> <!--EQUISDE-->
                             <?php
                                     try {
                                             $pdo = Database::connect();

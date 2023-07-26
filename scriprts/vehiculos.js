@@ -117,9 +117,9 @@ function eliminar_bitacora(id){
                         showConfirmButton: false
                         //allowOutsideClick: false,
                         //confirmButtonText: 'Aceptar',
-                    }).then(function(){document.location.href="admin/Busqueda.php";});//Sirve para cuando hay opciones de aceptar en el swal
+                    }).then(function(){document.location.href="Busqueda.php";});//Sirve para cuando hay opciones de aceptar en el swal
                     
-                    setTimeout(function() {document.location.href = 'admin/Busqueda.php';}, 1100);
+                    setTimeout(function() {document.location.href = 'Busqueda.php';}, 1100);
                 }
 		    });
         }
