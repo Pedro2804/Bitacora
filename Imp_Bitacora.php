@@ -194,11 +194,9 @@ $num = 1;
 					$objPHPExcel->getActiveSheet()->unmergeCells('H'.($i+1).':I'.($i+1));
 					$objPHPExcel->getActiveSheet()->unmergeCells('K'.($i+1).':M'.($i+1));*/
 
-					for($j=65; $j<72; $j++){
+					for($j=65; $j<72; $j++)
 						$objPHPExcel->getActiveSheet()->mergeCells(chr($j).$i.':'.chr($j).($i+1));
-						$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).($i+1))->getBorders()
-						->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-					}
+
 					$objPHPExcel->getActiveSheet()->mergeCells('H'.$i.':I'.($i+1));
 					$objPHPExcel->getActiveSheet()->mergeCells('J'.$i.':J'.($i+1));	
 					$objPHPExcel->getActiveSheet()->mergeCells('K'.$i.':M'.($i+1));
@@ -208,20 +206,50 @@ $num = 1;
 					$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setWrapText(true);
 					//$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
 
-
+					for($j=65; $j<80; $j++){
+						$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).($i+1))->getBorders()
+						->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+						$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).($i+1))->getBorders()
+						->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					}
 					$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':O'.($i+1))->getBorders()
 					->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-					
+
 					$i+=2;
 					//$objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(26);
 				}else{
+					$objPHPExcel->getActiveSheet()->mergeCells('H'.$i.':I'.$i);
+					$objPHPExcel->getActiveSheet()->mergeCells('K'.$i.':M'.$i);
+					for($j=65; $j<80; $j++){
+						$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).$i)->getBorders()
+						->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+						$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).$i)->getBorders()
+						->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					}
 					$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':O'.$i)->getBorders()
 					->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 					$i++;
 				}
 			endforeach;
+			$objPHPExcel->getActiveSheet()->mergeCells('L'.$i.':N'.($i+1));
+			$objPHPExcel->getActiveSheet()->mergeCells('O'.$i.':O'.($i+1));
 
-			$objPHPExcel->getActiveSheet()->setCellValue('O27', $km_total);
+			$objPHPExcel->getActiveSheet()->getStyle('O'.$i.':O'.($i+1))->getBorders()
+			->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+			$objPHPExcel->getActiveSheet()->getStyle('O'.$i.':O'.($i+1))->getBorders()
+			->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+			$objPHPExcel->getActiveSheet()->getStyle('O'.$i.':O'.($i+1))->getBorders()
+			->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+
+			$objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(7);
+			$objPHPExcel->getActiveSheet()->getRowDimension($i+1)->setRowHeight(7);
+
+			$objPHPExcel->getActiveSheet()->getStyle('L'.$i.':'.'O'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+			$objPHPExcel->getActiveSheet()->getStyle('L'.$i.':'.'O'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+			$objPHPExcel->getActiveSheet()->setCellValue('L'.$i, 'Total / kms Recorridos');
+			$objPHPExcel->getActiveSheet()->getStyle('L'.$i)->getFont()->setBold(true);
+			$objPHPExcel->getActiveSheet()->setCellValue('O'.$i, $km_total);
 
 			$HojaIndex++;
 			$num++;
