@@ -428,7 +428,7 @@ function editar_solicitudTest(){
     // ----
     if (isset($_POST['departamento'])) {
         $departamento = $_POST['departamento'];
-        $resultdepto = clavedepto($departamento);
+        $resultdepto = 0;
         if ($resultdepto == null) {
             $otrodepto = $_POST['departamento'];
             $otrodepto = conver($otrodepto);

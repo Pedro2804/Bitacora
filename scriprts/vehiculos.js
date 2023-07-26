@@ -105,7 +105,7 @@ function eliminar_bitacora(id){
         if (result){
             $.ajax({
                 type: "POST",
-                url: "../controller/controller.php",
+                url: "controller/controller.php",
                 data: {funcion:'eliminar_bitacora', id_bitacora:id},
                 cache: false,
                 success: function(result){
@@ -117,9 +117,9 @@ function eliminar_bitacora(id){
                         showConfirmButton: false
                         //allowOutsideClick: false,
                         //confirmButtonText: 'Aceptar',
-                    }).then(function(){document.location.href="../admin/Busqueda.php";});//Sirve para cuando hay opciones de aceptar en el swal
+                    }).then(function(){document.location.href="admin/Busqueda.php";});//Sirve para cuando hay opciones de aceptar en el swal
                     
-                    setTimeout(function() {document.location.href = '../admin/Busqueda.php';}, 1100);
+                    setTimeout(function() {document.location.href = 'admin/Busqueda.php';}, 1100);
                 }
 		    });
         }
