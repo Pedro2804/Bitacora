@@ -306,9 +306,9 @@
         var dias_recorrido = document.getElementsByClassName("tablinks_e");
         unidad.reportValidity();
         empleado.reportValidity();
-
+        
         if((empleado.value != '') && (unidad.value != '')){
-
+        
             $.ajax({
                 method: "POST",
                 url: "controller/controller.php",
@@ -327,12 +327,21 @@
                         document.getElementById('combustible_e').value = resultados.comb;
                             recorridos.style.display= 'block';
                             document.getElementById('sig_bitacora_e').style.display = "none";
-                            openTab(dias_recorrido[0].value);
+                            
+                            openTab_e(dias_recorrido[0].value);
+
                             for(i=0; i<dias_recorrido.length; i++)
                                 dias_recorrido[i].disabled = true;
                             dias_recorrido[0].className += " active";
 
-                            document.getElementById('km_I_e0').value = resultados.km;
+                            if(llenar == false)
+                                document.getElementById('km_I_e0').value = resultados.km;
+                            else{
+                                document.getElementById('km_I_e0').value = datos["Viernes 30"]["km_inicial"];
+                                document.getElementById('km_F_e0').value = datos["Viernes 30"]["km_final"];
+                                document.getElementById('salida_e0').value = datos["Viernes 30"]["salida"];
+                                document.getElementById('listaR_e0').value = datos["Viernes 30"]["recorrido"];
+                            }
                     }else{
                         swal({
                             type: 'error',

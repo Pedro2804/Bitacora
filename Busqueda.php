@@ -139,9 +139,10 @@ $fechafin = date('d-m-Y');
                      <div class="izquierdo" style="margin-top:10px !important; margin-left:37px;">
                         <label>Mostrar</label>
                         <select class="form-text" id="CmbMostrar" name="CmbMostrar">
-                           <option value="30">30</option>
-                           <option value="40">40</option>
-                           <option value="50">50</option>
+                           <option value="5">5</option>
+                           <option value="10">10</option>
+                           <option value="15">15</option>
+                           <option value="20">20</option>
                          </select> <label>registros</label>
                      </div>
               </form>

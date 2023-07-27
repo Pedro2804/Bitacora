@@ -47,7 +47,7 @@ $id = $_GET['id'];
         if($Solicitud['monto'])
           $monto=$Solicitud['monto'];
       endforeach;
-
+      $llenar = true;
   }catch (PDOException $e){
     echo 'Error: ' . $e->getMessage();
   }
@@ -72,13 +72,26 @@ $id = $_GET['id'];
       $q->execute(array($id));
       $filas = $q->rowCount();
       $data = $q->fetchall(PDO::FETCH_ASSOC);
-			/*foreach($data as $Solicitud):
-        $urgencia=$Solicitud['NivelUrgencia'];
-        $nombreDireccion=$Solicitud['Direccion'] ;
-        $numeroDireccion=$Solicitud['CveEntDireccion'];
-        $nombreDepartamento=($Solicitud['Departamento']);
-        $numeroDepartamento=$Solicitud['CveEntDepartamento'];
-      endforeach;*/
+      $datos = array();
+	    foreach($data as $Solicitud):
+            $dia = $Solicitud['dia_semana'];
+            $km_inicial=$Solicitud['km_inicial'];
+            $km_final=$Solicitud['km_final'] ;
+            $salida=$Solicitud['salida'];
+            $recorrido=$Solicitud['recorrido'];
+            
+            // verificamos si aun no existe el dia en el arreglo y creamos un subarreglo de ese dia
+            if (!isset($datos[$dia]))
+                $datos[$dia] = array();
+
+            // Despues agregamos la informacion de ese dia
+            $datos[$dia] = array(
+                "km_inicial" => $km_inicial,
+                "km_final" => $km_final,
+                "salida" => $salida,
+                "recorrido" => $recorrido
+            );
+        endforeach;
     }catch(PDOException $e)
     {
        echo 'Error: ' . $e->getMessage();
@@ -111,11 +124,16 @@ $id = $_GET['id'];
         <!-- start: sweetalert2 -->
     <script src="scriprts/sweetalert2.min.js"></script>
     <link rel="stylesheet" type="text/css" href="style/sweetalert2.min.css">
-
-
   <link rel="shortcut icon" href="img/logodifblanco.png">
-</head>
 
+  <link rel="shortcut&#x20;icon" href="img/favicon.ico" type="image/ico" />
+    <link rel="icon" href="img/favicon.ico" type="image/ico" />
+    <!-- Apple Touch Icons -->    
+    <link rel="apple-touch-icon" href="img/favicon.ico">
+    <link rel="apple-touch-icon" sizes="72x72" href="img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="114x114" href="img/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="144x144" href="img/favicon.ico" />
+</head>
 <body id="mimin" class="dashboard">
   <div class="jumbotron">
     <img src="img/logodifblanco.png" class="logo_dif">
@@ -393,7 +411,15 @@ $id = $_GET['id'];
         }
         // Obtiene los resultados al cargar la página
         obtenerResultados();
-        </script>
+    </script>
+
+<script type="text/javascript"> //ENVIAMOS EL ARREGLO A JS SCRIPT PARA PODER MANIPULARLO
+    datos = <?php echo json_encode($datos);?>;
+    llenar = <?php echo json_encode($llenar);?>;
+
+    //document.getElementById("km_I_e0").value = datos["Viernes 30"]["km_inicial"];
+    //$("#km_I_e0").val("1234");
+</script>
 
 <style>
     .tab_e {

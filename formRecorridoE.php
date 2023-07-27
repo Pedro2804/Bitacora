@@ -75,7 +75,7 @@
                 <!--Recorrido-->
                 <div class="col-md-6" style="width: 20%;">
                         <label style="font-size: 17px;">Recorrido:</label><br>
-                        <select id="destino_e<?php echo $j ?>" name="destino_e" onchange="listarRecorrido_(this)" required>
+                        <select id="destino_e<?php echo $j ?>" name="destino_e" onchange="listarRecorrido_e(this)" required>
                             <?php
                                 try {
                                     $pdo = Database::connect();
