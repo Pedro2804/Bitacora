@@ -13,6 +13,8 @@ $id = $_GET['id'];
   $fechainicio=null;
   $fechafin=null;
 
+
+
   //CONEXIÓN BD
   $pdo = Database::connect();
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -74,6 +76,7 @@ $id = $_GET['id'];
       $data = $q->fetchall(PDO::FETCH_ASSOC);
       $datos = array();
 	    foreach($data as $Solicitud):
+            $id_recorrido=$Solicitud['id_recorrido'];
             $dia = $Solicitud['dia_semana'];
             $km_inicial=$Solicitud['km_inicial'];
             $km_final=$Solicitud['km_final'] ;
@@ -86,6 +89,7 @@ $id = $_GET['id'];
 
             // Despues agregamos la informacion de ese dia
             $datos[$dia] = array(
+                "id_recorrido" => $id_recorrido,
                 "km_inicial" => $km_inicial,
                 "km_final" => $km_final,
                 "salida" => $salida,
@@ -156,11 +160,12 @@ $id = $_GET['id'];
                     <div class="col-md-12">
                         <form class="cmxform" id="form_editar_bitacora" method="get" action="">
                             <input type="hidden" value="editar_bitacora" id="funcion" name="funcion">
+                            <input type="hidden" value="<?php echo $id; ?>" id="id_bitacora" name="id_bitacora_form">
                             <div class="col-md-12" style="margin-top:40px !important;"><!--CENTRAL 0-->
                                 <!--Numero de control 1-->
                                 <div class="col-md-6" style="width: 18%;">
                                     <div class="form-group form-animate-text" id="N_C">
-                                        <input list="idE_e" type="text" class="form-text" id="numero_control_e" name="numero_control_e" value="<?php echo $num_control;?>" required>
+                                        <input list="idE_e" type="text" class="form-text" id="numero_control_e" name="numero_control_e" required>
                                         <datalist id="idE_e">
                                             <?php
                                                 try {
@@ -183,7 +188,7 @@ $id = $_GET['id'];
                                 <div class="col-md-6" style="width: 32%;"><!--IZQUIERDA 1-->
                                     <!--OPERADOR-->
                                     <div class="form-group form-animate-text" id="N_O_e" style="opacity: 1;">
-                                        <input type="text" class="form-text" id="N_operador_e" name="N_operador_e" value="<?php echo $nombre;?>" >
+                                        <input type="text" class="form-text" id="N_operador_e" name="N_operador_e" value="<?php echo $nombre;?>" onclick="this.blur();" >
                                         <span class="bar"></span>
                                         <label>Operador</label>
                                     </div>
@@ -192,12 +197,12 @@ $id = $_GET['id'];
                                 <!--PERIODO DEL-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <label>Del: </label>
-                                    <input type="text" class="form-text" id="FechaDel_e" name="FechaDel_e" value="<?php echo $fechainicio;?>">
+                                    <input type="text" class="form-text" id="FechaDel_e" name="FechaDel_e" value="<?php echo $fechainicio;?>" disabled>
                                 </div>
                                 <!--PERIODO AL-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <label>Al: </label>
-                                    <input type="text" class="form-text" id="FechaAl_e" name="FechaAl_e" value="<?php echo $fechafin;?>">
+                                    <input type="text" class="form-text" id="FechaAl_e" name="FechaAl_e" value="<?php echo $fechafin;?>" disabled>
                                 </div>
                             </div><!--END CENTRAL 0-->
                             
@@ -205,7 +210,7 @@ $id = $_GET['id'];
                                 <!--UNIDAD DE RESGUARDO-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="U_r_e">
-                                        <input list="idV_e" type="text" class="form-text" id="idVehiculo_e" name="idVehiculo_e" value="<?php echo $NoUnidad;?>" required>
+                                        <input list="idV_e" type="text" class="form-text" id="idVehiculo_e" onclick="this.blur();" name="idVehiculo_e" value="<?php echo $NoUnidad;?>" required>
                                         <datalist id="idV_e">
                                             <?php
                                                 try {
@@ -231,21 +236,21 @@ $id = $_GET['id'];
                                 <!--MARCA/MODELO-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="M_m_e" style="opacity: 1;">
-                                        <input type="text" class="form-text" id="marca_modelo_e" name="marca_modelo_e" value="<?php echo $marca;?>">
+                                        <input type="text" class="form-text" id="marca_modelo_e" name="marca_modelo_e" value="<?php echo $marca;?>" onclick="this.blur();">
                                         <span class="bar"></span><label>Marca/Modelo</label>
                                     </div>
                                 </div>
                                 <!--PLACAS-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="p_e" style="opacity: 1;">
-                                        <input type="text" class="form-text" id="placas_e" name="placas_e" value="<?php echo $placas;?>">
+                                        <input type="text" class="form-text" id="placas_e" name="placas_e" value="<?php echo $placas;?>" onclick="this.blur();">
                                         <span class="bar"></span><label>Placas</label>
                                     </div>
                                 </div>
                                 <!--TIPO DE COMBUSTIBLE-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="comb_e" style="opacity: 1;">
-                                        <input type="text" class="form-text" id="combustible_e" name="combustible_e" value="<?php echo $tipo_comb;?>">
+                                        <input type="text" class="form-text" id="combustible_e" name="combustible_e" value="<?php echo $tipo_comb;?>" onclick="this.blur();">
                                         <span class="bar"></span><label>Tipo de combustible</label>
                                     </div>
                                 </div>
@@ -255,7 +260,7 @@ $id = $_GET['id'];
                                 <!--TIPO DE COMBUSTIBLE-->
                                 <div class="col-md-6" style="width: 20%;">
                                     <div class="form-group form-animate-text" id="T_c_e">
-                                        <input type="text" class="form-text" oninput="this.value = this.value.toUpperCase()" id="tipo_comb_e" name="tipo_combustible_e" value="<?php echo $combustible;?>">
+                                        <input type="text" class="form-text" oninput="this.value = this.value.toUpperCase()" id="tipo_comb_e" name="tipo_combustible_e" >
                                         <span class="bar"></span>
                                         <label>Combustible</label>
                                     </div>
@@ -264,7 +269,7 @@ $id = $_GET['id'];
                                 <!--CADA VALE-->
                                 <div class="col-md-6" style="width: 20%;">
                                     <div class="form-group form-animate-text" id="C_v_e">
-                                        <input type="text" class="form-text" id="vale_e" name="cada_vale_e" value="<?php echo $vale;?>">
+                                        <input type="text" class="form-text" id="vale_e" name="cada_vale_e">
                                         <span class="bar"></span>
                                         <label>Cada vale</label>
                                     </div>
@@ -273,7 +278,7 @@ $id = $_GET['id'];
                                 <!--FECHA CARGA-->
                                 <div class="col-md-6" style="width: 20%;">
                                     <div class="form-group form-animate-text" id="F_c_e">
-                                        <input type="text" class="form-text" id="fecha_r_e" name="fecha_carga_e" value="<?php echo $fecha_carga;?>">
+                                        <input type="text" class="form-text" id="fecha_r_e" name="fecha_carga_e">
                                         <span class="bar"></span>
                                         <label>Fecha de carga</label>
                                     </div>
@@ -282,7 +287,7 @@ $id = $_GET['id'];
                                 <!--FOLIO-->
                                 <div class="col-md-6" style="width: 20%;">
                                     <div class="form-group form-animate-text" id="fol_e">
-                                        <input type="text" class="form-text" id="folio_e" name="folio_e" value="<?php echo $folio;?>">
+                                        <input type="text" class="form-text" id="folio_e" name="folio_e">
                                         <span class="bar"></span><label>FOLIO</label>
                                     </div>
                                 </div>
@@ -290,14 +295,20 @@ $id = $_GET['id'];
                                 <!--MONTO-->
                                 <div class="col-md-6" style="width: 20%;">
                                     <div class="form-group form-animate-text" id="mont_e">
-                                        <input type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" id="monto_e" name="monto_e" value="<?php echo $monto;?>">
+                                        <input type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" id="monto_e" name="monto_e">
                                         <span class="bar"></span><label>MONTO</label>
                                     </div>
                                 </div>
                             </div><!--END CENTRAL 2-->
 
                             <div class="col-md-12"><!--Boton siguiente-->
-                                <div id="sig_bitacora_e" class="btn-guardar" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Siguiente</div>
+                                <div class="col-md-6">
+                                    <div id="sig_bitacora_e" class="btn-guardar" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Siguiente</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="cancelar_e" class="btn-guardar" style="user-select: none; background: red; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Cancelar</div>
+                                </div>
+                            </div>
                             </div>
 
                             <div class="col-md-12" id="resultados"></div>
@@ -414,11 +425,15 @@ $id = $_GET['id'];
     </script>
 
 <script type="text/javascript"> //ENVIAMOS EL ARREGLO A JS SCRIPT PARA PODER MANIPULARLO
-    datos = <?php echo json_encode($datos);?>;
-    llenar = <?php echo json_encode($llenar);?>;
+    datos = Array(<?php echo json_encode($datos);?>);
+    id_bitacora = <?php echo json_encode($id);?>;
 
-    //document.getElementById("km_I_e0").value = datos["Viernes 30"]["km_inicial"];
-    //$("#km_I_e0").val("1234");
+    document.getElementById("numero_control_e").value = <?php echo json_encode($num_control);?>;
+    document.getElementById("tipo_comb_e").value = <?php echo json_encode($combustible);?>;
+    document.getElementById("vale_e").value = <?php echo json_encode($vale);?>;
+    document.getElementById("fecha_r_e").value = <?php echo json_encode($fecha_carga);?>;
+    document.getElementById("folio_e").value = <?php echo json_encode($folio);?>;
+    document.getElementById("monto_e").value = <?php echo json_encode($monto);?>;
 </script>
 
 <style>

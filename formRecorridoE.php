@@ -36,7 +36,7 @@
         <form id="form_editar_recorrido<?php echo $j ?>" method="get" action="">
             
             <input type="hidden" value="editar_recorrido" id="funcion" name="funcion">
-            <!--<input type="hidden" name="bitacora" value="12" />-->
+            <input type="hidden" id="id_recorrido<?php echo $j ?>" name="id_recorrido" value="" />
             <input type="hidden" name="dia_semana_e" value="<?php echo $nombreDia ?>" />
 
             <div class="col-md-12" style="padding-top:20px;">
@@ -49,13 +49,13 @@
                 <!--Kilometro inicial-->
                 <div class="col-md-6" style="width: 15%;">
                     <label style="font-size: 17px;">Km inicial:</label>
-                    <input id="km_I_e<?php echo $j ?>" type="number" name="km_inicial_e" min="0" style="height: 32px;" required />
+                    <input id="km_I_e<?php echo $j ?>" type="number" name="km_inicial_e" min="0" style="height: 32px;" disabled/>
                 </div>
 
                 <!--Kilometro final-->
                 <div class="col-md-6" style="width: 15%;">
                     <label style="font-size: 17px;">Km final:</label>
-                    <input id="km_F_e<?php echo $j ?>" type="number" name="km_final_e" min="0" style="height: 32px;" required />
+                    <input id="km_F_e<?php echo $j ?>" type="number" name="km_final_e" min="0" style="height: 32px;" disabled />
                 </div>
 
                 <!--Salida-->

@@ -253,7 +253,7 @@ function guardar_bitacora(){
         $vale = $_POST['cada_vale'];
     }
     if (isset($_POST['fecha_carga']) && !empty($_POST['fecha_carga'])) {
-        $fechaCarga = $_POST['fecha_carga'];
+        $fechaCarga = date('Y-m-d', strtotime($_POST['fecha_carga']));
     }
     if (isset($_POST['monto']) && !empty($_POST['monto'])) {
         $monto = $_POST['monto'];
@@ -311,6 +311,83 @@ function guardar_bitacora(){
     }
 }
 
+function editar_bitacora(){
+    $id = $_POST['id_bitacora_form'];
+    $empleado = null;
+    $idVehiculo = null;
+    $fechalDel = null;
+    $fechalAl = null;
+    $combustible = null;
+    $vale = null;
+    $fechaCarga = null;
+    $monto = null;
+    $folio = null;
+
+    if (isset($_POST['numero_control_e'])) {
+        $empleado = $_POST['numero_control_e'];
+        //echo $empleado;
+    }
+    if (isset($_POST['idVehiculo_e'])) {
+        $idVehiculo = $_POST['idVehiculo_e'];
+    }
+    if (isset($_POST['FechaDel_e'])) {
+        $fechalDel = date('Y-m-d', strtotime($_POST['FechaDel_e']));
+    }
+    if (isset($_POST['FechaAl_e'])) {
+        $fechalAl = date('Y-m-d', strtotime($_POST['FechaAl_e']));
+    }
+    if (isset($_POST['tipo_combustible_e']) && !empty($_POST['tipo_combustible_e'])) {
+        $combustible = $_POST['tipo_combustible_e'];
+    }
+    if (isset($_POST['cada_vale_e']) && !empty($_POST['cada_vale_e'])) {
+        $vale = $_POST['cada_vale_e'];
+    }
+    if (isset($_POST['fecha_carga_e']) && !empty($_POST['fecha_carga_e'])) {
+        $fechaCarga = date('Y-m-d', strtotime($_POST['fecha_carga_e']));
+    }
+    if (isset($_POST['monto_e']) && !empty($_POST['monto_e'])) {
+        $monto = $_POST['monto_e'];
+    }
+    if (isset($_POST['folio_e']) && !empty($_POST['folio_e'])) {
+        $folio = $_POST['folio_e'];
+    }
+
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Construir la consulta SQL y el array de parámetros dinámicamente
+    $sql = "UPDATE bitacora SET operador=?, NoUnidad=?, periodo_de=?, periodo_al=?";
+    $params = array($empleado, $idVehiculo, $fechalDel, $fechalAl);
+
+        $sql .= ", combustible=?";
+        $params[] = $combustible;
+
+        $sql .= ", cada_vale=?";
+        $params[] = $vale;
+
+        $sql .= ", fecha_carga=?";
+        $params[] = $fechaCarga;
+
+        $sql .= ", folio=?";
+        $params[] = $folio;
+
+        $sql .= ", monto=?";
+        $params[] = $monto;
+
+    $sql .=" WHERE id_bitacora = $id";
+    
+    $q = $pdo->prepare($sql);
+
+    try {
+        $q->execute($params);
+        Database::disconnect();
+        return true;
+    } catch (PDOException $e) {
+        Database::disconnect();
+        return "Error: " . $e;
+    }
+}
+
 function guardar_recorrido(){
     $dia = null;
     $k_i = null;
@@ -343,6 +420,51 @@ function guardar_recorrido(){
         // Construir la consulta SQL y el array de parámetros dinámicamente
         $sql = "INSERT INTO recorrido (dia_semana, salida, recorrido, km_inicial, km_final, bitacora) VALUES (?, ?, ?, ?, ?, ?);";
         $params = array($dia, $salida, $lista_rec, $k_i, $k_f, $id_bitacora);
+    
+        $q = $pdo->prepare($sql);
+    
+        try {
+            $q->execute($params);
+            Database::disconnect();
+            return true;
+        } catch (PDOException $e) {
+            Database::disconnect();
+            return "Error: " . $e;
+        }
+    }
+}
+
+function editar_recorrido(){
+    $id_recorrido = $_POST['id_recorrido'];
+    $dia = null;
+    $k_i = null;
+    $k_f = null;
+    $salida = null;
+    $lista_rec = null;
+
+    if (!isset($_POST['vacio_e'])) {
+        if (isset($_POST['dia_semana_e'])) {
+            $dia = $_POST['dia_semana_e'];
+        }
+        if (isset($_POST['salida_e'])) {
+            $salida = $_POST['salida_e'];
+        }
+        if (isset($_POST['listaRecorridos_e'])) {
+            $lista_rec = $_POST['listaRecorridos_e'];
+        }
+        if (isset($_POST['km_inicial_e'])) {
+            $k_i = $_POST['km_inicial_e'];
+        }
+        if (isset($_POST['km_final_e'])) {
+            $k_f = $_POST['km_final_e'];
+        }
+    
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+        // Construir la consulta SQL y el array de parámetros dinámicamente
+        $sql = "UPDATE recorrido SET dia_semana=?, salida=?, recorrido=?, km_inicial=?, km_final=? WHERE id_recorrido= $id_recorrido;";
+        $params = array($dia, $salida, $lista_rec, $k_i, $k_f);
     
         $q = $pdo->prepare($sql);
     

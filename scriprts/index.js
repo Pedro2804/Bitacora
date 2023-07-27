@@ -20,6 +20,10 @@
     $.datepicker.setDefaults($.datepicker.regional['es']);
     
     $(document).off('.datepicker.data-api');
+    $('#fecha_r').datepicker();
+    $('#fecha_d').datepicker();
+    $('#fecha_r_e').datepicker();
+    $('#fecha_d_e').datepicker();
 
     $("#numero_control").on("change", function(event){
         event.preventDefault();
@@ -333,14 +337,25 @@
                             for(i=0; i<dias_recorrido.length; i++)
                                 dias_recorrido[i].disabled = true;
                             dias_recorrido[0].className += " active";
-
-                            if(llenar == false)
-                                document.getElementById('km_I_e0').value = resultados.km;
-                            else{
-                                document.getElementById('km_I_e0').value = datos["Viernes 30"]["km_inicial"];
-                                document.getElementById('km_F_e0').value = datos["Viernes 30"]["km_final"];
-                                document.getElementById('salida_e0').value = datos["Viernes 30"]["salida"];
-                                document.getElementById('listaR_e0').value = datos["Viernes 30"]["recorrido"];
+                            
+                            var j=0;
+                            while(j<dias_recorrido.length){
+                                if(dias_recorrido[j].value in  datos[0]){
+                                    document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
+                                    document.getElementById("km_I_e"+j).value = datos[0][dias_recorrido[j].value]["km_inicial"];
+                                    document.getElementById("km_F_e"+j).value = datos[0][dias_recorrido[j].value]["km_final"];
+                                    document.getElementById("salida_e"+j).value = datos[0][dias_recorrido[j].value]["salida"];
+                                    document.getElementById("listaR_e"+j).value = datos[0][dias_recorrido[j].value]["recorrido"];
+                                }else{
+                                    document.getElementById("vacio_e"+j).checked = true;
+                                    document.getElementById("vacio_e"+j).disabled = true;
+                                    document.getElementById("salida_e"+j).disabled = true;
+                                    document.getElementById("destino_e"+j).disabled = true;
+                                    document.getElementById("recorrido_e"+j).disabled = true;
+                                    document.getElementById("btn_vaciar_e"+j).style.pointerEvents = "none";
+                                    document.getElementById("btn_agregar_e"+j).style.pointerEvents = "none";
+                                 }   
+                                j++;
                             }
                     }else{
                         swal({
@@ -394,6 +409,10 @@
                 }
             });
         }
+    });
+
+    $("#cancelar_e").on("click", function(event){
+        document.location.href = 'Busqueda.php';
     });
      
     $("#form_solicitud").submit(function(event) {

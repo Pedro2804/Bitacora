@@ -54,8 +54,16 @@ switch ($funcion)
         $respuesta=guardar_bitacora();
         echo $respuesta;
 	break;
+    case 'editar_bitacora':   
+        $respuesta=editar_bitacora();
+        echo $respuesta;
+	break;
     case 'guardar_recorrido':   
         $respuesta=guardar_recorrido();
+        echo $respuesta;
+	break;
+    case 'editar_recorrido':   
+        $respuesta=editar_recorrido();
         echo $respuesta;
 	break;
     case 'eliminar_bitacora':   

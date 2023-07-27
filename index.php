@@ -95,7 +95,7 @@
                                 <div class="col-md-6" style="width: 32%;"><!--IZQUIERDA 1-->
                                     <!--OPERADOR-->
                                     <div class="form-group form-animate-text" id="N_O" style="opacity: 0;">
-                                        <input type="text" class="form-text" id="N_operador" name="N_operador">
+                                        <input type="text" class="form-text" id="N_operador" name="N_operador" onclick="this.blur();">
                                         <span class="bar"></span>
                                         <label>Operador</label>
                                     </div>
@@ -143,21 +143,21 @@
                                 <!--MARCA/MODELO-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="M_m" style="opacity: 0;">
-                                        <input type="text" class="form-text" id="marca_modelo" name="marca_modelo">
+                                        <input type="text" class="form-text" id="marca_modelo" name="marca_modelo" onclick="this.blur();">
                                         <span class="bar"></span><label>Marca/Modelo</label>
                                     </div>
                                 </div>
                                 <!--PLACAS-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="p" style="opacity: 0;">
-                                        <input type="text" class="form-text" id="placas" name="placas">
+                                        <input type="text" class="form-text" id="placas" name="placas" onclick="this.blur();">
                                         <span class="bar"></span><label>Placas</label>
                                     </div>
                                 </div>
                                 <!--TIPO DE COMBUSTIBLE-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="comb" style="opacity: 0;">
-                                        <input type="text" class="form-text" id="combustible" name="combustible">
+                                        <input type="text" class="form-text" id="combustible" name="combustible" onclick="this.blur();">
                                         <span class="bar"></span><label>Tipo de combustible</label>
                                     </div>
                                 </div>
