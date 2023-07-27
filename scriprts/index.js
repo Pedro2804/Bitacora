@@ -43,7 +43,7 @@
                         $("#numero_control").val("");
                         swal({
                         type: 'error',
-                        title: 'La numero no existe en el sistema',
+                        title: 'El numero no existe en el sistema',
                         timer: 1000,
                         showConfirmButton: false});
                         $("#recorridos").css("display", "none");
@@ -56,6 +56,47 @@
                             showConfirmButton: false});
                             $("#recorridos").css("display", "none");
                             $("#sig_bitacora").css("display", "block");
+                    }
+                }
+            }
+        });
+    });
+
+    $("#numero_control_e").on("change", function(event){
+        event.preventDefault();
+        var Ncontrol = $(this).val();
+
+        $.ajax({
+            method: "POST",
+            url: "controller/controller.php",
+            data: {control: Ncontrol, funcion: "nombre_empleado"},
+            cache: false,
+            success: function(result){
+                //console.log(result);
+                if(result!=0){
+                    var resultados = JSON.parse(result);
+                    $("#N_O_e").css("opacity", 1);
+                    $("#N_operador_e").val(resultados);
+                }else{
+                    $("#N_O_e").css("opacity", 0);
+
+                    if (Ncontrol != ""){
+                        $("#numero_control_e").val("");
+                        swal({
+                        type: 'error',
+                        title: 'El numero no existe en el sistema',
+                        timer: 1000,
+                        showConfirmButton: false});
+                        $("#recorridos_e").css("display", "none");
+                        $("#sig_bitacora_e").css("display", "block");
+                    }else{
+                        swal({
+                            type: 'warning',
+                            title: 'Ingrese un Numero de control',
+                            timer: 1000,
+                            showConfirmButton: false});
+                            $("#recorridos_e").css("display", "none");
+                            $("#sig_bitacora_e").css("display", "block");
                     }
                 }
             }
@@ -106,6 +147,59 @@
             $("#comb").css("opacity", 0);
             $("#recorridos").css("display", "none");
             $("#sig_bitacora").css("display", "block");
+            swal({
+                type: 'warning',
+                title: 'Ingrese una unidad',
+                timer: 1000,
+                showConfirmButton: false
+            }); 
+        }      
+    });
+
+    $("#idVehiculo_e").on("change", function(event){ //jQuery
+        event.preventDefault();
+        var idVehiculo = $("#idVehiculo_e").val();
+        if(idVehiculo!=''){
+            $.ajax({
+                method: "POST",
+                url: "controller/controller.php",
+                data: {id: idVehiculo, funcion: "vehiculo"},
+                cache: false,
+                success: function(result){
+                    //console.log(result);
+                    if(result!=0){
+                        var resultados = JSON.parse(result);
+                        $("#M_m_e").css("opacity", 1);
+                        $("#marca_modelo_e").val(resultados.modelo);
+
+                        $("#p_e").css("opacity", 1);
+                        $("#placas_e").val(resultados.placas);
+                        $("#comb_e").css("opacity", 1);
+                        $("#combustible_e").val(resultados.comb);
+                        $("#km_I_e0").val(resultados.km);
+                    }else{
+                        $("#M_m_e").css("opacity", 0);
+                        $("#p_e").css("opacity", 0);
+                        $("#comb_e").css("opacity", 0);
+
+                        $("#idVehiculo_e").val("");
+                        swal({
+                            type: 'error',
+                            title: 'La unidad no existe en el sistema',
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                        $("#recorridos_e").css("display", "none");
+                        $("#sig_bitacora_e").css("display", "block");
+                    }
+                }
+            }); 
+        }else{
+            $("#M_m_e").css("opacity", 0);
+            $("#p_e").css("opacity", 0);
+            $("#comb_e").css("opacity", 0);
+            $("#recorridos_e").css("display", "none");
+            $("#sig_bitacora_e").css("display", "block");
             swal({
                 type: 'warning',
                 title: 'Ingrese una unidad',
@@ -197,6 +291,95 @@
                                 showConfirmButton: false});
                                 $("#recorridos").css("display", "none");
                                 $("#sig_bitacora").css("display", "block");
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    $("#sig_bitacora_e").on("click", function(event){
+        event.preventDefault();
+        var unidad = document.getElementById('idVehiculo_e');
+        var empleado = document.getElementById('numero_control_e');
+        var recorridos = document.getElementById('recorridos_e');
+        var dias_recorrido = document.getElementsByClassName("tablinks_e");
+        unidad.reportValidity();
+        empleado.reportValidity();
+
+        if((empleado.value != '') && (unidad.value != '')){
+
+            $.ajax({
+                method: "POST",
+                url: "controller/controller.php",
+                data: {id: unidad.value, funcion: "vehiculo"},
+                cache: false,
+                success: function(result){
+                    //console.log(result);
+                    if(result!=0){
+                        var resultados = JSON.parse(result);
+                        document.getElementById('M_m_e').style.opacity = 1;
+                        document.getElementById('marca_modelo_e').value = resultados.modelo;
+
+                        document.getElementById('p_e').style.opacity = 1;
+                        document.getElementById('placas_e').value = resultados.placas;
+                        document.getElementById('comb_e').style.opacity = 1;
+                        document.getElementById('combustible_e').value = resultados.comb;
+                            recorridos.style.display= 'block';
+                            document.getElementById('sig_bitacora_e').style.display = "none";
+                            openTab(dias_recorrido[0].value);
+                            for(i=0; i<dias_recorrido.length; i++)
+                                dias_recorrido[i].disabled = true;
+                            dias_recorrido[0].className += " active";
+
+                            document.getElementById('km_I_e0').value = resultados.km;
+                    }else{
+                        swal({
+                            type: 'error',
+                            title: 'La unidad no existe en el sistema',
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                            document.getElementById('recorridos_e').style.display= 'none';
+                            document.getElementById('sig_bitacora_e').style.display = 'block';
+                            document.getElementById('M_m_e').style.opacity = 0;
+                            document.getElementById('p_e').style.opacity = 0;
+                            document.getElementById('comb_e').style.opacity = 0;
+                    }
+                }
+            });
+
+            $.ajax({
+                method: "POST",
+                url: "controller/controller.php",
+                data: {control: empleado.value, funcion: "nombre_empleado"},
+                cache: false,
+                success: function(result){
+                    //console.log(result);
+                    if(result!=0){
+                        var resultados = JSON.parse(result);
+                        $("#N_O_e").css("opacity", 1);
+                        $("#N_operador_e").val(resultados);
+                    }else{
+                        $("#N_O_e").css("opacity", 0);
+    
+                        if (Ncontrol != ""){
+                            $("#numero_control_e").val("");
+                            swal({
+                            type: 'error',
+                            title: 'La numero no existe en el sistema',
+                            timer: 1000,
+                            showConfirmButton: false});
+                            $("#recorridos_e").css("display", "none");
+                            $("#sig_bitacora_e").css("display", "block");
+                        }else{
+                            swal({
+                                type: 'warning',
+                                title: 'Ingrese un Numero de control',
+                                timer: 1000,
+                                showConfirmButton: false});
+                                $("#recorridos_e").css("display", "none");
+                                $("#sig_bitacora_e").css("display", "block");
                         }
                     }
                 }

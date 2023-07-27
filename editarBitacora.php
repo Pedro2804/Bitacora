@@ -9,6 +9,7 @@ $id = $_GET['id'];
   $vale='';
   $folio='';
   $monto='';
+  $fecha_carga=null;
   $fechainicio=null;
   $fechafin=null;
 
@@ -17,9 +18,9 @@ $id = $_GET['id'];
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $sql = "SELECT bitacora.*, DATE_FORMAT(periodo_de,'%d-%m-%Y') AS fecha_de, DATE_FORMAT(periodo_al,'%d-%m-%Y') AS fecha_al,
   empleado.*, CONCAT(nombre,' ',ApellidoPaterno,' ',ApellidoMaterno) as nom_empleado, vehiculo.*,CONCAT(marca,' ', modelo) AS marca FROM bitacora
-  INNER JOIN bitacora ON empleado.NumeroControl
-  INNER JOIN bitacora ON vehiculo.num_unidad
-  where id_bitacora=?";
+  INNER JOIN empleado ON empleado.NumeroControl = bitacora.operador
+  INNER JOIN vehiculo ON vehiculo.num_unidad = bitacora.NoUnidad
+  WHERE id_bitacora=?";
   $q = $pdo->prepare($sql);
   //OBTENCIÓN DE VALORES PARA AUTOCOMPLETADO DE TIPO
     try{
@@ -35,6 +36,8 @@ $id = $_GET['id'];
         $placas=$Solicitud['placas'];
         $tipo_comb=$Solicitud['tipo_combustible'];
 
+        if($Solicitud['fecha_carga'])
+          $fecha_carga=$Solicitud['fecha_carga'];
         if($Solicitud['combustible'])
           $combustible=$Solicitud['combustible'];
         if($Solicitud['cada_vale'])
@@ -133,14 +136,14 @@ $id = $_GET['id'];
                 </div>
                 <div class="col-md-12 panel-body" style="padding-bottom:30px;">
                     <div class="col-md-12">
-                        <form class="cmxform" id="form_solicitud" method="get" action="">
-                            <input type="hidden" value="guardar_bitacora" id="funcion" name="funcion">
+                        <form class="cmxform" id="form_editar_bitacora" method="get" action="">
+                            <input type="hidden" value="editar_bitacora" id="funcion" name="funcion">
                             <div class="col-md-12" style="margin-top:40px !important;"><!--CENTRAL 0-->
                                 <!--Numero de control 1-->
                                 <div class="col-md-6" style="width: 18%;">
                                     <div class="form-group form-animate-text" id="N_C">
-                                        <input list="idE" type="text" class="form-text" id="numero_control" name="numero_control" required>
-                                        <datalist id="idE">
+                                        <input list="idE_e" type="text" class="form-text" id="numero_control_e" name="numero_control_e" value="<?php echo $num_control;?>" required>
+                                        <datalist id="idE_e">
                                             <?php
                                                 try {
                                                     $pdo = Database::connect();
@@ -161,8 +164,8 @@ $id = $_GET['id'];
                                 </div>
                                 <div class="col-md-6" style="width: 32%;"><!--IZQUIERDA 1-->
                                     <!--OPERADOR-->
-                                    <div class="form-group form-animate-text" id="N_O" style="opacity: 0;">
-                                        <input type="text" class="form-text" id="N_operador" name="N_operador">
+                                    <div class="form-group form-animate-text" id="N_O_e" style="opacity: 1;">
+                                        <input type="text" class="form-text" id="N_operador_e" name="N_operador_e" value="<?php echo $nombre;?>" >
                                         <span class="bar"></span>
                                         <label>Operador</label>
                                     </div>
@@ -171,21 +174,21 @@ $id = $_GET['id'];
                                 <!--PERIODO DEL-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <label>Del: </label>
-                                    <input type="text" class="form-text" id="FechaDel" name="FechaDel" value="<?php echo $fechainicio;?>">
+                                    <input type="text" class="form-text" id="FechaDel_e" name="FechaDel_e" value="<?php echo $fechainicio;?>">
                                 </div>
                                 <!--PERIODO AL-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <label>Al: </label>
-                                    <input type="text" class="form-text" id="FechaAl" name="FechaAl" value="<?php echo $fechafin;?>">
+                                    <input type="text" class="form-text" id="FechaAl_e" name="FechaAl_e" value="<?php echo $fechafin;?>">
                                 </div>
                             </div><!--END CENTRAL 0-->
                             
                             <div class="col-md-12" style="margin-top:40px !important;"><!--CENTRAL 1-->
                                 <!--UNIDAD DE RESGUARDO-->
                                 <div class="col-md-6" style="width: 25%;">
-                                    <div class="form-group form-animate-text" id="U_r">
-                                        <input list="idV" type="text" class="form-text" id="idVehiculo" name="idVehiculo" required>
-                                        <datalist id="idV">
+                                    <div class="form-group form-animate-text" id="U_r_e">
+                                        <input list="idV_e" type="text" class="form-text" id="idVehiculo_e" name="idVehiculo_e" value="<?php echo $NoUnidad;?>" required>
+                                        <datalist id="idV_e">
                                             <?php
                                                 try {
                                                     $pdo = Database::connect();
@@ -209,22 +212,22 @@ $id = $_GET['id'];
 
                                 <!--MARCA/MODELO-->
                                 <div class="col-md-6" style="width: 25%;">
-                                    <div class="form-group form-animate-text" id="M_m" style="opacity: 0;">
-                                        <input type="text" class="form-text" id="marca_modelo" name="marca_modelo">
+                                    <div class="form-group form-animate-text" id="M_m_e" style="opacity: 1;">
+                                        <input type="text" class="form-text" id="marca_modelo_e" name="marca_modelo_e" value="<?php echo $marca;?>">
                                         <span class="bar"></span><label>Marca/Modelo</label>
                                     </div>
                                 </div>
                                 <!--PLACAS-->
                                 <div class="col-md-6" style="width: 25%;">
-                                    <div class="form-group form-animate-text" id="p" style="opacity: 0;">
-                                        <input type="text" class="form-text" id="placas" name="placas">
+                                    <div class="form-group form-animate-text" id="p_e" style="opacity: 1;">
+                                        <input type="text" class="form-text" id="placas_e" name="placas_e" value="<?php echo $placas;?>">
                                         <span class="bar"></span><label>Placas</label>
                                     </div>
                                 </div>
                                 <!--TIPO DE COMBUSTIBLE-->
                                 <div class="col-md-6" style="width: 25%;">
-                                    <div class="form-group form-animate-text" id="comb" style="opacity: 0;">
-                                        <input type="text" class="form-text" id="combustible" name="combustible">
+                                    <div class="form-group form-animate-text" id="comb_e" style="opacity: 1;">
+                                        <input type="text" class="form-text" id="combustible_e" name="combustible_e" value="<?php echo $tipo_comb;?>">
                                         <span class="bar"></span><label>Tipo de combustible</label>
                                     </div>
                                 </div>
@@ -233,8 +236,8 @@ $id = $_GET['id'];
                             <div class="col-md-12" style="margin-top:40px !important;"> <!--CENTRAL 2-->
                                 <!--TIPO DE COMBUSTIBLE-->
                                 <div class="col-md-6" style="width: 20%;">
-                                    <div class="form-group form-animate-text" id="T_c">
-                                        <input type="text" class="form-text" oninput="this.value = this.value.toUpperCase()" id="tipo_comb" name="tipo_combustible">
+                                    <div class="form-group form-animate-text" id="T_c_e">
+                                        <input type="text" class="form-text" oninput="this.value = this.value.toUpperCase()" id="tipo_comb_e" name="tipo_combustible_e" value="<?php echo $combustible;?>">
                                         <span class="bar"></span>
                                         <label>Combustible</label>
                                     </div>
@@ -242,8 +245,8 @@ $id = $_GET['id'];
 
                                 <!--CADA VALE-->
                                 <div class="col-md-6" style="width: 20%;">
-                                    <div class="form-group form-animate-text" id="C_v">
-                                        <input type="text" class="form-text" id="vale" name="cada_vale">
+                                    <div class="form-group form-animate-text" id="C_v_e">
+                                        <input type="text" class="form-text" id="vale_e" name="cada_vale_e" value="<?php echo $vale;?>">
                                         <span class="bar"></span>
                                         <label>Cada vale</label>
                                     </div>
@@ -251,8 +254,8 @@ $id = $_GET['id'];
 
                                 <!--FECHA CARGA-->
                                 <div class="col-md-6" style="width: 20%;">
-                                    <div class="form-group form-animate-text" id="F_c">
-                                        <input type="text" class="form-text" id="fecha_r" name="fecha_carga">
+                                    <div class="form-group form-animate-text" id="F_c_e">
+                                        <input type="text" class="form-text" id="fecha_r_e" name="fecha_carga_e" value="<?php echo $fecha_carga;?>">
                                         <span class="bar"></span>
                                         <label>Fecha de carga</label>
                                     </div>
@@ -260,23 +263,23 @@ $id = $_GET['id'];
 
                                 <!--FOLIO-->
                                 <div class="col-md-6" style="width: 20%;">
-                                    <div class="form-group form-animate-text" id="fol">
-                                        <input type="text" class="form-text" id="folio" name="folio">
+                                    <div class="form-group form-animate-text" id="fol_e">
+                                        <input type="text" class="form-text" id="folio_e" name="folio_e" value="<?php echo $folio;?>">
                                         <span class="bar"></span><label>FOLIO</label>
                                     </div>
                                 </div>
 
                                 <!--MONTO-->
                                 <div class="col-md-6" style="width: 20%;">
-                                    <div class="form-group form-animate-text" id="mont">
-                                        <input type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" id="monto" name="monto">
+                                    <div class="form-group form-animate-text" id="mont_e">
+                                        <input type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" id="monto_e" name="monto_e" value="<?php echo $monto;?>">
                                         <span class="bar"></span><label>MONTO</label>
                                     </div>
                                 </div>
                             </div><!--END CENTRAL 2-->
 
                             <div class="col-md-12"><!--Boton siguiente-->
-                                <div id="sig_bitacora" class="btn-guardar" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Siguiente</div>
+                                <div id="sig_bitacora_e" class="btn-guardar" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Siguiente</div>
                             </div>
 
                             <div class="col-md-12" id="resultados"></div>
@@ -287,7 +290,7 @@ $id = $_GET['id'];
 
                 <!-- inicio de formularios para recorrido -->
                 <div class="col-md-12 panel-body">
-                    <div id="recorridos" style="display: none;"></div>
+                    <div id="recorridos_e" style="display: none;"></div>
                 </div>
             </div>
             
@@ -314,10 +317,113 @@ $id = $_GET['id'];
 <!-- custom -->
 <script src="scriprts/index.js"></script>
 <script>
-$( document ).ready(function()
-{
-    
-});
-</script>
+            $(function() {
+                var f = new Date();
+                fech=f.getDate()+"-"+(f.getMonth() +1)+"-"+f.getFullYear();
+
+                //Paginacion(1);
+                $("#FechaDel_e").datepicker({
+                    maxDate: fech,
+                    monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septimbre", "Octubre", "Noviembre", "Diciembre" ],
+                    monthNamesShort: [ "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic" ],
+                    dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+                    dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+                    dateFormat: 'dd-mm-yy',
+                    yearRange: '-10:+0',
+                    onSelect: obtenerResultados
+                });
+                $("#FechaAl_e").datepicker({
+                    maxDate: fech,
+                    monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septimbre", "Octubre", "Noviembre", "Diciembre" ],
+                    monthNamesShort: [ "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic" ],
+                    dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+                    dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+                    dateFormat: 'dd-mm-yy',
+                    yearRange: '-10:+0',
+                    onSelect: obtenerResultados
+                });
+
+            });
+        </script>
+
+    <!-- custom -->
+        <script src="scriprts/index.js"></script>
+        <script src="scriprts/formRecorrido.js"></script>
+        <script>
+            $( document ).ready(function(){});
+        </script>
+        <script>
+        // Función para obtener los resultados en base a las fechas seleccionadas
+        function obtenerResultados() {
+            var fechaDel = document.getElementById('FechaDel_e').value;
+            var fechaAl = document.getElementById('FechaAl_e').value;
+            // Realiza una solicitud AJAX al servidor
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'procesarE.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Muestra los resultados en el contenedor de resultados
+                document.getElementById('recorridos_e').innerHTML = xhr.responseText;
+                if(document.getElementsByClassName("tablinks_e").length>1){
+                    openTab_e(document.getElementsByClassName("tablinks_e")[0].value);
+                    document.getElementsByClassName("tablinks_e")[0].className += " active";
+                }else if(document.getElementsByClassName("tablinks_e").length==1){
+                    document.getElementById("boton_guardar_e0").style.display = "block";
+                    document.getElementById("btn_sig_e0").style.display = "none";
+                    openTab_e(document.getElementsByClassName("tablinks_e")[0].value);
+                    document.getElementsByClassName("tablinks_e")[0].className += " active"
+                    document.getElementById("destino_e0").required = false;
+                }else{
+                    $('#sig_bitacora_e').css("display", "block");
+                    swal({
+                        type: 'error',
+                        title: 'Rango de fecha no válido',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(function() {
+                        document.location.href = 'editarBitacora.php';
+                    }, 1100);
+                }
+            }
+            };
+             
+            xhr.send('FechaDel_e=' + encodeURIComponent(fechaDel) + '&FechaAl_e=' + encodeURIComponent(fechaAl));
+        }
+        // Obtiene los resultados al cargar la página
+        obtenerResultados();
+        </script>
+
+<style>
+    .tab_e {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background: #FF1781;
+        font-family: 'Oxygen Mono', Tahoma, Arial, sans-serif;
+    }
+
+    .tab_e button {
+        background: #FF1781;
+        color: #FFFFFF;
+        font-size: 17px;
+        float: left;
+        border: none;
+        outline: none;
+        padding: 14px 16px;
+        transition: 0.3s;
+    }
+
+    .tab_e button.active {
+        background-color: #172e5c;
+    }
+
+    .tabcontent_e {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+</style>
 </body>
 </html>

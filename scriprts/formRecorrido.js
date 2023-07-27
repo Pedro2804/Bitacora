@@ -268,3 +268,189 @@
             }
         }
     }
+
+//FUNCIONES PARA EDITAR BITACORA, SOLO CAMBIA LA '_e' para poder diferenciarlo
+
+function openTab_e(tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent_e");
+    
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks_e");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    document.getElementById(tabName).scrollIntoView({ behavior: 'smooth' });
+}
+
+function formVacio_e(checkbox) {
+    if(checkbox.checked){
+        document.getElementById("km_I_e"+checkbox.id[checkbox.id.length-1]).disabled = true;
+        document.getElementById("km_F_e"+checkbox.id[checkbox.id.length-1]).disabled = true;
+        document.getElementById("salida_e"+checkbox.id[checkbox.id.length-1]).disabled = true;
+        document.getElementById("destino_e"+checkbox.id[checkbox.id.length-1]).disabled = true;
+        document.getElementById("recorrido_e"+checkbox.id[checkbox.id.length-1]).disabled = true;
+        document.getElementById("btn_vaciar_e"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "none";
+        document.getElementById("btn_agregar_e"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "none";
+     }else{
+        document.getElementById("km_I_e"+checkbox.id[checkbox.id.length-1]).disabled = false;
+        document.getElementById("km_F_e"+checkbox.id[checkbox.id.length-1]).disabled = false;
+        document.getElementById("salida_e"+checkbox.id[checkbox.id.length-1]).disabled = false;
+        document.getElementById("destino_e"+checkbox.id[checkbox.id.length-1]).disabled = false;
+        document.getElementById("recorrido_e"+checkbox.id[checkbox.id.length-1]).disabled = false;
+        document.getElementById("btn_vaciar_e"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "auto";
+        document.getElementById("btn_agregar_e"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "auto";
+     }
+}
+
+function siguiente_dia_e(dia){
+    var dias_recorrido = document.getElementsByClassName("tablinks_e");
+    var km_inicial = document.getElementById("km_I_e"+dia.id[dia.id.length - 1]);
+    var km_final = document.getElementById("km_F_e"+dia.id[dia.id.length - 1]);
+    var salida = document.getElementById("salida_e"+dia.id[dia.id.length - 1]);
+    var listaR = document.getElementById("listaR_e"+dia.id[dia.id.length - 1]);
+    
+    if(!document.getElementById("vacio_e"+dia.id[dia.id.length - 1]).checked){
+        if(!listaR.value)
+            document.getElementById("destino_e"+dia.id[dia.id.length - 1]).reportValidity();
+
+        salida.reportValidity();
+        km_final.reportValidity();
+        km_inicial.reportValidity();
+    
+        if(km_inicial.value && km_final.value && salida.value && listaR.value){
+           
+            if(parseInt(km_inicial.value)<parseInt(km_final.value)){
+                var i = 0;
+                while(i<dias_recorrido.length){
+                    if(dias_recorrido[i].value == dia.parentNode.parentNode.parentNode.id){
+                        i++;
+                        break;
+                    }
+                    i++;
+                }
+
+                if((dias_recorrido.length-1) == i){
+                    document.getElementById('boton_guardar_e'+i).style.display = "block";
+                    document.getElementById(dias_recorrido[i].value).querySelector('#btn_sig_e'+i).style.visibility = "hidden";
+                    document.getElementById(dias_recorrido[i].value).querySelector('#destino_e'+i).required = false;
+                }
+                openTab_e(dias_recorrido[i].value);
+                dias_recorrido[i].className += " active";
+
+                document.getElementById("km_I_e"+i).value = document.getElementById("km_F_e"+(i-1)).value;
+
+                if(i != 0){
+                    document.getElementById(dias_recorrido[i].value).querySelector('#btn_ant_e'+i).style.visibility = "visible";
+                }
+            }else
+                swal({
+                    type: 'warning',
+                    title: 'El KM inicial no puede ser mayor al KM final',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+        }
+    }else{
+        var i = 0;
+        while(i<dias_recorrido.length){
+            if(dias_recorrido[i].value == dia.parentNode.parentNode.parentNode.id){
+                i++;
+                break;
+            }
+            i++;
+        }
+
+        if((dias_recorrido.length-1) == i){
+            document.getElementById('boton_guardar_e'+i).style.display = "block";
+            document.getElementById(dias_recorrido[i].value).querySelector('#btn_sig_e'+i).style.visibility = "hidden";
+            document.getElementById(dias_recorrido[i].value).querySelector('#destino_e'+i).required = false;
+        }
+        openTab_e(dias_recorrido[i].value);
+        dias_recorrido[i].className += " active";
+
+        document.getElementById("km_I_e"+i).value = document.getElementById("km_I_e"+(i-1)).value;
+
+        if(i != 0){
+            document.getElementById(dias_recorrido[i].value).querySelector('#btn_ant_e'+i).style.visibility = "visible";
+        }    
+    }
+    //listaR.readOnly = !listaR.readOnly;
+}
+
+function anterior_dia_e(dia){
+    var dias_recorrido = document.getElementsByClassName("tablinks_e");
+
+    var i = 0;
+        while(i<dias_recorrido.length){
+            if(dias_recorrido[i].value == dia.parentNode.parentNode.parentNode.id){
+                i--;
+                break;
+            }
+            i++;
+        }
+        openTab_e(dias_recorrido[i].value);
+        dias_recorrido[i].className += " active";
+}
+
+function listarRecorrido_e(seleccionado) {
+    if(seleccionado.value != "")
+        document.getElementById("listaR_e"+seleccionado.id[seleccionado.id.length -1]).value += seleccionado.value + '\n';
+    seleccionado.value = "";
+}
+
+function vaciar_e(bntvaciar) {
+    document.getElementById("listaR_e"+bntvaciar.id[bntvaciar.id.length - 1]).value = "";
+}
+
+function nuevoRecorrido_e(btnNuevo) {
+    var nuevoR = document.getElementById("recorrido_e"+btnNuevo.id[btnNuevo.id.length - 1]);
+    
+    if(nuevoR.value){
+        nuevoR.value = nuevoR.value.toUpperCase();
+        $.ajax({
+            method: "POST",
+            url: "controller/controller.php",
+            data: {lugar: nuevoR.value, funcion: "nuevo_recorrido"},
+            cache: false,
+            success: function(result) {
+                if (result == 1) {
+                    document.getElementById("listaR_e"+btnNuevo.id[btnNuevo.id.length -1]).value += nuevoR.value + '\n';
+                    swal({
+                        type: 'success',
+                        title: 'Operacion exitosa',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+
+                    var nuevaOpcion = document.createElement('option');
+                    nuevaOpcion.value = nuevoR.value;
+                    nuevaOpcion.textContent = nuevoR.value;
+                    for (var i = 0; i < document.getElementsByClassName("tablinks_e").length; i++)
+                        document.getElementById("destino_e"+i).appendChild(nuevaOpcion.cloneNode(true));
+
+                    nuevoR.value = "";
+                    
+                }else{
+                    swal({
+                        type: 'warning',
+                        title: 'Recorrido repetido',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                    nuevoR.value = "";
+                }
+            }
+        });
+        
+    }else
+        swal({
+            type: 'error',
+            title: 'Ingrese un nuevo recorrido',
+            timer: 1000,
+            showConfirmButton: false
+        });
+}
