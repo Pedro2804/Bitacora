@@ -341,6 +341,7 @@
                             var j=0;
                             while(j<dias_recorrido.length){
                                 if(dias_recorrido[j].value in  datos[0]){
+                                    document.getElementById("vacio_e"+j).disabled = true;
                                     document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
                                     document.getElementById("km_I_e"+j).value = datos[0][dias_recorrido[j].value]["km_inicial"];
                                     document.getElementById("km_F_e"+j).value = datos[0][dias_recorrido[j].value]["km_final"];

@@ -190,7 +190,7 @@ $num = 1;
 				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
 
-				if(strlen($MostrarFila['recorrido'])>35){
+				if(strlen($MostrarFila['recorrido'])>38){
 					/*$objPHPExcel->getActiveSheet()->unmergeCells('H'.$i.':I'.$i);
 					$objPHPExcel->getActiveSheet()->unmergeCells('K'.$i.':M'.$i);
 					$objPHPExcel->getActiveSheet()->unmergeCells('H'.($i+1).':I'.($i+1));
