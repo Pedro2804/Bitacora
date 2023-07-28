@@ -21,7 +21,7 @@ if(!empty($_GET['id'])) $Solicitud =$_GET['id'];
 *********************************************************/	
 
 date_default_timezone_set('America/Mexico_City');
-$nomb = 'Bitacora2_'.date('d');
+$nomb = 'Bitacora_'.date('d');
 
 switch (date('m')){
 		case 1: $nomb .= 'Ene_'; break;
@@ -115,9 +115,11 @@ $num = 1;
 				
 				$objPHPExcel->getActiveSheet()->setCellValue('L9', $MostrarFila['cada_vale']);
 
-				$fecha_carga = new DateTime($MostrarFila['fecha_carga']);
-				$objPHPExcel->getActiveSheet()->setCellValue('E10', $fecha_carga->format('d').' de '.$meses[$fecha_carga->format('n')].' de '.$fecha_carga->format('Y'));
-				
+				if($MostrarFila['fecha_carga']){
+					$fecha_carga = new DateTime($MostrarFila['fecha_carga']);
+					$objPHPExcel->getActiveSheet()->setCellValue('E10', $fecha_carga->format('d').' de '.$meses[$fecha_carga->format('n')].' de '.$fecha_carga->format('Y'));
+				}
+
 				switch ($MostrarFila['tipo_combustible']) {
 					case 'gasolina':
 						$objPHPExcel->getActiveSheet()->setCellValue('M10', "X");
