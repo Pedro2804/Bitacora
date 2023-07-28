@@ -13,7 +13,7 @@
         <meta name="keyword" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="img/favicon.ico" type="image/ico" />
-        <title>Bitacora</title>
+        <title>Nueva Bitacora</title>
 
         <!-- start: Css -->
         <link rel="stylesheet" type="text/css" href="asset/css/bootstrap.min.css">
@@ -54,8 +54,6 @@
             <ul>
                 <li class='active'><a href='index.php'>Nueva Bitacora</a></li>
                 <li><a href='Busqueda.php'>Ver Bitacoras</a></li>
-                <!--<li><a href='busquedanoticia.php'>Ver Noticia</a></li>
-                <li><a href='nueva_noticia.php'>NUEVA NOTICIA</a></li>-->
                 <li><a href='admin/autos.php'>ADMINISTRADOR</a></li>
             </ul>
         </div> 
@@ -68,7 +66,7 @@
                     <div class="col-md-12">
                         <form class="cmxform" id="form_solicitud" method="get" action="">
                             <input type="hidden" value="guardar_bitacora" id="funcion" name="funcion">
-                            <div class="col-md-12" style="margin-top:40px !important;"><!--CENTRAL 0-->
+                            <div class="col-md-12" style="margin-top:40px !important;">
                                 <!--Numero de control 1-->
                                 <div class="col-md-6" style="width: 18%;">
                                     <div class="form-group form-animate-text" id="N_C">
@@ -92,14 +90,14 @@
                                         <span class="bar"></span><label>Numero de control*</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6" style="width: 32%;"><!--IZQUIERDA 1-->
+                                <div class="col-md-6" style="width: 32%;">
                                     <!--OPERADOR-->
                                     <div class="form-group form-animate-text" id="N_O" style="opacity: 0;">
                                         <input type="text" class="form-text" id="N_operador" name="N_operador" onclick="this.blur();">
                                         <span class="bar"></span>
                                         <label>Operador</label>
                                     </div>
-                                </div><!--IZQUIERDA 1-->
+                                </div>
                                 
                                 <!--PERIODO DEL-->
                                 <div class="col-md-6" style="width: 25%;">
@@ -111,9 +109,9 @@
                                     <label>Al: </label>
                                     <input type="text" class="form-text" id="FechaAl" name="FechaAl" value="<?php echo $fechafin;?>">
                                 </div>
-                            </div><!--END CENTRAL 0-->
+                            </div>
                             
-                            <div class="col-md-12" style="margin-top:40px !important;"><!--CENTRAL 1-->
+                            <div class="col-md-12" style="margin-top:40px !important;">
                                 <!--UNIDAD DE RESGUARDO-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="U_r">
@@ -161,9 +159,9 @@
                                         <span class="bar"></span><label>Tipo de combustible</label>
                                     </div>
                                 </div>
-                            </div><!--END CENTRAL 1-->
+                            </div>
                                 
-                            <div class="col-md-12" style="margin-top:40px !important;"> <!--CENTRAL 2-->
+                            <div class="col-md-12" style="margin-top:40px !important;">
                                 <!--TIPO DE COMBUSTIBLE-->
                                 <div class="col-md-6" style="width: 20%;">
                                     <div class="form-group form-animate-text" id="T_c">
@@ -206,7 +204,7 @@
                                         <span class="bar"></span><label>MONTO</label>
                                     </div>
                                 </div>
-                            </div><!--END CENTRAL 2-->
+                            </div>
 
                             <div class="col-md-12"><!--Boton siguiente-->
                                 <div id="sig_bitacora" class="btn-guardar" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Siguiente</div>

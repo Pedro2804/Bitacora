@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nuevo Sello</title>
+    <title>Nuevo Vehiculo</title>
     <!-- start: validacion -->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -33,11 +33,8 @@ if (!isset($_SESSION['usuario'])) {
         <link rel="stylesheet" type="text/css" href="../asset/css/plugins/ionrangeslider/ion.rangeSlider.skinFlat.css"/>
         <link rel="stylesheet" type="text/css" href="../asset/css/plugins/bootstrap-material-datetimepicker.css"/>
         <link href="../asset/css/style.css" rel="stylesheet">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
-        <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
-        <script src="../scriprts/html2canvas.js"></script>
+        
         <link rel="stylesheet" href="../css/flexselect.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="../css/estilos.css" />
         <link rel="stylesheet" href="../css/responsive.css" />
         <!-- end: Css -->
                 <!-- start: sweetalert2 -->
@@ -45,33 +42,13 @@ if (!isset($_SESSION['usuario'])) {
         <link rel="stylesheet" type="text/css" href="../style/sweetalert2.min.css">
         <link rel="shortcut icon" href="img/logodifblanco.png">
         <script src="responsive.js"></script>
-        <script src="../asset/js/main.js"></script>
-        <!-- Apple Touch Icons -->
-        <link rel="apple-touch-icon" href="../img/favicon.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="../img/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="114x114" href="../img/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="144x144" href="../img/favicon.ico" />
-
-    <!-- start: Javascript -->
-    <script src="../asset/js/jquery.min.js"></script>
-    <script src="../asset/js/jquery.ui.min.js"></script>
-    <script src="../asset/js/bootstrap.min.js"></script>
-    <script src="../scriprts/jquery.knob.js"></script>
-
-    <!-- plugins -->
-
-    <script src="../asset/js/plugins/moment.min.js"></script>
-    <script src="../asset/js/plugins/jquery.datatables.min.js"></script>
-    <script src="../asset/js/plugins/datatables.bootstrap.min.js"></script>
-
-    <script src="../asset/js/plugins/jquery.nicescroll.js"></script>
 
     <!-- start: main script -->
 
     <!-- custom -->
     <link href="../css/estilos.css" rel="stylesheet">
     <script src="../scriprts/vehiculos.js"></script>
-    <script src="../scriprts/formRecorrido.js"></script>
+
     <!-- end: Javascript -->
 
     <link rel="icon" href="../img/favicon.ico" type="image/ico" />
@@ -186,6 +163,18 @@ if (!isset($_SESSION['usuario'])) {
         </div>
         <!-- end: content -->
     </div>
+    <!-- start: Javascript -->
+    <script src="../asset/js/jquery.min.js"></script>
+    <script src="../asset/js/jquery.ui.min.js"></script>
+    <script src="../asset/js/bootstrap.min.js"></script>
+
+    <!-- plugins -->
+
+    <script src="../asset/js/plugins/moment.min.js"></script>
+    <script src="../asset/js/plugins/jquery.datatables.min.js"></script>
+    <script src="../asset/js/plugins/datatables.bootstrap.min.js"></script>
+
+    <script src="../asset/js/plugins/jquery.nicescroll.js"></script>
     <script src="../asset/js/main.js"></script>
 </body>
 </html>

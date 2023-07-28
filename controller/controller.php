@@ -78,10 +78,6 @@ switch ($funcion)
         $respuesta=nombreempl();
         if ($respuesta == false) echo '0';
         else echo json_encode($respuesta);
-	break;
-    case 'editar_solicitudTest':
-        $respuesta=editar_solicitudTest();
-        echo $respuesta;
-	break;       
+	break;      
 }
 ?> 

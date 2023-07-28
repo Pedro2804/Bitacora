@@ -495,234 +495,6 @@ function bitacora(){
     }
 }
 
-
-function editar_solicitudTest(){
-
-    $clave = null;
-    $fecha_recibo = null;
-    $fecha_doc = null;
-    $direccion = null;
-    $departamento = null;
-    $Nivel_urgencia = null;
-    $contacto = null;
-    $telefono = null;
-    $red = null;
-    $mantenimiento = null;
-    $telefonia = null;
-    $formateo = null;
-    $comunicacion = null;
-    $impresora = null;
-    $asistencia_t = null;
-    $otro = null;
-    $descripcion_p = null;
-    $solicita = null;
-    $vobo = null;
-    $entrega = null;
-    $recibe = null;
-    $cvedepto = null;
-    $otrodepto = null;
-    $sql_ = "";
-
-    if (isset($_POST['clave_editar'])) {
-        $clave = $_POST['clave_editar'];
-    }
-    // ----
-    if (isset($_POST['fecha_r'])) {
-        $fecha_recibo = $_POST['fecha_r'];
-    }
-    if ($fecha_recibo != null) {
-        $sql_ .= "FechaRecibida='" . $fecha_recibo . "', ";
-    }
-    // ----
-    if (isset($_POST['fecha_d'])) {
-        $fecha_doc = $_POST['fecha_d'];
-    }
-    if ($fecha_doc != null) {
-        $sql_ .= "FechaDocumento='" . $fecha_doc . "', ";
-    }
-    // ----
-    if (isset($_POST['direccion'])) {
-        $direccion = $_POST['direccion'];
-    }
-    if ($direccion != null) {
-        $sql_ .= "CveEntDireccion=" . $direccion . ", ";
-    }
-    // ----
-    if (isset($_POST['departamento'])) {
-        $departamento = $_POST['departamento'];
-        $resultdepto = 0;
-        if ($resultdepto == null) {
-            $otrodepto = $_POST['departamento'];
-            $otrodepto = conver($otrodepto);
-        } else {
-            $cvedepto = $resultdepto;
-        }
-    }
-    if ($cvedepto != null) {
-        $sql_ .= "CveEntDepartamento=" . $cvedepto . ", ";
-    }
-    // ----
-    if (isset($_POST['urgencia'])) {
-        $Nivel_urgencia = $_POST['urgencia'];
-    }
-    if ($Nivel_urgencia != null) {
-        $sql_ .= "NivelUrgencia=" . $Nivel_urgencia . ", ";
-    }
-    /* // ----
-    if (isset($_POST['contacto'])) {
-        $contacto = $_POST['contacto'];
-        $contacto = conver($contacto);
-    }
-    // ----
-    if (isset($_POST['telefono'])) {
-        $telefono = $_POST['telefono'];
-    }
-    // ---- */
-    if (isset($_POST['red'])) {
-        $red = 1;
-    }
-    if ($red == null) {
-        $sql_ .= "Red=NULL, ";
-    } else {
-        $sql_ .= "Red=" . $red . ", ";
-    }
-    // ----
-    if (isset($_POST['mantenimiento'])) {
-        $mantenimiento = 1;
-    }
-    if ($mantenimiento == null) {
-        $sql_ .= "Mantenimiento=NULL, ";
-    } else {
-        $sql_ .= "Mantenimiento=" . $mantenimiento . ", ";
-    }
-
-     // ----
-    if (isset($_POST['telefonia'])) {
-        $telefonia = 1;
-    }
-    if ($telefonia == null) {
-        $sql_ .= "Telefonia=NULL, ";
-    } else {
-        $sql_ .= "Telefonia=" . $telefonia . ", ";
-    }
-
-    // ----
-    if (isset($_POST['formateo'])) {
-        $formateo = 1;
-    }
-    if ($formateo == null) {
-        $sql_ .= "Formateo=NULL, ";
-    } else {
-        $sql_ .= "Formateo=" . $formateo . ", ";
-    }
-
-    // ----
-    if (isset($_POST['comunicacion'])) {
-        $comunicacion = 1;
-    }
-    if ($comunicacion == null) {
-        $sql_ .= "Comunicacion=NULL, ";
-    } else {
-        $sql_ .= "Comunicacion=" . $comunicacion . ", ";
-    }
-
-    // ----
-    if (isset($_POST['impresora'])) {
-        $impresora = 1;
-    }
-    if ($impresora == null) {
-        $sql_ .= "Impresora=NULL, ";
-    } else {
-        $sql_ .= "Impresora=" . $impresora . ", ";
-    }
-
-    // ----
-    if (isset($_POST['asistencia_t'])) {
-        $asistencia_t = 1;
-    }
-    if ($asistencia_t == null) {
-        $sql_ .= "Asistencia=NULL, ";
-    } else {
-        $sql_ .= "Asistencia=" . $asistencia_t . ", ";
-    }
-
-   // ----
-    if (isset($_POST['otro'])) {
-        $otro = 1;
-    }
-    if ($otro == null) {
-        $sql_ .= "Otro=NULL, ";
-    } else {
-        $sql_ .= "Otro=" . $otro . ", ";
-    }
-
-    // ----
-    if (isset($_POST['descripcion'])) {
-        $descripcion_p = $_POST['descripcion'];
-        $descripcion_p = conver($descripcion_p);
-    }
-    if ($descripcion_p != "") {
-        $sql_ .= "DescripcionProblema='" . $descripcion_p . "', ";
-        $sql_ .= "DescripcionServicio='" . $descripcion_p . "', ";
-    }
-     // ----
-    if (isset($_POST['solicita'])) {
-        $solicita = $_POST['solicita'];
-        if ($solicita == "") {
-            $sql_ .= "Solicita=NULL, ";
-        } else {
-            $solicita = conver($solicita);
-            $sql_ .= "Solicita='" . $solicita . "', ";
-        }
-    }
-    // ----
-    if (isset($_POST['visto'])) {
-        $vobo = $_POST['visto'];
-        if ($vobo == "") {
-            $sql_ .= "VoBo=NULL, ";
-        } else {
-            $vobo = conver($vobo);
-            $sql_ .= "VoBo='".$vobo."', ";
-        }
-    }
-    // ----
-    if (isset($_POST['entrega'])) {
-        $entrega = $_POST['entrega'];
-        if ($entrega == 0) {
-            $entrega = null;
-        } else {
-            $resultentrega = nombreempl();
-            $entrega = conver($resultentrega);
-            $sql_ .= "Entrega='".$entrega."', ";
-        }
-    }
-    // ----
-    if (isset($_POST['recibe'])) {
-        $recibe = $_POST['recibe'];
-        if ($recibe == "") {
-            $sql_ .= "Recibe=NULL ";
-        } else {
-            $recibe = conver($recibe);
-            $sql_ .= "Recibe='".$recibe."' ";
-        }
-    }
-
-
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "UPDATE not_solicitud SET ".$sql_." WHERE ClaveEntidad=?";
-    $q = $pdo->prepare($sql);
-    try {
-        $q->execute(array($clave));
-        Database::disconnect();
-        return true;
-    } catch (PDOException $e) {
-        Database::disconnect();
-        return "Error: " . $e;
-    }
-    
-}
-
 function nuevo_auto(){
     $unidad = $_POST['num_unidad'];
     $marca = strtoupper($_POST['marca']);
@@ -759,19 +531,20 @@ function editar_auto(){
     $kilometraje = $_POST['kilometraje'];
     $sql_ = "num_unidad='$unidad', marca='$marca', modelo='$modelo', placas='$placas', tipo_combustible='$combustible', kilometraje='$kilometraje'";
 
-
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "UPDATE vehiculo SET " . $sql_ . " WHERE id_vehiculo=?";
-    $q = $pdo->prepare($sql);
-    try {
-        $q->execute(array($id));
-        Database::disconnect();
-        return true;
-    } catch (PDOException $e) {
-        Database::disconnect();
-        return "Error: " . $e;
-    }
+    if(repetido("vehiculo", "num_unidad", $unidad) == false){
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "UPDATE vehiculo SET " . $sql_ . " WHERE id_vehiculo=?";
+        $q = $pdo->prepare($sql);
+        try {
+            $q->execute(array($id));
+            Database::disconnect();
+            return true;
+        } catch (PDOException $e) {
+            Database::disconnect();
+            return "Error: " . $e;
+        }
+    }else return false;
 }
 
 function eliminar_auto() {

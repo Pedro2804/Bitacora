@@ -13,7 +13,7 @@ $fechafin = date('d-m-Y');
   <meta charset="utf-8">
   <meta name="keyword" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bitacoras</title>
+  <title>Ver Bitacoras</title>
   <!-- start: Css -->
   <link rel="stylesheet" type="text/css" href="asset/css/bootstrap.min.css">
 
@@ -71,27 +71,17 @@ $fechafin = date('d-m-Y');
       <ul>
         <li><a href='index.php'>Nueva Bitacora</a></li>
         <li class='active'><a href='Busqueda.php'>Ver Bitacoras</a></li>
-        <!--<li><a href='busquedanoticia.php'>Ver Noticia</a></li>
-        <li><a href='nueva_noticia.php'>NUEVA NOTICIA</a></li>-->
         <li><a href='admin/autos.php'>ADMINISTRADOR</a></li>
       </ul>
     </div> 
     <div class="col-md-10" style="width: 100%;">
         <div class="col-md-12 panel">
            <div class="col-md-12 panel-heading">
-              <h4 class="Titulos">RESUMEN DE SOLICITUDES</h4>
+              <h4 class="Titulos">RESUMEN DE BITACORAS</h4>
            </div>
            <div class="col-md-12 panel-body" style="padding-bottom:30px;">
               <div class="col-md-12">
               <form id="FrmBusquedaSolicitudes" name="FrmBusquedaSolicitudes" method="post" action="">
-              		<!--<div class="izquierdo">
-                        <div class="form-animate-radio"><label class="radio">Ver solicitudes</label>
-                            <select class="form-text" id="CmbFolio" name="CmbFolio">
-                               <option value="1">SIN FOLIO</option>
-                               <option value="2">CON FOLIO</option>
-                             </select>
-                        </div>
-                    </div>-->
                     <div style="clear:both"></div>
               		<div class="izquierdo" style="margin-top:10px !important;">
                     	<label>Del: </label>
@@ -107,35 +97,6 @@ $fechafin = date('d-m-Y');
                      	<input class="btn-guardar" type="submit" id="BtnBuscar" value="Buscar">
                      </div>
                     <div style="clear:both"></div>
-              		<!--<div class="izquierdo" style="margin-top:10px!important; margin-left:37px;">
-                    	<select class="form-text" id="CmbDireccion" name="CmbDireccion">
-                           <option value="0"> - DIRECCI&Oacute;N -</option>
-                           <option value="8">PRESIDENCIA</option>
-                           <?php
-                            try {
-                	               $pdo = Database::connect();
-                                   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                   $sql = "select ClaveEntidad, Nombre from direccion_cat where Estatus = 1 order by Nombre";
-                                   $q = $pdo->prepare($sql);
-                                   $q->execute(array());
-                                   $data = $q->fetchall(PDO::FETCH_ASSOC);
-                                   foreach($data as $row)
-                     	               echo '<option value="'.$row['ClaveEntidad'].'">'.$row['Nombre'].'</option>';
-                                }
-                            catch(PDOException $e)
-                               {
-                                   echo 'Error: ' . $e->getMessage();
-                               }
-                            ?>
-                         </select>
-                     </div>-->
-                     <!--<div class="izquierdo" style="margin-top:10px !important; margin-left:37px;">
-                    	<select class="form-text" id="CmbEstatus" name="CmbEstatus">
-                           <option value="0"> - ESTATUS DE LA SOLICITUD -</option>
-                           <option value="1">RECIBIDO</option>
-                           <option value="2">ATENDIDO</option>
-                         </select>
-                     </div>-->
                      <div class="izquierdo" style="margin-top:10px !important; margin-left:37px;">
                         <label>Mostrar</label>
                         <select class="form-text" id="CmbMostrar" name="CmbMostrar">

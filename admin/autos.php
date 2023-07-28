@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Control vehicular</title>
+    <title>Administrador</title>
     <!-- start: validacion -->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -66,8 +66,6 @@ if (!isset($_SESSION['usuario'])) {
             <ul>
                 <li><a href='../index.php'>Nueva Bitacora</a></li>
                 <li><a href='../Busqueda.php'>Ver Bitacoras</a></li>
-                <!--<li><a href='../busquedanoticia.php'>Ver Noticia</a></li>
-                <li><a href='../nueva_noticia.php'>NUEVA NOTICIA</a></li>-->
                 <li class='active'><a href='autos.php'>ADMINISTRADOR</a></li>
             </ul>
         </div>
