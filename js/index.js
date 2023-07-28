@@ -18,7 +18,13 @@ $(document).ready(function()
                 showConfirmButton: false
               });
                 $(".login-form")[0].reset();
-            }
+            }else
+              swal({
+                type: 'error',
+                title: 'El usuario ya existe en el sistema',
+                timer: 1000,
+                showConfirmButton: false
+              });
           }
         });
       }else{
