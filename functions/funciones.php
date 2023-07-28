@@ -40,7 +40,8 @@ function nuevo_usuario(){
     $usuario=$_POST['usuario'];
     $password=sha1($_POST['pass']);
 
-    $pdo = Database::connect();
+    if(repetido("Catalogo_usuario", "usuario", $usuario) == false){
+        $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $sql = "INSERT INTO Catalogo_usuario (usuario, password) VALUES (?,?);";
         $q = $pdo->prepare($sql);
@@ -52,6 +53,7 @@ function nuevo_usuario(){
             Database::disconnect();
             return "Error: " . $e;
         }
+    }else return false;
 }
 
 function data_output($columns, $data){

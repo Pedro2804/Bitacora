@@ -13,7 +13,7 @@ if(isset($_SESSION['usuario'])){
   <meta name="author" content="Isna Nur Azis">
   <meta name="keyword" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vehiculos</title>
+  <title>Login</title>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
@@ -72,13 +72,13 @@ if(isset($_SESSION['usuario'])){
                   <div class="form-group form-animate-text" style="margin-top:40px !important;">
                     <input id="txt_mail" type="text" class="form-text" data-error="Usuario no valido" required>
                     <span class="bar"></span>
-                    <label>Usuario</label>
+                    <label style="color: Gray !important;">Usuario</label>
                        <div class="help-block with-errors"></div>
                   </div>
                   <div class="form-group form-animate-text" style="margin-top:40px !important;">
                     <input id="txt_pass" type="password" class="form-text" data-error="Password no valido" data-minlength="3" required>
                     <span class="bar"></span>
-                    <label>Password</label>
+                    <label style="color: Gray !important;">Password</label>
                     <div class="help-block with-errors"></div>
                   </div>
                   <input type="submit" class="btn-guardar" value="Entrar"/>
