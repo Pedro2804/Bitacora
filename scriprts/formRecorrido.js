@@ -499,7 +499,7 @@ function Nbitacora_e(dia) {
                         }
                     }
                 });
-
+                setTimeout(2000);
                 var i = 0;
                 while (i < dias_recorrido.length) {
                     document.getElementById("listaR_e"+i).disabled = false;

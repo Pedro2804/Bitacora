@@ -60,7 +60,7 @@
         <div class="col-md-10" style="width: 100%;">
             <div class="col-md-12 panel">
                 <div class="col-md-12 panel-heading">
-                    <h4 class="Titulos">BITACORA</h4>
+                    <h4 class="Titulos">NUEVA BITACORA</h4>
                 </div>
                 <div class="col-md-12 panel-body" style="padding-bottom:30px;">
                     <div class="col-md-12">
