@@ -101,7 +101,7 @@
                                 
                                 <!--PERIODO DEL-->
                                 <div class="col-md-6" style="width: 30%;">
-                                    <label>Fecha de recorrido del: </label>
+                                    <label>Fecha de Recorrido Del: </label>
                                     <input type="text" class="form-text" id="FechaDel" name="FechaDel" value="<?php echo $fechainicio->format('d-m-Y');?>">
                                 </div>
                                 <!--PERIODO AL-->
