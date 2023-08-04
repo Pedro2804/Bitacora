@@ -68,7 +68,7 @@
                             <input type="hidden" value="guardar_bitacora" id="funcion" name="funcion">
                             <div class="col-md-12" style="margin-top:40px !important;">
                                 <!--Numero de control 1-->
-                                <div class="col-md-6" style="width: 18%;">
+                                <div class="col-md-6" style="width: 16%;">
                                     <div class="form-group form-animate-text" id="N_C">
                                         <input list="idE" type="text" class="form-text" id="numero_control" name="numero_control" required>
                                         <datalist id="idE">
@@ -90,7 +90,7 @@
                                         <span class="bar"></span><label>Numero de control*</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6" style="width: 32%;">
+                                <div class="col-md-6" style="width: 30%;">
                                     <!--OPERADOR-->
                                     <div class="form-group form-animate-text" id="N_O" style="opacity: 0;">
                                         <input type="text" class="form-text" id="N_operador" name="N_operador" onclick="this.blur();">
@@ -100,12 +100,12 @@
                                 </div>
                                 
                                 <!--PERIODO DEL-->
-                                <div class="col-md-6" style="width: 25%;">
-                                    <label>Del: </label>
+                                <div class="col-md-6" style="width: 30%;">
+                                    <label>Fecha de Recorrido Del: </label>
                                     <input type="text" class="form-text" id="FechaDel" name="FechaDel" value="<?php echo $fechainicio->format('d-m-Y');?>">
                                 </div>
                                 <!--PERIODO AL-->
-                                <div class="col-md-6" style="width: 25%;">
+                                <div class="col-md-6" style="width: 24%;">
                                     <label>Al: </label>
                                     <input type="text" class="form-text" id="FechaAl" name="FechaAl" value="<?php echo $fechafin;?>">
                                 </div>
