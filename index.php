@@ -163,7 +163,7 @@
                                 
                             <div class="col-md-12" style="margin-top:40px !important;">
                                 <!--TIPO DE COMBUSTIBLE-->
-                                <div class="col-md-6" style="width: 20%;">
+                                <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="T_c">
                                         <input type="text" class="form-text" oninput="this.value = this.value.toUpperCase()" id="tipo_comb" name="tipo_combustible">
                                         <span class="bar"></span>
@@ -171,17 +171,8 @@
                                     </div>
                                 </div>
 
-                                <!--CADA VALE-->
-                                <div class="col-md-6" style="width: 20%;">
-                                    <div class="form-group form-animate-text" id="C_v">
-                                        <input type="text" class="form-text" id="vale" name="cada_vale">
-                                        <span class="bar"></span>
-                                        <label>Cada vale</label>
-                                    </div>
-                                </div>
-
                                 <!--FECHA CARGA-->
-                                <div class="col-md-6" style="width: 20%;">
+                                <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="F_c">
                                         <input type="text" class="form-text" id="fecha_r" name="fecha_carga">
                                         <span class="bar"></span>
@@ -190,7 +181,7 @@
                                 </div>
 
                                 <!--FOLIO-->
-                                <div class="col-md-6" style="width: 20%;">
+                                <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="fol">
                                         <input type="text" class="form-text" id="folio" name="folio">
                                         <span class="bar"></span><label>FOLIO</label>
@@ -198,7 +189,7 @@
                                 </div>
 
                                 <!--MONTO-->
-                                <div class="col-md-6" style="width: 20%;">
+                                <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="mont">
                                         <input type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" id="monto" name="monto">
                                         <span class="bar"></span><label>MONTO</label>
