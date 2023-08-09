@@ -242,6 +242,18 @@
                         document.getElementById('combustible').value = resultados.comb;
                             recorridos.style.display= 'block';
                             document.getElementById('sig_bitacora').style.display = "none";
+
+                            $.ajax({
+                                method: "POST",
+                                url: "controller/controller.php",
+                                data: {id: 0, funcion: "num_bitacoras"},
+                                cache: false,
+                                success: function (result) {
+                                    var j = 0;
+                                    while (j < dias_recorrido.length) {$("#num_bitacoras"+j).val(result); j++;}
+                                }
+                            });
+
                             openTab(dias_recorrido[0].value);
                             for(i=0; i<dias_recorrido.length; i++)
                                 dias_recorrido[i].disabled = true;

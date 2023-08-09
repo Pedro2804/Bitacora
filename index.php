@@ -200,7 +200,7 @@
                             <div class="col-md-12"><!--Boton siguiente-->
                                 <div id="sig_bitacora" class="btn-guardar" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Siguiente</div>
                             </div>
-
+                            
                             <div class="col-md-12" id="resultados"></div>
 
                         </form>
@@ -284,12 +284,30 @@
                 if(document.getElementsByClassName("tablinks").length>1){
                     openTab(document.getElementsByClassName("tablinks")[0].value);
                     document.getElementsByClassName("tablinks")[0].className += " active";
+                    $.ajax({
+                        method: "POST",
+                        url: "controller/controller.php",
+                        data: {id: 0, funcion: "num_bitacoras"},
+                        cache: false,
+                        success: function (result) {
+                            var j = 0;
+                            while (j < document.getElementsByClassName("tablinks").length) {$("#num_bitacoras"+j).val(result); j++;}
+                        }
+                    });
                 }else if(document.getElementsByClassName("tablinks").length==1){
                     document.getElementById("boton_guardar0").style.display = "block";
                     document.getElementById("btn_sig0").style.display = "none";
                     openTab(document.getElementsByClassName("tablinks")[0].value);
                     document.getElementsByClassName("tablinks")[0].className += " active"
-                    document.getElementById("destino0").required = false;
+                    $.ajax({
+                        method: "POST",
+                        url: "controller/controller.php",
+                        data: {id: 0, funcion: "num_bitacoras"},
+                        cache: false,
+                        success: function (result) {
+                            $("#num_bitacoras0").val(result);
+                        }
+                    });
                 }else{
                     $('#sig_bitacora').css("display", "block");
                     swal({

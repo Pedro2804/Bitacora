@@ -36,6 +36,7 @@
         <form id="formulario_recorrido<?php echo $j ?>" method="get" action="">
             
             <input type="hidden" value="guardar_recorrido" id="funcion" name="funcion">
+            <input type="hidden" value="" id="num_bitacoras<?php echo $j ?>" name="id_bitacora">
             <!--<input type="hidden" name="bitacora" value="12" />-->
             <input type="hidden" name="dia_semana" value="<?php echo $nombreDia ?>" />
 
@@ -59,7 +60,7 @@
                 </div>
 
                 <!--Salida-->
-                <div class="col-md-6" style="width: 20%;">
+                <div class="col-md-6" style="width: 18%;">
                     <?php $opciones = array('Estacionamiento', 'Casitas', 'Opción 3'); ?>
                     <label style="font-size: 17px;">Salida:</label><br>
                     <select id="salida<?php echo $j ?>" name="salida" required>
@@ -71,51 +72,26 @@
                         ?>
                     </select>
                 </div>
-                
-                <!--Recorrido-->
-                <div class="col-md-6" style="width: 20%;">
-                        <label style="font-size: 17px;">Recorrido:</label><br>
-                        <select id="destino<?php echo $j ?>" name="destino" onchange="listarRecorrido(this)" required>
-                            <?php
-                                try {
-                                    $pdo = Database::connect();
-                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                    $sql = "SELECT * FROM Destino";
-                                    $q = $pdo->prepare($sql);
-                                    $q->execute(array());
-                                    $data = $q->fetchall(PDO::FETCH_ASSOC);
-                                    echo '<option value="">Seleccione los destinos</option>';
-                                    foreach($data as $row)
-                                        echo '<option value="'.$row['lugar'].'">'.$row['lugar'].'</option>';
-                                }catch(PDOException $e){
-                                    echo 'Error: ' . $e->getMessage();
-                                }
-                            ?>
-                        </select>
-                </div>
 
-                <div class="col-md-6" style="width: 22%;">
+                <div class="col-md-6" style="width: 20%;">
                     <div class="form-group form-animate-text" style="margin: 0px;">
-                        <input type="text" oninput="this.value = this.value.toUpperCase()" id="recorrido<?php echo $j ?>" class="form-text" name="recorrido">
+                        <input type="text" oninput="this.value = this.value.toUpperCase()" maxlength="60" id="recorrido<?php echo $j ?>" class="form-text" name="recorrido" required>
                         <span class="bar"></span><label>Nuevo recorrido</label>
                     </div>
                 </div>
 
                 <!--Boton agregar-->
-                <div class="col-md-6" style="width: 8%;">
+                <div class="col-md-6" style="width: 6%;">
                     <div id="btn_agregar<?php echo $j ?>" class="btn-guardar" onclick="nuevoRecorrido(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Agregar</div>
                 </div>
-            </div>
-            
-            <!--Lista de recorridos-->
-            <div class="col-md-12">
-                <div class="col-md-6" style="width: 70%;"></div>
+
+                <!--Lista de recorridos-->
+                <div class="col-md-6" style="width: 20%;">
                 <!--Text area-->
-                <div class="col-md-6" style="width: 22%;">
-                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos" placeholder="Recorridos" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
+                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos" placeholder="Recorridos (maximo 60 caracteres)" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
                 </div>
                 <!--Boton vaciar-->
-                <div class="col-md-6" style="width: 8%;">
+                <div class="col-md-6" style="width: 6%;">
                     <div id="btn_vaciar<?php echo $j ?>" class="btn-guardar" onclick="vaciar(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Vaciar</div>
                 </div>
             </div>

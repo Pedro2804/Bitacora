@@ -70,8 +70,8 @@ switch ($funcion)
         $respuesta=eliminar_bitacora();
         echo $respuesta;
 	break;
-    case 'nuevo_recorrido':
-        $respuesta=nuevo_recorrido($lugar);
+    case 'num_bitacoras':
+        $respuesta=num_bitacoras();
         echo $respuesta;
 	break;
     case 'nombre_empleado':

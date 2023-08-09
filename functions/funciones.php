@@ -188,22 +188,20 @@ function get_vehiculo($id){
     }
 }
 
-function nuevo_recorrido($lugar){
-    $aux = repetido("Destino", "lugar", $lugar);
-    if($aux == false){
-        $pdo = Database::connect();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO Destino (lugar) VALUES (?);";
-        $q = $pdo->prepare($sql);
-        try {
-            $q->execute(array($lugar));
-            Database::disconnect();
-            return true;
-        } catch (PDOException $e) {
-            Database::disconnect();
-            return "Error: " . $e;
-        }
-    }else return false;
+function num_bitacoras(){
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "SELECT COUNT(id_bitacora) AS bitacoras FROM bitacora;";
+    $q = $pdo->prepare($sql);
+    try {
+        $q->execute(array());
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        Database::disconnect();
+        return $data["bitacoras"]+1;
+    } catch (PDOException $e) {
+        Database::disconnect();
+        return "Error: " . $e;
+    }
 }
 
 function repetido($tabla, $columna, $lugar){
@@ -251,9 +249,6 @@ function guardar_bitacora(){
     if (isset($_POST['tipo_combustible']) && !empty($_POST['tipo_combustible'])) {
         $combustible = $_POST['tipo_combustible'];
     }
-    if (isset($_POST['cada_vale']) && !empty($_POST['cada_vale'])) {
-        $vale = $_POST['cada_vale'];
-    }
     if (isset($_POST['fecha_carga']) && !empty($_POST['fecha_carga'])) {
         $fechaCarga = date('Y-m-d', strtotime($_POST['fecha_carga']));
     }
@@ -274,10 +269,6 @@ function guardar_bitacora(){
     if (!empty($combustible)) {
         $sql .= ", combustible";
         $params[] = $combustible;
-    }
-    if (!empty($vale)) {
-        $sql .= ", cada_vale";
-        $params[] = $vale;
     }
     if (!empty($fechaCarga)) {
         $sql .= ", fecha_carga";
@@ -391,6 +382,7 @@ function editar_bitacora(){
 }
 
 function guardar_recorrido(){
+    $vacio = null;
     $dia = null;
     $k_i = null;
     $k_f = null;
@@ -413,15 +405,37 @@ function guardar_recorrido(){
         if (isset($_POST['km_final'])) {
             $k_f = $_POST['km_final'];
         }
-    
-        $id_bitacora = bitacora();
+        
+        $vacio = 0;
+        $id_bitacora = $_POST['id_bitacora'];
         
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
         // Construir la consulta SQL y el array de parámetros dinámicamente
-        $sql = "INSERT INTO recorrido (dia_semana, salida, recorrido, km_inicial, km_final, bitacora) VALUES (?, ?, ?, ?, ?, ?);";
-        $params = array($dia, $salida, $lista_rec, $k_i, $k_f, $id_bitacora);
+        $sql = "INSERT INTO recorrido (dia_semana, salida, recorrido, km_inicial, km_final, vacio, bitacora) VALUES (?, ?, ?, ?, ?, ?, ?);";
+        $params = array($dia, $salida, $lista_rec, $k_i, $k_f, $vacio, $id_bitacora);
+    
+        $q = $pdo->prepare($sql);
+    
+        try {
+            $q->execute($params);
+            Database::disconnect();
+            return true;
+        } catch (PDOException $e) {
+            Database::disconnect();
+            return "Error: " . $e;
+        }
+    }else{
+        $vacio = 1;
+        $id_bitacora = $_POST['id_bitacora'];
+        
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+        // Construir la consulta SQL y el array de parámetros dinámicamente
+        $sql = "INSERT INTO recorrido (vacio, bitacora) VALUES (?,?);";
+        $params = array($vacio, $id_bitacora);
     
         $q = $pdo->prepare($sql);
     
@@ -478,22 +492,6 @@ function editar_recorrido(){
             Database::disconnect();
             return "Error: " . $e;
         }
-    }
-}
-
-function bitacora(){
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT MAX(id_bitacora) AS id FROM bitacora;";
-    $q = $pdo->prepare($sql);
-    try {
-        $q->execute();
-        $res = $q->fetch(PDO::FETCH_ASSOC);
-        Database::disconnect();
-        return $res['id'];
-    } catch (PDOException $e) {
-        Database::disconnect();
-        return "Error: " . $e;
     }
 }
 

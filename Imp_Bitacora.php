@@ -7,7 +7,7 @@ require_once 'libexportar/PHPExcel/IOFactory.php';
 require_once 'libexportar/PHPExcel/Cell/AdvancedValueBinder.php';
 
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
-$objPHPExcel = $objReader->load("Bitacora2.xlsx");
+$objPHPExcel = $objReader->load("Bitacora.xlsx");
 
 
 include 'config/conexion.php';
@@ -88,7 +88,7 @@ $num = 1;
 				WHERE not_solicitud.ClaveEntidad = ".$Solicitud. " ORDER BY FechaRecibida DESC, Folio DESC ";*/
         $q = $pdo->prepare($sql);
         $q->execute(array());
-        $data = $q->fetchall(PDO::FETCH_ASSOC);		   
+        $data = $q->fetchall(PDO::FETCH_ASSOC);
 		   foreach($data as $MostrarFila):
 				$objPHPExcel->getActiveSheet()->setCellValue('C6', $MostrarFila['empleado']);
 				$objPHPExcel->getActiveSheet()->setCellValueExplicit('K6', $MostrarFila['operador']);
@@ -112,8 +112,6 @@ $num = 1;
 					$objPHPExcel->getActiveSheet()->setCellValue('H9', $de->format('Y'));
 				else
 					$objPHPExcel->getActiveSheet()->setCellValue('H9', $de->format('Y').'-'.$al->format('Y'));
-				
-				$objPHPExcel->getActiveSheet()->setCellValue('L9', $MostrarFila['cada_vale']);
 
 				if($MostrarFila['fecha_carga']){
 					$fecha_carga = new DateTime($MostrarFila['fecha_carga']);
@@ -147,93 +145,91 @@ $num = 1;
 			$i = 13;
 			$km_total = 0;
 			foreach($data as $MostrarFila):
-				$dia = explode(" ",$MostrarFila['dia_semana']);
-				if($dia[1]<10) (string)$dia[1] = '0'.(string)$dia[1];
-				switch ($dia[0]) {
-					case 'Lunes':
-						$objPHPExcel->getActiveSheet()->setCellValueExplicit('A'.$i, $dia[1]);
-					break;
-					case 'Martes':
-						$objPHPExcel->getActiveSheet()->setCellValueExplicit('B'.$i, $dia[1]);
-					break;
-					case 'Miércoles':
-						$objPHPExcel->getActiveSheet()->setCellValueExplicit('C'.$i, $dia[1]);
-					break;
-					case 'Jueves':
-						$objPHPExcel->getActiveSheet()->setCellValueExplicit('D'.$i, $dia[1]);
-					break;
-					case 'Viernes':
-						$objPHPExcel->getActiveSheet()->setCellValueExplicit('E'.$i, $dia[1]);
-					break;
-					case 'Sábado':
-						$objPHPExcel->getActiveSheet()->setCellValueExplicit('F'.$i, $dia[1]);
-					break;
-					case 'Domingo':
-						$objPHPExcel->getActiveSheet()->setCellValueExplicit('G'.$i, $dia[1]);
-					break;
-					
-					default:
-						# code...
+				if($MostrarFila['vacio'] == 0){
+					$dia = explode(" ",$MostrarFila['dia_semana']);
+					if($dia[1]<10) (string)$dia[1] = '0'.(string)$dia[1];
+					switch ($dia[0]) {
+						case 'Lunes':
+							$objPHPExcel->getActiveSheet()->setCellValueExplicit('A'.$i, $dia[1]);
 						break;
-				}
-				$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':'.'O'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-				$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':'.'O'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-
-				$objPHPExcel->getActiveSheet()->setCellValue('H'.$i, $MostrarFila['salida']);
-				$objPHPExcel->getActiveSheet()->setCellValue('J'.$i, $MostrarFila['km_inicial']);
-				$objPHPExcel->getActiveSheet()->setCellValue('K'.$i, $MostrarFila['recorrido']);	
-				$objPHPExcel->getActiveSheet()->setCellValue('N'.$i, $MostrarFila['km_final']);
-				$objPHPExcel->getActiveSheet()->setCellValue('O'.$i, $MostrarFila['km_final']-$MostrarFila['km_inicial']);
-				
-				$km_total += $MostrarFila['km_final']-$MostrarFila['km_inicial'];
-
-				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-				$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
-
-				if(strlen($MostrarFila['recorrido'])>38){
-					/*$objPHPExcel->getActiveSheet()->unmergeCells('H'.$i.':I'.$i);
-					$objPHPExcel->getActiveSheet()->unmergeCells('K'.$i.':M'.$i);
-					$objPHPExcel->getActiveSheet()->unmergeCells('H'.($i+1).':I'.($i+1));
-					$objPHPExcel->getActiveSheet()->unmergeCells('K'.($i+1).':M'.($i+1));*/
-
-					for($j=65; $j<72; $j++)
-						$objPHPExcel->getActiveSheet()->mergeCells(chr($j).$i.':'.chr($j).($i+1));
-
-					$objPHPExcel->getActiveSheet()->mergeCells('H'.$i.':I'.($i+1));
-					$objPHPExcel->getActiveSheet()->mergeCells('J'.$i.':J'.($i+1));	
-					$objPHPExcel->getActiveSheet()->mergeCells('K'.$i.':M'.($i+1));
-					$objPHPExcel->getActiveSheet()->mergeCells('N'.$i.':N'.($i+1));
-					$objPHPExcel->getActiveSheet()->mergeCells('O'.$i.':O'.($i+1));
-
-					$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setWrapText(true);
-					//$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
-
-					for($j=65; $j<80; $j++){
-						$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).($i+1))->getBorders()
-						->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-						$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).($i+1))->getBorders()
-						->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+						case 'Martes':
+							$objPHPExcel->getActiveSheet()->setCellValueExplicit('B'.$i, $dia[1]);
+						break;
+						case 'Miércoles':
+							$objPHPExcel->getActiveSheet()->setCellValueExplicit('C'.$i, $dia[1]);
+						break;
+						case 'Jueves':
+							$objPHPExcel->getActiveSheet()->setCellValueExplicit('D'.$i, $dia[1]);
+						break;
+						case 'Viernes':
+							$objPHPExcel->getActiveSheet()->setCellValueExplicit('E'.$i, $dia[1]);
+						break;
+						case 'Sábado':
+							$objPHPExcel->getActiveSheet()->setCellValueExplicit('F'.$i, $dia[1]);
+						break;
+						case 'Domingo':
+							$objPHPExcel->getActiveSheet()->setCellValueExplicit('G'.$i, $dia[1]);
+						break;
+						
+						default:
+							# code...
+							break;
 					}
-					$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':O'.($i+1))->getBorders()
-					->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':'.'O'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+					$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':'.'O'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
-					$i+=2;
-					//$objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(26);
-				}else{
-					$objPHPExcel->getActiveSheet()->mergeCells('H'.$i.':I'.$i);
-					$objPHPExcel->getActiveSheet()->mergeCells('K'.$i.':M'.$i);
-					for($j=65; $j<80; $j++){
-						$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).$i)->getBorders()
-						->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-						$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).$i)->getBorders()
-						->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					$objPHPExcel->getActiveSheet()->setCellValue('H'.$i, $MostrarFila['salida']);
+					$objPHPExcel->getActiveSheet()->setCellValue('J'.$i, $MostrarFila['km_inicial']);
+					$objPHPExcel->getActiveSheet()->setCellValue('K'.$i, $MostrarFila['recorrido']);	
+					$objPHPExcel->getActiveSheet()->setCellValue('N'.$i, $MostrarFila['km_final']);
+					$objPHPExcel->getActiveSheet()->setCellValue('O'.$i, $MostrarFila['km_final']-$MostrarFila['km_inicial']);
+					
+					$km_total += $MostrarFila['km_final']-$MostrarFila['km_inicial'];
+
+					$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+					$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
+
+					if(strlen($MostrarFila['recorrido'])>29){
+
+						for($j=65; $j<72; $j++) // TABLA DINAMICA EN EXCEL
+							$objPHPExcel->getActiveSheet()->mergeCells(chr($j).$i.':'.chr($j).($i+1)); //SE UNEN LOS RENGLONES CUANDO EL RECORRIDO TIENE UN SALTO DE LINEA
+
+						$objPHPExcel->getActiveSheet()->mergeCells('H'.$i.':I'.($i+1));
+						$objPHPExcel->getActiveSheet()->mergeCells('J'.$i.':J'.($i+1));	
+						$objPHPExcel->getActiveSheet()->mergeCells('K'.$i.':M'.($i+1));
+						$objPHPExcel->getActiveSheet()->mergeCells('N'.$i.':N'.($i+1));
+						$objPHPExcel->getActiveSheet()->mergeCells('O'.$i.':O'.($i+1));
+
+						$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setWrapText(true);
+						//$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+
+						/*for($j=65; $j<80; $j++){
+							$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).($i+1))->getBorders()
+							->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+							$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).($i+1))->getBorders()
+							->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+						}
+						$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':O'.($i+1))->getBorders()
+						->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);*/
+
+						$i+=2;
+						//$objPHPExcel->getActiveSheet()->getRowDimension($i)->setRowHeight(26);
+					}else{
+						$objPHPExcel->getActiveSheet()->mergeCells('H'.$i.':I'.$i);
+						$objPHPExcel->getActiveSheet()->mergeCells('K'.$i.':M'.$i);
+						/*for($j=65; $j<80; $j++){
+							$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).$i)->getBorders()
+							->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+							$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).$i)->getBorders()
+							->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+						}
+						$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':O'.$i)->getBorders()
+						->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);*/
+						$i++;
 					}
-					$objPHPExcel->getActiveSheet()->getStyle('A'.$i.':O'.$i)->getBorders()
-					->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-					$i++;
 				}
 			endforeach;
-			$objPHPExcel->getActiveSheet()->mergeCells('L'.$i.':N'.($i+1));
+			/*$objPHPExcel->getActiveSheet()->mergeCells('L'.$i.':N'.($i+1)); //CONTINUACION DE LA CREACION DE UNA TABLA DINAMICA EN EXCEL
 			$objPHPExcel->getActiveSheet()->mergeCells('O'.$i.':O'.($i+1));
 
 			$objPHPExcel->getActiveSheet()->getStyle('O'.$i.':O'.($i+1))->getBorders()
@@ -250,27 +246,27 @@ $num = 1;
 			$objPHPExcel->getActiveSheet()->getStyle('L'.$i.':'.'O'.$i)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
 			$objPHPExcel->getActiveSheet()->setCellValue('L'.$i, 'Total / kms Recorridos');
-			$objPHPExcel->getActiveSheet()->getStyle('L'.$i)->getFont()->setBold(true);
-			$objPHPExcel->getActiveSheet()->setCellValue('O'.$i, $km_total);
+			$objPHPExcel->getActiveSheet()->getStyle('L'.$i)->getFont()->setBold(true);*/
+			$objPHPExcel->getActiveSheet()->setCellValue('O27', $km_total);
 
 			$HojaIndex++;
 			$num++;
 		
 		
-		$objPHPExcel->getActiveSheet()->getPageSetup()->setPrintArea("A1:O34");
-		
-		//$objPHPExcel->getActiveSheet()->getPageMargins()->setTop(2.00)->setBottom(2.00);
-		//$objPHPExcel->getActiveSheet()->getPageMargins()->setLeft(0.80)->setRight(0.70);
-		
-		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
-		$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
+			$objPHPExcel->getActiveSheet()->getPageSetup()->setPrintArea("A1:O34");
+			
+			//$objPHPExcel->getActiveSheet()->getPageMargins()->setTop(2.00)->setBottom(2.00); //PARA PONER MARGENES
+			//$objPHPExcel->getActiveSheet()->getPageMargins()->setLeft(0.80)->setRight(0.70);
+			
+			$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+			$objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(1);
 
-		/*$objDrawing6 = new PHPExcel_Worksheet_HeaderFooterDrawing();
-		$objDrawing6->setName('header');
-		$objDrawing6->setPath('img/prueba.jpg');
-		$objDrawing6->setWidth(700);
-		$objPHPExcel->getActiveSheet()->getHeaderFooter()->addImage($objDrawing6, PHPExcel_Worksheet_HeaderFooter::IMAGE_HEADER_LEFT);
-		$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&G&');*/
+			/*$objDrawing6 = new PHPExcel_Worksheet_HeaderFooterDrawing();//PARA PONER IMAGEN AL FORMATO
+			$objDrawing6->setName('header');
+			$objDrawing6->setPath('img/prueba.jpg');
+			$objDrawing6->setWidth(700);
+			$objPHPExcel->getActiveSheet()->getHeaderFooter()->addImage($objDrawing6, PHPExcel_Worksheet_HeaderFooter::IMAGE_HEADER_LEFT);
+			$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&G&');*/
     }
      catch(PDOException $e)
     {

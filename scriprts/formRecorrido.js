@@ -18,7 +18,6 @@
             document.getElementById("km_I"+checkbox.id[checkbox.id.length-1]).disabled = true;
             document.getElementById("km_F"+checkbox.id[checkbox.id.length-1]).disabled = true;
             document.getElementById("salida"+checkbox.id[checkbox.id.length-1]).disabled = true;
-            document.getElementById("destino"+checkbox.id[checkbox.id.length-1]).disabled = true;
             document.getElementById("recorrido"+checkbox.id[checkbox.id.length-1]).disabled = true;
             document.getElementById("btn_vaciar"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "none";
             document.getElementById("btn_agregar"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "none";
@@ -26,7 +25,6 @@
             document.getElementById("km_I"+checkbox.id[checkbox.id.length-1]).disabled = false;
             document.getElementById("km_F"+checkbox.id[checkbox.id.length-1]).disabled = false;
             document.getElementById("salida"+checkbox.id[checkbox.id.length-1]).disabled = false;
-            document.getElementById("destino"+checkbox.id[checkbox.id.length-1]).disabled = false;
             document.getElementById("recorrido"+checkbox.id[checkbox.id.length-1]).disabled = false;
             document.getElementById("btn_vaciar"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "auto";
             document.getElementById("btn_agregar"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "auto";
@@ -42,7 +40,7 @@
         
         if(!document.getElementById("vacio"+dia.id[dia.id.length - 1]).checked){
             if(!listaR.value)
-                document.getElementById("destino"+dia.id[dia.id.length - 1]).reportValidity();
+                document.getElementById("recorrido"+dia.id[dia.id.length - 1]).reportValidity();
 
             salida.reportValidity();
             km_final.reportValidity();
@@ -63,7 +61,6 @@
                     if((dias_recorrido.length-1) == i){
                         document.getElementById('boton_guardar'+i).style.display = "block";
                         document.getElementById(dias_recorrido[i].value).querySelector('#btn_sig'+i).style.visibility = "hidden";
-                        document.getElementById(dias_recorrido[i].value).querySelector('#destino'+i).required = false;
                     }
                     openTab(dias_recorrido[i].value);
                     dias_recorrido[i].className += " active";
@@ -94,7 +91,6 @@
             if((dias_recorrido.length-1) == i){
                 document.getElementById('boton_guardar'+i).style.display = "block";
                 document.getElementById(dias_recorrido[i].value).querySelector('#btn_sig'+i).style.visibility = "hidden";
-                document.getElementById(dias_recorrido[i].value).querySelector('#destino'+i).required = false;
             }
             openTab(dias_recorrido[i].value);
             dias_recorrido[i].className += " active";
@@ -105,7 +101,6 @@
                 document.getElementById(dias_recorrido[i].value).querySelector('#btn_ant'+i).style.visibility = "visible";
             }    
         }
-        //listaR.readOnly = !listaR.readOnly;
     }
 
     function anterior_dia(dia){
@@ -141,51 +136,22 @@
         
         if(nuevoR.value){
             nuevoR.value = nuevoR.value.toUpperCase();
-            $.ajax({
-                method: "POST",
-                url: "controller/controller.php",
-                data: {lugar: nuevoR.value, funcion: "nuevo_recorrido"},
-                cache: false,
-                success: function(result) {
-                    if (result == 1) {
-                        if(document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value.length == 0)
-                            document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value += nuevoR.value;
-                        else
-                            document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value += ', '+nuevoR.value;
-                        swal({
-                            type: 'success',
-                            title: 'Operacion exitosa',
-                            timer: 1000,
-                            showConfirmButton: false
-                        });
-
-                        var nuevaOpcion = document.createElement('option');
-                        nuevaOpcion.value = nuevoR.value;
-                        nuevaOpcion.textContent = nuevoR.value;
-                        for (var i = 0; i < document.getElementsByClassName("tablinks").length; i++)
-                            document.getElementById("destino"+i).appendChild(nuevaOpcion.cloneNode(true));
-
-                        nuevoR.value = "";
-                        
-                    }else{
-                        swal({
-                            type: 'warning',
-                            title: 'Recorrido repetido',
-                            timer: 1000,
-                            showConfirmButton: false
-                        });
-                        nuevoR.value = "";
-                    }
-                }
-            });
-            
-        }else
-            swal({
-                type: 'error',
-                title: 'Ingrese un nuevo recorrido',
-                timer: 1000,
-                showConfirmButton: false
-            });
+            //if (si se quiere verificar que los recoriidos se repiten o no) {
+                if(document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value.length == 0)
+                    document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value += nuevoR.value;
+                else
+                    document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value += ', '+nuevoR.value;
+                    nuevoR.value = "";   
+            //}else{
+                /*swal({
+                    type: 'warning',
+                    title: 'Recorrido repetido',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+                nuevoR.value = "";*/
+            //}
+        }
     }
 
     function Nbitacora(dia) {
@@ -195,63 +161,14 @@
         var salida = document.getElementById("salida"+dia.id[dia.id.length - 1]);
         var listaR = document.getElementById("listaR"+dia.id[dia.id.length - 1]);
 
-        if(!document.getElementById("vacio"+dia.id[dia.id.length - 1]).checked){
-            if(!listaR.value)
-                document.getElementById("destino"+dia.id[dia.id.length - 1]).reportValidity();
-
-            salida.reportValidity();
-            km_final.reportValidity();
-            km_inicial.reportValidity();
-
-            if(km_inicial.value && km_final.value && salida.value && listaR.value){
-                if(parseInt(km_inicial.value)<parseInt(km_final.value)){
-                    $.ajax({
-                        type: "POST",
-                        url: "controller/controller.php",
-                        data: $("#form_solicitud").serialize(),
-                        cache: false,
-                        success: function(result) {
-                            console.log(result);
-                            if (result == 1) {
-                                swal({
-                                    type: 'success',
-                                    title: 'Solicitud Generada',
-                                    timer: 1000,
-                                    showConfirmButton: false
-                                });
-                                //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
-                            }
-                        }
-                    });
-
-                    var i = 0;
-                    while (i < dias_recorrido.length) {
-                        document.getElementById("listaR"+i).disabled = false;
-                        $.ajax({
-                            type: "POST",
-                            url: "controller/controller.php",
-                            data: $("#formulario_recorrido"+i).serialize(),
-                            cache: false
-                        });
-                        i++;
-                    }
-                    setTimeout(function() { document.location.href = 'index.php'; }, 1100);
-                }else
-                    swal({
-                        type: 'warning',
-                        title: 'El KM inicial no puede ser mayor al KM final',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-            }
-        }else if(dias_recorrido.length == 1){//verica si solo se va a registrar un dia y que no este vacio el formulario
+        if(dias_recorrido.length == 1){//verica si solo se va a registrar un dia y que no este vacio el formulario
             swal({
                 type: 'warning',
                 title: 'El recorrido no debe estar vacío',
                 timer: 1000,
                 showConfirmButton: false
             });
-        }else if(dias_recorrido.length > 1){ //verifica si hay mas de un dia y por lo menos 1 debe reistrarse
+        }else if(dias_recorrido.length > 1){ //verifica si hay mas de un dia y por lo menos 1 debe registrarse
             var i = 0;
             var aux = true;
             while (i < dias_recorrido.length) {
@@ -266,6 +183,55 @@
                     timer: 1000,
                     showConfirmButton: false
                 });
+            }else{
+                if(!listaR.value)
+                    document.getElementById("recorrido"+dia.id[dia.id.length - 1]).reportValidity();
+
+                salida.reportValidity();
+                km_final.reportValidity();
+                km_inicial.reportValidity();
+
+                if(km_inicial.value && km_final.value && salida.value && listaR.value){
+                    if(parseInt(km_inicial.value)<parseInt(km_final.value)){
+                        $.ajax({
+                            type: "POST",
+                            url: "controller/controller.php",
+                            data: $("#form_solicitud").serialize(),
+                            cache: false,
+                            success: function(result) {
+                                console.log(result);
+                                if (result == 1) {
+                                    swal({
+                                        type: 'success',
+                                        title: 'Solicitud Generada',
+                                        timer: 1000,
+                                        showConfirmButton: false
+                                    });
+                                    //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+                                }
+                            }
+                        });
+
+                        var i = 0;
+                        while (i < dias_recorrido.length) {
+                            document.getElementById("listaR"+i).disabled = false;
+                            $.ajax({
+                                type: "POST",
+                                url: "controller/controller.php",
+                                data: $("#formulario_recorrido"+i).serialize(),
+                                cache: false
+                            });
+                            i++;
+                        }
+                        setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+                    }else
+                        swal({
+                            type: 'warning',
+                            title: 'El KM inicial no puede ser mayor al KM final',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                }
             }
         }
     }
