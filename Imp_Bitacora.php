@@ -203,7 +203,7 @@ $num = 1;
 						$objPHPExcel->getActiveSheet()->getStyle('K'.$i.':'.'M'.$i)->getAlignment()->setWrapText(true);
 						//$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
 
-						/*for($j=65; $j<80; $j++){
+						/*for($j=65; $j<80; $j++){ //PARA LA TABLA DINAMICA ES PARA EL ARCHIVO "Bitacora2", YA QUE NO TIENE LA TABLA PREDEFINIDA
 							$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).($i+1))->getBorders()
 							->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 							$objPHPExcel->getActiveSheet()->getStyle(chr($j).$i.':'.chr($j).($i+1))->getBorders()
