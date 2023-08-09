@@ -184,53 +184,87 @@
                     showConfirmButton: false
                 });
             }else{
-                if(!listaR.value)
-                    document.getElementById("recorrido"+dia.id[dia.id.length - 1]).reportValidity();
+                if(!document.getElementById("vacio"+dia.id[dia.id.length - 1]).checked){
+                    if(!listaR.value)
+                        document.getElementById("recorrido"+dia.id[dia.id.length - 1]).reportValidity();
 
-                salida.reportValidity();
-                km_final.reportValidity();
-                km_inicial.reportValidity();
+                    salida.reportValidity();
+                    km_final.reportValidity();
+                    km_inicial.reportValidity();
 
-                if(km_inicial.value && km_final.value && salida.value && listaR.value){
-                    if(parseInt(km_inicial.value)<parseInt(km_final.value)){
-                        $.ajax({
-                            type: "POST",
-                            url: "controller/controller.php",
-                            data: $("#form_solicitud").serialize(),
-                            cache: false,
-                            success: function(result) {
-                                console.log(result);
-                                if (result == 1) {
-                                    swal({
-                                        type: 'success',
-                                        title: 'Solicitud Generada',
-                                        timer: 1000,
-                                        showConfirmButton: false
-                                    });
-                                    //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
-                                }
-                            }
-                        });
-
-                        var i = 0;
-                        while (i < dias_recorrido.length) {
-                            document.getElementById("listaR"+i).disabled = false;
+                    if(km_inicial.value && km_final.value && salida.value && listaR.value){
+                        if(parseInt(km_inicial.value)<parseInt(km_final.value)){
                             $.ajax({
                                 type: "POST",
                                 url: "controller/controller.php",
-                                data: $("#formulario_recorrido"+i).serialize(),
-                                cache: false
+                                data: $("#form_solicitud").serialize(),
+                                cache: false,
+                                success: function(result) {
+                                    console.log(result);
+                                    if (result == 1) {
+                                        swal({
+                                            type: 'success',
+                                            title: 'Solicitud Generada',
+                                            timer: 1000,
+                                            showConfirmButton: false
+                                        });
+                                        //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+                                    }
+                                }
                             });
-                            i++;
+
+                            var i = 0;
+                            while (i < dias_recorrido.length) {
+                                document.getElementById("listaR"+i).disabled = false;
+                                $.ajax({
+                                    type: "POST",
+                                    url: "controller/controller.php",
+                                    data: $("#formulario_recorrido"+i).serialize(),
+                                    cache: false
+                                });
+                                i++;
+                            }
+                            setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+                        }else
+                            swal({
+                                type: 'warning',
+                                title: 'El KM inicial no puede ser mayor al KM final',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                    }
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: "controller/controller.php",
+                        data: $("#form_solicitud").serialize(),
+                        cache: false,
+                        success: function(result) {
+                            console.log(result);
+                            if (result == 1) {
+                                swal({
+                                    type: 'success',
+                                    title: 'Solicitud Generada',
+                                    timer: 1000,
+                                    showConfirmButton: false
+                                });
+                                //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+                            }
                         }
-                        setTimeout(function() { document.location.href = 'index.php'; }, 1100);
-                    }else
-                        swal({
-                            type: 'warning',
-                            title: 'El KM inicial no puede ser mayor al KM final',
-                            timer: 1500,
-                            showConfirmButton: false
+                    });
+
+                    var i = 0;
+                    while (i < dias_recorrido.length) {
+                        document.getElementById("listaR"+i).disabled = false;
+                        $.ajax({
+                            type: "POST",
+                            url: "controller/controller.php",
+                            data: $("#formulario_recorrido"+i).serialize(),
+                            cache: false
                         });
+                        i++;
+                    }
+                    setTimeout(function() { document.location.href = 'index.php'; }, 1100);
                 }
             }
         }
