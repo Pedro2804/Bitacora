@@ -88,7 +88,7 @@ $id = $_GET['id'];
             );
 
             if($Solicitud["vacio"] == 0) //verificamos que el recorrido no esté vacío
-                $kilometraje_anterior += $km_final - $km_inicial;
+                $kilometraje_anterior = $km_final - $km_inicial;
         endforeach;
     }catch(PDOException $e)
     {
@@ -407,7 +407,7 @@ $id = $_GET['id'];
 
 <script type="text/javascript"> //ENVIAMOS EL ARREGLO A JS SCRIPT PARA PODER MANIPULARLO
     datos = Array(<?php echo json_encode($datos);?>);
-    km_ant = Array(<?php echo json_encode($kilometraje_anterior);?>);
+    km_ant = <?php echo json_encode($kilometraje_anterior);?>;
     id_bitacora = <?php echo json_encode($id);?>;
 
     document.getElementById("numero_control_e").value = <?php echo json_encode($num_control);?>;

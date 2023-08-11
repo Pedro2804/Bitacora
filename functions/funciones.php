@@ -313,7 +313,6 @@ function editar_bitacora(){
     $fechalDel = null;
     $fechalAl = null;
     $combustible = null;
-    $vale = null;
     $fechaCarga = null;
     $monto = null;
     $folio = null;
@@ -334,9 +333,6 @@ function editar_bitacora(){
     if (isset($_POST['tipo_combustible_e']) && !empty($_POST['tipo_combustible_e'])) {
         $combustible = $_POST['tipo_combustible_e'];
     }
-    if (isset($_POST['cada_vale_e']) && !empty($_POST['cada_vale_e'])) {
-        $vale = $_POST['cada_vale_e'];
-    }
     if (isset($_POST['fecha_carga_e']) && !empty($_POST['fecha_carga_e'])) {
         $fechaCarga = date('Y-m-d', strtotime($_POST['fecha_carga_e']));
     }
@@ -356,9 +352,6 @@ function editar_bitacora(){
 
         $sql .= ", combustible=?";
         $params[] = $combustible;
-
-        $sql .= ", cada_vale=?";
-        $params[] = $vale;
 
         $sql .= ", fecha_carga=?";
         $params[] = $fechaCarga;
@@ -435,7 +428,6 @@ function guardar_recorrido(){
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        // Construir la consulta SQL y el array de parámetros dinámicamente
         $sql = "INSERT INTO recorrido (vacio, bitacora) VALUES (?,?);";
         $params = array($vacio, $id_bitacora);
     
@@ -481,8 +473,8 @@ function editar_recorrido(){
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
         // Construir la consulta SQL y el array de parámetros dinámicamente
-        $sql = "UPDATE recorrido SET dia_semana=?, salida=?, recorrido=?, km_inicial=?, km_final=? WHERE id_recorrido= $id_recorrido;";
-        $params = array($dia, $salida, $lista_rec, $k_i, $k_f);
+        $sql = "UPDATE recorrido SET dia_semana=?, salida=?, recorrido=?, km_inicial=?, km_final=? vacio=? WHERE id_recorrido= $id_recorrido;";
+        $params = array($dia, $salida, $lista_rec, $k_i, $k_f, 0);
     
         $q = $pdo->prepare($sql);
     

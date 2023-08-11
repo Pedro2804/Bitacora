@@ -173,14 +173,14 @@
         var salida = document.getElementById("salida"+dia.id[dia.id.length - 1]);
         var listaR = document.getElementById("listaR"+dia.id[dia.id.length - 1]);
 
-        if(dias_recorrido.length == 1){//verica si solo se va a registrar un dia y que no este vacio el formulario
+        if(dias_recorrido.length == 1 && document.getElementById("vacio0").checked){//verica si solo se va a registrar un dia y que no este vacio el formulario
             swal({
                 type: 'warning',
                 title: 'El recorrido no debe estar vacío',
                 timer: 1000,
                 showConfirmButton: false
             });
-        }else if(dias_recorrido.length > 1){ //verifica si hay mas de un dia y por lo menos 1 debe registrarse
+        }else if(dias_recorrido.length >= 1){ //verifica si hay mas de un dia y por lo menos 1 debe registrarse
             var i = 0;
             var aux = true;
             while (i < dias_recorrido.length) {
@@ -228,6 +228,7 @@
                             var i = 0;
                             while (i < dias_recorrido.length) {
                                 document.getElementById("listaR"+i).disabled = false;
+                                document.getElementById("km_I"+i).disabled = false;
                                 $.ajax({
                                     type: "POST",
                                     url: "controller/controller.php",
@@ -461,6 +462,7 @@ function Nbitacora_e(dia) {
     var km_final = document.getElementById("km_F_e"+dia.id[dia.id.length - 1]);
     var salida = document.getElementById("salida_e"+dia.id[dia.id.length - 1]);
     var listaR = document.getElementById("listaR_e"+dia.id[dia.id.length - 1]);
+    
     if(!document.getElementById("vacio_e"+dia.id[dia.id.length - 1]).checked){
         if(!listaR.value)
             document.getElementById("recorrido_e"+dia.id[dia.id.length - 1]).reportValidity();
@@ -496,7 +498,6 @@ function Nbitacora_e(dia) {
                 while (i < dias_recorrido.length) {
                     document.getElementById("listaR_e"+i).disabled = false;
                     document.getElementById("km_I_e"+i).disabled = false;
-                    document.getElementById("km_F_e"+i).disabled = false;
                     $.ajax({
                         type: "POST",
                         url: "controller/controller.php",
