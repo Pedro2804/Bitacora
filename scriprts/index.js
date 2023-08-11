@@ -351,10 +351,9 @@
                             for(i=0; i<dias_recorrido.length; i++)
                                 dias_recorrido[i].disabled = true;
                             dias_recorrido[0].className += " active";
-                            
                             var j=0;
                             while(j<dias_recorrido.length){
-                                if(dias_recorrido[j].value in  datos[0]){
+                                if(datos[0][dias_recorrido[j].value] && datos[0][dias_recorrido[j].value]["vacio"]==0){
                                     document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
                                     document.getElementById("km_I_e"+j).value = datos[0][dias_recorrido[j].value]["km_inicial"];
                                     document.getElementById("km_F_e"+j).value = datos[0][dias_recorrido[j].value]["km_final"];
@@ -362,6 +361,7 @@
                                     document.getElementById("listaR_e"+j).value = datos[0][dias_recorrido[j].value]["recorrido"];
                                 }else{
                                     document.getElementById("vacio_e"+j).checked = true;
+                                    document.getElementById("km_I_e"+j).disabled = true;
                                     document.getElementById("km_F_e"+j).disabled = true;
                                     document.getElementById("salida_e"+j).disabled = true;
                                     document.getElementById("recorrido_e"+j).disabled = true;

@@ -65,6 +65,7 @@ $id = $_GET['id'];
       $data = $q->fetchall(PDO::FETCH_ASSOC);
       $datos = array();
 	    foreach($data as $Solicitud):
+            $vacio=$Solicitud['vacio'];
             $id_recorrido=$Solicitud['id_recorrido'];
             $dia = $Solicitud['dia_semana'];
             $km_inicial=$Solicitud['km_inicial'];
@@ -78,6 +79,7 @@ $id = $_GET['id'];
 
             // Despues agregamos la informacion de ese dia
             $datos[$dia] = array(
+                "vacio" => $vacio,
                 "id_recorrido" => $id_recorrido,
                 "km_inicial" => $km_inicial,
                 "km_final" => $km_final,
