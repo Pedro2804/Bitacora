@@ -59,7 +59,7 @@
                 </div>
 
                 <!--Salida-->
-                <div class="col-md-6" style="width: 20%;">
+                <div class="col-md-6" style="width: 18%;">
                     <?php $opciones = array('Estacionamiento', 'Casitas', 'Opción 3'); ?>
                     <label style="font-size: 17px;">Salida:</label><br>
                     <select id="salida_e<?php echo $j ?>" name="salida_e" required>
@@ -71,30 +71,8 @@
                         ?>
                     </select>
                 </div>
-                
-                <!--Recorrido-->
-                <div class="col-md-6" style="width: 20%;">
-                        <label style="font-size: 17px;">Recorrido:</label><br>
-                        <select id="destino_e<?php echo $j ?>" name="destino_e" onchange="listarRecorrido_e(this)" required>
-                            <?php
-                                try {
-                                    $pdo = Database::connect();
-                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                    $sql = "SELECT * FROM Destino";
-                                    $q = $pdo->prepare($sql);
-                                    $q->execute(array());
-                                    $data = $q->fetchall(PDO::FETCH_ASSOC);
-                                    echo '<option value="">Seleccione los destinos</option>';
-                                    foreach($data as $row)
-                                        echo '<option value="'.$row['lugar'].'">'.$row['lugar'].'</option>';
-                                }catch(PDOException $e){
-                                    echo 'Error: ' . $e->getMessage();
-                                }
-                            ?>
-                        </select>
-                </div>
 
-                <div class="col-md-6" style="width: 22%;">
+                <div class="col-md-6" style="width: 20%;">
                     <div class="form-group form-animate-text" style="margin: 0px;">
                         <input type="text" oninput="this.value = this.value.toUpperCase()" id="recorrido_e<?php echo $j ?>" class="form-text" name="recorrido_e">
                         <span class="bar"></span><label>Nuevo recorrido</label>
@@ -102,20 +80,16 @@
                 </div>
 
                 <!--Boton agregar-->
-                <div class="col-md-6" style="width: 8%;">
+                <div class="col-md-6" style="width: 6%;">
                     <div id="btn_agregar_e<?php echo $j ?>" class="btn-guardar" onclick="nuevoRecorrido_e(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Agregar</div>
                 </div>
-            </div>
-            
-            <!--Lista de recorridos-->
-            <div class="col-md-12">
-                <div class="col-md-6" style="width: 70%;"></div>
+
                 <!--Text area-->
-                <div class="col-md-6" style="width: 22%;">
+                <div class="col-md-6" style="width: 20%;">
                     <textarea id="listaR_e<?php echo $j ?>" name="listaRecorridos_e" placeholder="Recorridos" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
                 </div>
                 <!--Boton vaciar-->
-                <div class="col-md-6" style="width: 8%;">
+                <div class="col-md-6" style="width: 6%;">
                     <div id="btn_vaciar_e<?php echo $j ?>" class="btn-guardar" onclick="vaciar_e(this)" style="user-select: none; background: #172e5c; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Vaciar</div>
                 </div>
             </div>

@@ -212,7 +212,6 @@
                     <div id="recorridos" style="display: none;"></div>
                 </div>
             </div>
-            
         </div>
         <!-- start: Javascript -->
         <script src="asset/js/jquery.min.js"></script>
@@ -298,7 +297,7 @@
                     document.getElementById("boton_guardar0").style.display = "block";
                     document.getElementById("btn_sig0").style.display = "none";
                     openTab(document.getElementsByClassName("tablinks")[0].value);
-                    document.getElementsByClassName("tablinks")[0].className += " active"
+                    document.getElementsByClassName("tablinks")[0].className += " active";
                     $.ajax({
                         method: "POST",
                         url: "controller/controller.php",

@@ -139,9 +139,21 @@
             //if (si se quiere verificar que los recoriidos se repiten o no) {
                 if(document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value.length == 0)
                     document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value += nuevoR.value;
-                else
-                    document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value += ', '+nuevoR.value;
-                    nuevoR.value = "";   
+                else{
+                    var texto = document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value;
+                    var palabras = texto.replace(/,/g, "").split(" ");
+
+                    if(!palabras.includes(nuevoR.value))
+                        document.getElementById("listaR"+btnNuevo.id[btnNuevo.id.length -1]).value += ', '+nuevoR.value;
+                    else
+                        swal({
+                            type: 'warning',
+                            title: 'Recorrido repetido',
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                }
+                nuevoR.value = "";   
             //}else{
                 /*swal({
                     type: 'warning',

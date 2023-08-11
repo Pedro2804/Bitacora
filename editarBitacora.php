@@ -6,7 +6,6 @@ $id = $_GET['id'];
 <?php
   //DECLARACIÓN DE VALORES PARA AUTOCOMPLETADO
   $combustible='';
-  $vale='';
   $folio='';
   $monto='';
   $fecha_carga=null;
@@ -42,8 +41,6 @@ $id = $_GET['id'];
           $fecha_carga=$Solicitud['fecha_carga'];
         if($Solicitud['combustible'])
           $combustible=$Solicitud['combustible'];
-        if($Solicitud['cada_vale'])
-          $vale=$Solicitud['cada_vale'];
         if($Solicitud['folio'])
           $folio=$Solicitud['folio'];
         if($Solicitud['monto'])
@@ -139,19 +136,19 @@ $id = $_GET['id'];
     <link rel="apple-touch-icon" sizes="144x144" href="img/favicon.ico" />
 </head>
 <body id="mimin" class="dashboard">
-  <div class="jumbotron">
-    <img src="img/logodifblanco.png" class="logo_dif">
-  </div>
-  <div id='cssmenu'>  
-    <ul>
-      <li><a href='index.php'>Nueva Bitacora</a></li>
-      <li><a href='Busqueda.php'>Ver Bitacoras</a></li>
-      <li><a href='admin/autos.php'>ADMINISTRADOR</a></li>
-      <li class='active'><a href='index.php'>Editar Bitacora</a></li>
-    </ul>
-  </div>
+        <div class="jumbotron">
+            <img src="img/logodifblanco.png" class="logo_dif">
+        </div>
+        <div id='cssmenu'>  
+            <ul>
+            <li><a href='index.php'>Nueva Bitacora</a></li>
+            <li><a href='Busqueda.php'>Ver Bitacoras</a></li>
+            <li><a href='admin/autos.php'>ADMINISTRADOR</a></li>
+            <li class='active'><a href='index.php'>Editar Bitacora</a></li>
+            </ul>
+        </div>
 
-  <div class="col-md-10" style="width: 100%;">
+        <div class="col-md-10" style="width: 100%;">
             <div class="col-md-12 panel">
                 <div class="col-md-12 panel-heading">
                     <h4 class="Titulos">BITACORA</h4>
@@ -163,7 +160,7 @@ $id = $_GET['id'];
                             <input type="hidden" value="<?php echo $id; ?>" id="id_bitacora" name="id_bitacora_form">
                             <div class="col-md-12" style="margin-top:40px !important;"><!--CENTRAL 0-->
                                 <!--Numero de control 1-->
-                                <div class="col-md-6" style="width: 18%;">
+                                <div class="col-md-6" style="width: 16%;">
                                     <div class="form-group form-animate-text" id="N_C">
                                         <input list="idE_e" type="text" class="form-text" id="numero_control_e" name="numero_control_e" required>
                                         <datalist id="idE_e">
@@ -185,7 +182,7 @@ $id = $_GET['id'];
                                         <span class="bar"></span><label>Numero de control*</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6" style="width: 32%;"><!--IZQUIERDA 1-->
+                                <div class="col-md-6" style="width: 30%;"><!--IZQUIERDA 1-->
                                     <!--OPERADOR-->
                                     <div class="form-group form-animate-text" id="N_O_e" style="opacity: 1;">
                                         <input type="text" class="form-text" id="N_operador_e" name="N_operador_e" value="<?php echo $nombre;?>" onclick="this.blur();" >
@@ -195,12 +192,12 @@ $id = $_GET['id'];
                                 </div><!--IZQUIERDA 1-->
                                 
                                 <!--PERIODO DEL-->
-                                <div class="col-md-6" style="width: 25%;">
-                                    <label>Del: </label>
+                                <div class="col-md-6" style="width: 30%;">
+                                    <label>Fecha de Recorrido Del: </label>
                                     <input type="text" class="form-text" id="FechaDel_e" name="FechaDel_e" value="<?php echo $fechainicio;?>" disabled>
                                 </div>
                                 <!--PERIODO AL-->
-                                <div class="col-md-6" style="width: 25%;">
+                                <div class="col-md-6" style="width: 24%;">
                                     <label>Al: </label>
                                     <input type="text" class="form-text" id="FechaAl_e" name="FechaAl_e" value="<?php echo $fechafin;?>" disabled>
                                 </div>
@@ -258,7 +255,7 @@ $id = $_GET['id'];
                                 
                             <div class="col-md-12" style="margin-top:40px !important;"> <!--CENTRAL 2-->
                                 <!--TIPO DE COMBUSTIBLE-->
-                                <div class="col-md-6" style="width: 20%;">
+                                <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="T_c_e">
                                         <input type="text" class="form-text" oninput="this.value = this.value.toUpperCase()" id="tipo_comb_e" name="tipo_combustible_e" >
                                         <span class="bar"></span>
@@ -266,17 +263,8 @@ $id = $_GET['id'];
                                     </div>
                                 </div>
 
-                                <!--CADA VALE-->
-                                <div class="col-md-6" style="width: 20%;">
-                                    <div class="form-group form-animate-text" id="C_v_e">
-                                        <input type="text" class="form-text" id="vale_e" name="cada_vale_e">
-                                        <span class="bar"></span>
-                                        <label>Cada vale</label>
-                                    </div>
-                                </div>
-
                                 <!--FECHA CARGA-->
-                                <div class="col-md-6" style="width: 20%;">
+                                <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="F_c_e">
                                         <input type="text" class="form-text" id="fecha_r_e" name="fecha_carga_e">
                                         <span class="bar"></span>
@@ -285,7 +273,7 @@ $id = $_GET['id'];
                                 </div>
 
                                 <!--FOLIO-->
-                                <div class="col-md-6" style="width: 20%;">
+                                <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="fol_e">
                                         <input type="text" class="form-text" id="folio_e" name="folio_e">
                                         <span class="bar"></span><label>FOLIO</label>
@@ -293,7 +281,7 @@ $id = $_GET['id'];
                                 </div>
 
                                 <!--MONTO-->
-                                <div class="col-md-6" style="width: 20%;">
+                                <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="mont_e">
                                         <input type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" id="monto_e" name="monto_e">
                                         <span class="bar"></span><label>MONTO</label>
@@ -309,10 +297,8 @@ $id = $_GET['id'];
                                     <div id="cancelar_e" class="btn-guardar" style="user-select: none; background: red; width: 75px; height: 35px; text-align: center; padding-top: 8px; cursor: pointer;">Cancelar</div>
                                 </div>
                             </div>
-                            </div>
 
                             <div class="col-md-12" id="resultados"></div>
-
                         </form>
                     </div>        
                 </div>
@@ -321,8 +307,7 @@ $id = $_GET['id'];
                 <div class="col-md-12 panel-body">
                     <div id="recorridos_e" style="display: none;"></div>
                 </div>
-            </div>
-            
+            </div> 
         </div>
 
 <!-- start: Javascript -->
@@ -401,8 +386,7 @@ $id = $_GET['id'];
                     document.getElementById("boton_guardar_e0").style.display = "block";
                     document.getElementById("btn_sig_e0").style.display = "none";
                     openTab_e(document.getElementsByClassName("tablinks_e")[0].value);
-                    document.getElementsByClassName("tablinks_e")[0].className += " active"
-                    document.getElementById("destino_e0").required = false;
+                    document.getElementsByClassName("tablinks_e")[0].className += " active";
                 }else{
                     $('#sig_bitacora_e').css("display", "block");
                     swal({
@@ -430,7 +414,6 @@ $id = $_GET['id'];
 
     document.getElementById("numero_control_e").value = <?php echo json_encode($num_control);?>;
     document.getElementById("tipo_comb_e").value = <?php echo json_encode($combustible);?>;
-    document.getElementById("vale_e").value = <?php echo json_encode($vale);?>;
     document.getElementById("fecha_r_e").value = <?php echo json_encode($fecha_carga);?>;
     document.getElementById("folio_e").value = <?php echo json_encode($folio);?>;
     document.getElementById("monto_e").value = <?php echo json_encode($monto);?>;

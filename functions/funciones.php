@@ -191,13 +191,15 @@ function get_vehiculo($id){
 function num_bitacoras(){
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT COUNT(id_bitacora) AS bitacoras FROM bitacora;";
+    $sql = "SELECT MAX(id_bitacora) AS bitacoras FROM bitacora;";
     $q = $pdo->prepare($sql);
     try {
         $q->execute(array());
         $data = $q->fetch(PDO::FETCH_ASSOC);
         Database::disconnect();
-        return $data["bitacoras"]+1;
+        if($data["bitacoras"])
+            return $data["bitacoras"]+1;
+        else return 1;
     } catch (PDOException $e) {
         Database::disconnect();
         return "Error: " . $e;

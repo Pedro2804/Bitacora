@@ -363,7 +363,6 @@
                                     document.getElementById("vacio_e"+j).checked = true;
                                     document.getElementById("vacio_e"+j).disabled = true;
                                     document.getElementById("salida_e"+j).disabled = true;
-                                    document.getElementById("destino_e"+j).disabled = true;
                                     document.getElementById("recorrido_e"+j).disabled = true;
                                     document.getElementById("btn_vaciar_e"+j).style.pointerEvents = "none";
                                     document.getElementById("btn_agregar_e"+j).style.pointerEvents = "none";
