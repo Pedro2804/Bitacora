@@ -55,7 +55,7 @@
                 <!--Kilometro final-->
                 <div class="col-md-6" style="width: 15%;">
                     <label style="font-size: 17px;">Km final:</label>
-                    <input id="km_F_e<?php echo $j ?>" type="number" name="km_final_e" min="0" style="height: 32px;" disabled />
+                    <input id="km_F_e<?php echo $j ?>" type="number" name="km_final_e" min="0" style="height: 32px;" required/>
                 </div>
 
                 <!--Salida-->
@@ -74,7 +74,7 @@
 
                 <div class="col-md-6" style="width: 20%;">
                     <div class="form-group form-animate-text" style="margin: 0px;">
-                        <input type="text" oninput="this.value = this.value.toUpperCase()" id="recorrido_e<?php echo $j ?>" class="form-text" name="recorrido_e">
+                        <input type="text" oninput="this.value = this.value.toUpperCase()" onkeydown="if(event.keyCode === 13){nuevoRecorrido_e(this);}" maxlength="60" id="recorrido_e<?php echo $j ?>" class="form-text" name="recorrido_e" required>
                         <span class="bar"></span><label>Nuevo recorrido</label>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
 
                 <!--Text area-->
                 <div class="col-md-6" style="width: 20%;">
-                    <textarea id="listaR_e<?php echo $j ?>" name="listaRecorridos_e" placeholder="Recorridos" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
+                    <textarea id="listaR_e<?php echo $j ?>" name="listaRecorridos_e" placeholder="Recorridos (maximo 60 caracteres)" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
                 </div>
                 <!--Boton vaciar-->
                 <div class="col-md-6" style="width: 6%;">

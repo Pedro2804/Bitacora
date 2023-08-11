@@ -46,7 +46,6 @@ $id = $_GET['id'];
         if($Solicitud['monto'])
           $monto=$Solicitud['monto'];
       endforeach;
-      $llenar = true;
   }catch (PDOException $e){
     echo 'Error: ' . $e->getMessage();
   }
@@ -55,18 +54,11 @@ $id = $_GET['id'];
 <?php 
 //QUE DIOS ME PERDONE POR ESTE SPAGHETTI DE CÓDIGO
 //OBTENER VALORES DE :(
+    $kilometraje_anterior = 0; //en dado caso que se quiera editar el vehiculo, almacenamos su kilometraje cuando no se creaba la bitacora.
   try {
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "SELECT * FROM recorrido WHERE bitacora = ?";
-    //POR SI TE LLEGA A SERVIR ESTE TIPO DE CONSULTAS :) soy el nuevo que lo quito :)
-    /*$sql = "SELECT not_solicitud.*, DATE_FORMAT(FechaRecibida,'%d-%m-%Y') AS FechaRecibido_, DATE_FORMAT(FechaAtendida,'%d-%m-%Y') AS FechaAtendida_,  
-                direccion_cat.Nombre AS Direccion, IFNULL(departamento_cat.Nombre,IFNULL(OtroDepartamento,'')) as Departamento,
-                CASE not_solicitud.Estatus WHEN 1 THEN 'RECIBIDO' ELSE 'ATENDIDO' END AS EstatusSolicitud, LPAD(Folio,4,'0') AS Folio_
-                FROM not_solicitud
-              INNER JOIN direccion_cat ON direccion_cat.ClaveEntidad = not_solicitud.CveEntDireccion
-              LEFT OUTER JOIN departamento_cat ON departamento_cat.ClaveEntidad = not_solicitud.CveEntDepartamento
-              WHERE 1 AND not_solicitud.ClaveEntidad=".$id."";*/ //POR SI TE LLEGA A SERVIR ESTE TIPO DE CONSULTAS :)
       $q = $pdo->prepare($sql);
       $q->execute(array($id));
       $filas = $q->rowCount();
@@ -92,6 +84,9 @@ $id = $_GET['id'];
                 "salida" => $salida,
                 "recorrido" => $recorrido
             );
+
+            if($Solicitud["vacio"] == 0) //verificamos que el recorrido no esté vacío
+                $kilometraje_anterior += $km_final - $km_inicial;
         endforeach;
     }catch(PDOException $e)
     {
@@ -207,7 +202,7 @@ $id = $_GET['id'];
                                 <!--UNIDAD DE RESGUARDO-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="U_r_e">
-                                        <input list="idV_e" type="text" class="form-text" id="idVehiculo_e" onclick="this.blur();" name="idVehiculo_e" value="<?php echo $NoUnidad;?>" required>
+                                        <input list="idV_e" type="text" class="form-text" id="idVehiculo_e" name="idVehiculo_e" value="<?php echo $NoUnidad;?>" required>
                                         <datalist id="idV_e">
                                             <?php
                                                 try {
@@ -410,6 +405,7 @@ $id = $_GET['id'];
 
 <script type="text/javascript"> //ENVIAMOS EL ARREGLO A JS SCRIPT PARA PODER MANIPULARLO
     datos = Array(<?php echo json_encode($datos);?>);
+    km_ant = Array(<?php echo json_encode($kilometraje_anterior);?>);
     id_bitacora = <?php echo json_encode($id);?>;
 
     document.getElementById("numero_control_e").value = <?php echo json_encode($num_control);?>;

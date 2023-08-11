@@ -304,15 +304,13 @@ function formVacio_e(checkbox) {
         document.getElementById("km_I_e"+checkbox.id[checkbox.id.length-1]).disabled = true;
         document.getElementById("km_F_e"+checkbox.id[checkbox.id.length-1]).disabled = true;
         document.getElementById("salida_e"+checkbox.id[checkbox.id.length-1]).disabled = true;
-        document.getElementById("destino_e"+checkbox.id[checkbox.id.length-1]).disabled = true;
         document.getElementById("recorrido_e"+checkbox.id[checkbox.id.length-1]).disabled = true;
         document.getElementById("btn_vaciar_e"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "none";
         document.getElementById("btn_agregar_e"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "none";
      }else{
-        document.getElementById("km_I_e"+checkbox.id[checkbox.id.length-1]).disabled = false;
+        //document.getElementById("km_I_e"+checkbox.id[checkbox.id.length-1]).disabled = false;
         document.getElementById("km_F_e"+checkbox.id[checkbox.id.length-1]).disabled = false;
         document.getElementById("salida_e"+checkbox.id[checkbox.id.length-1]).disabled = false;
-        document.getElementById("destino_e"+checkbox.id[checkbox.id.length-1]).disabled = false;
         document.getElementById("recorrido_e"+checkbox.id[checkbox.id.length-1]).disabled = false;
         document.getElementById("btn_vaciar_e"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "auto";
         document.getElementById("btn_agregar_e"+checkbox.id[checkbox.id.length-1]).style.pointerEvents = "auto";
@@ -328,7 +326,7 @@ function siguiente_dia_e(dia){
     
     if(!document.getElementById("vacio_e"+dia.id[dia.id.length - 1]).checked){
         if(!listaR.value)
-            document.getElementById("destino_e"+dia.id[dia.id.length - 1]).reportValidity();
+            document.getElementById("recorrido_e"+dia.id[dia.id.length - 1]).reportValidity();
 
         salida.reportValidity();
         km_final.reportValidity();
@@ -349,7 +347,6 @@ function siguiente_dia_e(dia){
                 if((dias_recorrido.length-1) == i){
                     document.getElementById('boton_guardar_e'+i).style.display = "block";
                     document.getElementById(dias_recorrido[i].value).querySelector('#btn_sig_e'+i).style.visibility = "hidden";
-                    document.getElementById(dias_recorrido[i].value).querySelector('#destino_e'+i).required = false;
                 }
                 openTab_e(dias_recorrido[i].value);
                 dias_recorrido[i].className += " active";
@@ -380,7 +377,6 @@ function siguiente_dia_e(dia){
         if((dias_recorrido.length-1) == i){
             document.getElementById('boton_guardar_e'+i).style.display = "block";
             document.getElementById(dias_recorrido[i].value).querySelector('#btn_sig_e'+i).style.visibility = "hidden";
-            document.getElementById(dias_recorrido[i].value).querySelector('#destino_e'+i).required = false;
         }
         openTab_e(dias_recorrido[i].value);
         dias_recorrido[i].className += " active";
@@ -424,55 +420,37 @@ function vaciar_e(bntvaciar) {
 
 function nuevoRecorrido_e(btnNuevo) {
     var nuevoR = document.getElementById("recorrido_e"+btnNuevo.id[btnNuevo.id.length - 1]);
-    
-    if(nuevoR.value){
-        nuevoR.value = nuevoR.value.toUpperCase();
-        $.ajax({
-            method: "POST",
-            url: "controller/controller.php",
-            data: {lugar: nuevoR.value, funcion: "nuevo_recorrido"},
-            cache: false,
-            success: function(result) {
-                if (result == 1) {
-                    if(document.getElementById("listaR_e"+btnNuevo.id[btnNuevo.id.length -1]).value.length == 0)
-                        document.getElementById("listaR_e"+btnNuevo.id[btnNuevo.id.length -1]).value += nuevoR.value;
-                    else
-                        document.getElementById("listaR_e"+btnNuevo.id[btnNuevo.id.length -1]).value += ', '+nuevoR.value;
-
-                    swal({
-                        type: 'success',
-                        title: 'Operacion exitosa',
-                        timer: 1000,
-                        showConfirmButton: false
-                    });
-
-                    var nuevaOpcion = document.createElement('option');
-                    nuevaOpcion.value = nuevoR.value;
-                    nuevaOpcion.textContent = nuevoR.value;
-                    for (var i = 0; i < document.getElementsByClassName("tablinks_e").length; i++)
-                        document.getElementById("destino_e"+i).appendChild(nuevaOpcion.cloneNode(true));
-
-                    nuevoR.value = "";
-                    
-                }else{
-                    swal({
-                        type: 'warning',
-                        title: 'Recorrido repetido',
-                        timer: 1000,
-                        showConfirmButton: false
-                    });
-                    nuevoR.value = "";
-                }
-            }
-        });
         
-    }else
-        swal({
-            type: 'error',
-            title: 'Ingrese un nuevo recorrido',
-            timer: 1000,
-            showConfirmButton: false
-        });
+        if(nuevoR.value){
+            nuevoR.value = nuevoR.value.toUpperCase();
+            //if (si se quiere verificar que los recoriidos se repiten o no) {
+                if(document.getElementById("listaR_e"+btnNuevo.id[btnNuevo.id.length -1]).value.length == 0)
+                    document.getElementById("listaR_e"+btnNuevo.id[btnNuevo.id.length -1]).value += nuevoR.value;
+                else{
+                    var texto = document.getElementById("listaR_e"+btnNuevo.id[btnNuevo.id.length -1]).value;
+                    var palabras = texto.replace(/,/g, "").split(" ");
+
+                    if(!palabras.includes(nuevoR.value))
+                        document.getElementById("listaR_e"+btnNuevo.id[btnNuevo.id.length -1]).value += ', '+nuevoR.value;
+                    else
+                        swal({
+                            type: 'warning',
+                            title: 'Recorrido repetido',
+                            timer: 1000,
+                            showConfirmButton: false
+                        });
+                }
+                nuevoR.value = "";   
+            //}else{
+                /*swal({
+                    type: 'warning',
+                    title: 'Recorrido repetido',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+                nuevoR.value = "";*/
+            //}
+        }
 }
 
 function Nbitacora_e(dia) {
@@ -483,7 +461,7 @@ function Nbitacora_e(dia) {
     var listaR = document.getElementById("listaR_e"+dia.id[dia.id.length - 1]);
     if(!document.getElementById("vacio_e"+dia.id[dia.id.length - 1]).checked){
         if(!listaR.value)
-            document.getElementById("destino_e"+dia.id[dia.id.length - 1]).reportValidity();
+            document.getElementById("recorrido_e"+dia.id[dia.id.length - 1]).reportValidity();
 
         salida.reportValidity();
         km_final.reportValidity();

@@ -50,7 +50,7 @@
                 <!--Kilometro inicial-->
                 <div class="col-md-6" style="width: 15%;">
                     <label style="font-size: 17px;">Km inicial:</label>
-                    <input id="km_I<?php echo $j ?>" type="number" name="km_inicial" min="0" style="height: 32px;" required />
+                    <input id="km_I<?php echo $j ?>" type="number" name="km_inicial" min="0" style="height: 32px;" disabled/>
                 </div>
 
                 <!--Kilometro final-->

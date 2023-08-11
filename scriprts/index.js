@@ -111,6 +111,7 @@
         event.preventDefault();
         var idVehiculo = $("#idVehiculo").val();
         if(idVehiculo!=''){
+            obtenerResultados();
             $.ajax({
                 method: "POST",
                 url: "controller/controller.php",
@@ -164,6 +165,7 @@
         event.preventDefault();
         var idVehiculo = $("#idVehiculo_e").val();
         if(idVehiculo!=''){
+            obtenerResultados();
             $.ajax({
                 method: "POST",
                 url: "controller/controller.php",
@@ -353,7 +355,6 @@
                             var j=0;
                             while(j<dias_recorrido.length){
                                 if(dias_recorrido[j].value in  datos[0]){
-                                    document.getElementById("vacio_e"+j).disabled = true;
                                     document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
                                     document.getElementById("km_I_e"+j).value = datos[0][dias_recorrido[j].value]["km_inicial"];
                                     document.getElementById("km_F_e"+j).value = datos[0][dias_recorrido[j].value]["km_final"];
@@ -361,7 +362,7 @@
                                     document.getElementById("listaR_e"+j).value = datos[0][dias_recorrido[j].value]["recorrido"];
                                 }else{
                                     document.getElementById("vacio_e"+j).checked = true;
-                                    document.getElementById("vacio_e"+j).disabled = true;
+                                    document.getElementById("km_F_e"+j).disabled = true;
                                     document.getElementById("salida_e"+j).disabled = true;
                                     document.getElementById("recorrido_e"+j).disabled = true;
                                     document.getElementById("btn_vaciar_e"+j).style.pointerEvents = "none";
