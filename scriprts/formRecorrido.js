@@ -352,8 +352,10 @@ function siguiente_dia_e(dia){
                 openTab_e(dias_recorrido[i].value);
                 dias_recorrido[i].className += " active";
 
-                if(document.getElementById("km_I_e"+i).value == "")
+                if(document.getElementById("km_F_e"+(i-1)).value != "")
                     document.getElementById("km_I_e"+i).value = document.getElementById("km_F_e"+(i-1)).value;
+                else if(document.getElementById("km_I_e"+i).value == "")
+                    document.getElementById("km_I_e"+i).value = document.getElementById("km_I_e"+(i-1)).value;
 
                 if(i != 0){
                     document.getElementById(dias_recorrido[i].value).querySelector('#btn_ant_e'+i).style.visibility = "visible";
@@ -383,7 +385,9 @@ function siguiente_dia_e(dia){
         openTab_e(dias_recorrido[i].value);
         dias_recorrido[i].className += " active";
 
-        if(document.getElementById("km_I_e"+i).value == "")
+        if(document.getElementById("km_F_e"+(i-1)).value != "")
+            document.getElementById("km_I_e"+i).value = document.getElementById("km_F_e"+(i-1)).value;
+        else if(document.getElementById("km_I_e"+i).value == "")
             document.getElementById("km_I_e"+i).value = document.getElementById("km_I_e"+(i-1)).value;
 
         if(i != 0){
@@ -481,7 +485,7 @@ function Nbitacora_e(dia) {
                     data: $("#form_editar_bitacora").serialize(),
                     cache: false,
                     success: function(result) {
-                        console.log(result);
+                        //console.log(result);
                         if (result == 1) {
                             swal({
                                 type: 'success',
@@ -493,7 +497,7 @@ function Nbitacora_e(dia) {
                         }
                     }
                 });
-                setTimeout(2000);
+
                 var i = 0;
                 while (i < dias_recorrido.length) {
                     document.getElementById("listaR_e"+i).disabled = false;
@@ -502,7 +506,10 @@ function Nbitacora_e(dia) {
                         type: "POST",
                         url: "controller/controller.php",
                         data: $("#form_editar_recorrido"+i).serialize(),
-                        cache: false
+                        cache: false,
+                        success: function(result){
+                            console.log(result);
+                        }
                     });
                     i++;
                 }

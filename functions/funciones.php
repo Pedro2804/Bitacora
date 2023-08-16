@@ -423,13 +423,14 @@ function guardar_recorrido(){
         }
     }else{
         $vacio = 1;
+        $dia = $_POST['dia_semana'];
         $id_bitacora = $_POST['id_bitacora'];
         
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "INSERT INTO recorrido (vacio, bitacora) VALUES (?,?);";
-        $params = array($vacio, $id_bitacora);
+        $sql = "INSERT INTO recorrido (dia_semana, vacio, bitacora) VALUES (?,?,?);";
+        $params = array($dia, $vacio, $id_bitacora);
     
         $q = $pdo->prepare($sql);
     
@@ -469,12 +470,29 @@ function editar_recorrido(){
             $k_f = $_POST['km_final_e'];
         }
     
+        try {
+            $pdo = Database::connect();
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+            $sql = "UPDATE recorrido SET dia_semana=?, salida=?, recorrido=?, km_inicial=?, km_final=?, vacio=? WHERE id_recorrido= $id_recorrido;";
+            $params = array($dia, $salida, $lista_rec, $k_i, $k_f, 0);
+        
+            $q = $pdo->prepare($sql);
+            $q->execute($params);
+            Database::disconnect();
+            return true;
+        } catch (PDOException $e) {
+            Database::disconnect();
+            return "Error: " . $e;
+        }
+    }else{
+        $dia = $_POST['dia_semana_e'];
+
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        // Construir la consulta SQL y el array de parámetros dinámicamente
-        $sql = "UPDATE recorrido SET dia_semana=?, salida=?, recorrido=?, km_inicial=?, km_final=? vacio=? WHERE id_recorrido= $id_recorrido;";
-        $params = array($dia, $salida, $lista_rec, $k_i, $k_f, 0);
+        $sql = "UPDATE recorrido SET dia_semana=?, salida=?, recorrido=?, km_inicial=?, km_final=?, vacio=? WHERE id_recorrido= $id_recorrido;";
+        $params = array($dia, $salida, $lista_rec, $k_i, $k_f, 1);
     
         $q = $pdo->prepare($sql);
     

@@ -36,7 +36,7 @@
         <form id="form_editar_recorrido<?php echo $j ?>" method="get" action="">
             
             <input type="hidden" value="editar_recorrido" id="funcion" name="funcion">
-            <input type="text" id="id_recorrido<?php echo $j ?>" name="id_recorrido" value="" />
+            <input type="hidden" id="id_recorrido<?php echo $j ?>" name="id_recorrido" value="" />
             <input type="hidden" name="dia_semana_e" value="<?php echo $nombreDia ?>" />
 
             <div class="col-md-12" style="padding-top:20px;">

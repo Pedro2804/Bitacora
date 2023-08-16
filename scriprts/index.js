@@ -353,7 +353,7 @@
                             dias_recorrido[0].className += " active";
                             var j=0;
                             while(j<dias_recorrido.length){
-                                if(dias_recorrido[j].value in datos[0]){
+                                if(dias_recorrido[j].value in datos[0] && datos[0][dias_recorrido[j].value]["vacio"] == 0){
                                     document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
 
                                     if(datos[0][dias_recorrido[j].value]["km_inicial"])
@@ -364,9 +364,10 @@
                                     document.getElementById("salida_e"+j).value = datos[0][dias_recorrido[j].value]["salida"];
                                     document.getElementById("listaR_e"+j).value = datos[0][dias_recorrido[j].value]["recorrido"];
                                 }else{
-                                    document.getElementById("id_recorrido"+j).value = datos[0][""]["id_recorrido"];
+                                    document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
                                     document.getElementById("vacio_e"+j).checked = true;
-                                    document.getElementById("km_I_e"+j).value = km_ant;
+                                    if(j == 0)
+                                        document.getElementById("km_I_e"+j).value = km_ant;
                                     document.getElementById("km_I_e"+j).disabled = true;
                                     document.getElementById("km_F_e"+j).disabled = true;
                                     document.getElementById("salida_e"+j).disabled = true;

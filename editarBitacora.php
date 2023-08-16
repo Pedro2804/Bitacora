@@ -54,7 +54,7 @@ $id = $_GET['id'];
 <?php 
 //QUE DIOS ME PERDONE POR ESTE SPAGHETTI DE CÓDIGO
 //OBTENER VALORES DE :(
-    $kilometraje_anterior = 0; //en dado caso que se quiera editar el vehiculo, almacenamos su kilometraje cuando no se creaba la bitacora.
+    $km_total = 0; //en dado caso que se quiera editar el vehiculo, almacenamos su kilometraje cuando no se creaba la bitacora.
   try {
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -88,12 +88,23 @@ $id = $_GET['id'];
             );
 
             if($Solicitud["vacio"] == 0) //verificamos que el recorrido no esté vacío
-                $kilometraje_anterior = $km_final - $km_inicial;
+                $km_total += $km_final - $km_inicial;
         endforeach;
-    }catch(PDOException $e)
-    {
-       echo 'Error: ' . $e->getMessage();
-    }
+        Database::disconnect();
+    }catch(PDOException $e){ echo 'Error: ' . $e->getMessage();}
+
+    try{
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT kilometraje FROM vehiculo WHERE num_unidad= ?";
+        $q = $pdo->prepare($sql);
+        $q->execute(array($NoUnidad));
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        $km_actual = $data['kilometraje'];
+        Database::disconnect();
+    }catch(PDOException $e){ echo 'Error: ' . $e->getMessage();}
+
+    $kilometraje_anterior = $km_actual - $km_total;
 ?>
 <!DOCTYPE html>
 <html lang="en">
