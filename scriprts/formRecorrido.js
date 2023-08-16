@@ -353,7 +353,7 @@ function siguiente_dia_e(dia){
                 dias_recorrido[i].className += " active";
 
                 document.getElementById("km_I_e"+i).value = document.getElementById("km_F_e"+(i-1)).value;
-
+                
                 if(i != 0){
                     document.getElementById(dias_recorrido[i].value).querySelector('#btn_ant_e'+i).style.visibility = "visible";
                 }
