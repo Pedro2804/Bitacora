@@ -257,8 +257,8 @@
                             });
 
                             openTab(dias_recorrido[0].value);
-                            for(i=0; i<dias_recorrido.length; i++)
-                                dias_recorrido[i].disabled = true;
+                            //for(i=0; i<dias_recorrido.length; i++)
+                                //dias_recorrido[i].disabled = true;
                             dias_recorrido[0].className += " active";
 
                             document.getElementById('km_I0').value = resultados.km;

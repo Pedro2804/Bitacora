@@ -17,7 +17,7 @@
                 $nombreDia = $diasSemana[$diaSemana].' '.$fecha->format('j'); // Ejemplo: "lunes 12"
 
                 // Generar la pestaña
-                echo '<button class="tablinks" value="'.$nombreDia.'">'.$nombreDia.'</button>';
+                echo '<button class="tablinks" value="'.$nombreDia.'" disabled>'.$nombreDia.'</button>';
             }
         ?>
     </div>

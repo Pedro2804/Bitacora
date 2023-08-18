@@ -268,6 +268,25 @@
             $( document ).ready(function(){});
         </script>
         <script>
+
+            function km_inicial() {
+                unidad = document.getElementById('idVehiculo');
+                if(unidad.value != ""){
+                    $.ajax({
+                        method: "POST",
+                        url: "controller/controller.php",
+                        data: {id: unidad.value, funcion: "vehiculo"},
+                        cache: false,
+                        success: function(result){
+                            //console.log(result);
+                            if(result!=0){
+                                var resultados = JSON.parse(result);
+                                document.getElementById('km_I0').value = resultados.km;
+                            }
+                        }
+                    });
+                }
+            }
         // Función para obtener los resultados en base a las fechas seleccionadas
         function obtenerResultados() {
             var fechaDel = document.getElementById('FechaDel').value;
@@ -293,6 +312,7 @@
                             while (j < document.getElementsByClassName("tablinks").length) {$("#num_bitacoras"+j).val(result); j++;}
                         }
                     });
+                    km_inicial();
                 }else if(document.getElementsByClassName("tablinks").length==1){
                     document.getElementById("boton_guardar0").style.display = "block";
                     document.getElementById("btn_sig0").style.display = "none";
@@ -307,6 +327,7 @@
                             $("#num_bitacoras0").val(result);
                         }
                     });
+                    km_inicial();
                 }else{
                     $('#sig_bitacora').css("display", "block");
                     swal({

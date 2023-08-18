@@ -38,6 +38,10 @@ switch ($funcion)
         $respuesta=editar_auto();
         echo $respuesta;
 	break;
+    case 'editar_km':
+        $respuesta=editar_km();
+        echo $respuesta;
+	break;
     case 'eliminar_auto':
         $respuesta=eliminar_auto();
         echo $respuesta;

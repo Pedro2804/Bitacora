@@ -223,6 +223,24 @@ function repetido($tabla, $columna, $lugar){
     }
 }
 
+function editar_km(){
+    $unidad = $_POST['unidad'];
+    $km = $_POST['km'];
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "UPDATE vehiculo SET kilometraje=? where num_unidad = ?;";
+    $q = $pdo->prepare($sql);
+    try {
+        $q->execute(array($km, $unidad));
+        //$res = $q->fetch(PDO::FETCH_ASSOC);
+        Database::disconnect();
+        return true;
+    } catch (PDOException $e) {
+        Database::disconnect();
+        return "Error: " . $e;
+    }
+}
+
 function guardar_bitacora(){
 
     $empleado = null;
@@ -491,12 +509,11 @@ function editar_recorrido(){
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        $sql = "UPDATE recorrido SET dia_semana=?, salida=?, recorrido=?, km_inicial=?, km_final=?, vacio=? WHERE id_recorrido= $id_recorrido;";
-        $params = array($dia, $salida, $lista_rec, $k_i, $k_f, 1);
-    
-        $q = $pdo->prepare($sql);
-    
         try {
+            $sql = "UPDATE recorrido SET dia_semana=?, salida=?, recorrido=?, km_inicial=?, km_final=?, vacio=? WHERE id_recorrido= $id_recorrido;";
+            $params = array($dia, $salida, $lista_rec, $k_i, $k_f, 1);
+        
+            $q = $pdo->prepare($sql);
             $q->execute($params);
             Database::disconnect();
             return true;
