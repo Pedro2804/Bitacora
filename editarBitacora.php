@@ -215,7 +215,7 @@ $id = $_GET['id'];
                                 <!--UNIDAD DE RESGUARDO-->
                                 <div class="col-md-6" style="width: 25%;">
                                     <div class="form-group form-animate-text" id="U_r_e">
-                                        <input list="idV_e" type="text" class="form-text" id="idVehiculo_e" name="idVehiculo_e" value="<?php echo $NoUnidad;?>" required>
+                                        <input list="idV_e" type="text" class="form-text" id="idVehiculo_e" name="idVehiculo_e" required>
                                         <datalist id="idV_e">
                                             <?php
                                                 try {
@@ -418,10 +418,12 @@ $id = $_GET['id'];
 
 <script type="text/javascript"> //ENVIAMOS EL ARREGLO A JS SCRIPT PARA PODER MANIPULARLO
     datos = Array(<?php echo json_encode($datos);?>);
+    NoUnidad = <?php echo json_encode($NoUnidad);?>;
     km_ant = <?php echo json_encode($kilometraje_anterior);?>;
     id_bitacora = <?php echo json_encode($id);?>;
 
     document.getElementById("numero_control_e").value = <?php echo json_encode($num_control);?>;
+    document.getElementById("idVehiculo_e").value = <?php echo json_encode($NoUnidad);?>;
     document.getElementById("tipo_comb_e").value = <?php echo json_encode($combustible);?>;
     document.getElementById("fecha_r_e").value = <?php echo json_encode($fecha_carga);?>;
     document.getElementById("folio_e").value = <?php echo json_encode($folio);?>;

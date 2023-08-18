@@ -282,8 +282,8 @@
                         document.getElementById("listaR"+i).disabled = false;
                         document.getElementById("km_I"+i).disabled = false;
 
-                        if (document.getElementById("km_I"+i).value != "")
-                            km_f_aux = document.getElementById("km_I"+i).value;
+                        if (document.getElementById("km_F"+i).value != "")
+                            km_f_aux = document.getElementById("km_F"+i).value;
 
                         $.ajax({
                             type: "POST",
@@ -408,7 +408,7 @@ function siguiente_dia_e(dia){
         openTab_e(dias_recorrido[i].value);
         dias_recorrido[i].className += " active";
 
-        if (!document.getElementById("vacio_e"+i).checked) {
+        if (!document.getElementById("vacio_e"+(i-1)).checked) {
             var km_aux = "";
             for (let j = 0; j < i-1; j++) {
                 if (document.getElementById("km_F_e"+j).value != "") {
@@ -564,13 +564,25 @@ function Nbitacora_e(dia) {
                                 data: $("#form_editar_recorrido"+i).serialize(),
                                 cache: false,
                                 success: function(result){
-                                    //console.log(result);
+                                    console.log(result);
                                 }
                             });
                             i++;
                         }
+
+                        if (document.getElementById("idVehiculo_e").value != NoUnidad) {
+                            $.ajax({ //Actualizamos el kilometraje del vehiculo cuando cambia de vehiculo al editar
+                                type: "POST",
+                                url: "controller/controller.php",
+                                data: {unidad: NoUnidad, km: km_ant , funcion: "editar_km"},
+                                cache: false,
+                                success: function(result) {
+                                    //console.log(result);
+                                }
+                            });
+                        }
         
-                        $.ajax({ //Actualizamos el kilometraje del vehiculo cada vez que se crea una nueva bitacora
+                       $.ajax({ //Actualizamos el kilometraje del vehiculo cada vez que se crea una nueva bitacora
                             type: "POST",
                             url: "controller/controller.php",
                             data: {unidad: document.getElementById("idVehiculo_e").value, km: document.getElementById("km_F_e"+(i-1)).value , funcion: "editar_km"},
@@ -606,7 +618,6 @@ function Nbitacora_e(dia) {
                                 timer: 1000,
                                 showConfirmButton: false
                             });
-                            //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
                         }
                     }
                 });
@@ -625,10 +636,22 @@ function Nbitacora_e(dia) {
                         data: $("#form_editar_recorrido"+i).serialize(),
                         cache: false,
                         success: function(result){
-                            //console.log(result);
+                            console.log(result);
                         }
                     });
                     i++;
+                }
+
+                if (document.getElementById("idVehiculo_e").value != NoUnidad) { //NoUnidad lo traemos desde editarBitacora.php
+                    $.ajax({ //Actualizamos el kilometraje del vehiculo cuando cambia de vehiculo al editar
+                        type: "POST",
+                        url: "controller/controller.php",
+                        data: {unidad: NoUnidad, km: km_ant , funcion: "editar_km"},
+                        cache: false,
+                        success: function(result) {
+                            //console.log(result);
+                        }
+                    });
                 }
         
                 $.ajax({ //Actualizamos el kilometraje del vehiculo cada vez que se crea una nueva bitacora
@@ -637,7 +660,7 @@ function Nbitacora_e(dia) {
                     data: {unidad: document.getElementById("idVehiculo_e").value, km: km_f_aux , funcion: "editar_km"},
                     cache: false,
                     success: function(result) {
-                        console.log(result);
+                        //console.log(result);
                     }
                 });
                 setTimeout(function() { document.location.href = 'Busqueda.php'; }, 1100);

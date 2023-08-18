@@ -465,6 +465,7 @@ function guardar_recorrido(){
 
 function editar_recorrido(){
     $id_recorrido = $_POST['id_recorrido'];
+    $vacio = null;
     $dia = null;
     $k_i = null;
     $k_f = null;
@@ -491,9 +492,9 @@ function editar_recorrido(){
         try {
             $pdo = Database::connect();
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
-            $sql = "UPDATE recorrido SET dia_semana=?, salida=?, recorrido=?, km_inicial=?, km_final=?, vacio=? WHERE id_recorrido= $id_recorrido;";
-            $params = array($dia, $salida, $lista_rec, $k_i, $k_f, 0);
+            $vacio = 0;
+            $sql = "UPDATE recorrido SET dia_semana=?, salida=?, recorrido=?, km_inicial=?, km_final=?, vacio=? WHERE id_recorrido=$id_recorrido;";
+            $params = array($dia, $salida, $lista_rec, $k_i, $k_f, $vacio);
         
             $q = $pdo->prepare($sql);
             $q->execute($params);
@@ -505,13 +506,14 @@ function editar_recorrido(){
         }
     }else{
         $dia = $_POST['dia_semana_e'];
+        $vacio = 1;
 
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+        
         try {
-            $sql = "UPDATE recorrido SET dia_semana=?, salida=?, recorrido=?, km_inicial=?, km_final=?, vacio=? WHERE id_recorrido= $id_recorrido;";
-            $params = array($dia, $salida, $lista_rec, $k_i, $k_f, 1);
+            $sql = "UPDATE recorrido SET dia_semana=?, salida=NULL, recorrido=NULL, km_inicial=NULL, km_final=NULL, vacio=? WHERE id_recorrido=$id_recorrido;";
+            $params = array($dia, $vacio);
         
             $q = $pdo->prepare($sql);
             $q->execute($params);

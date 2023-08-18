@@ -162,6 +162,7 @@
     });
 
     $("#idVehiculo_e").on("change", function(event){ //jQuery
+        var dias_recorrido = document.getElementsByClassName("tablinks_e");
         event.preventDefault();
         var idVehiculo = $("#idVehiculo_e").val();
         if(idVehiculo!=''){
@@ -175,6 +176,12 @@
                     //console.log(result);
                     if(result!=0){
                         var resultados = JSON.parse(result);
+
+                        var j=0;
+                        while(j<dias_recorrido.length){
+                            document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
+                            j++;
+                        }
                         $("#M_m_e").css("opacity", 1);
                         $("#marca_modelo_e").val(resultados.modelo);
 
