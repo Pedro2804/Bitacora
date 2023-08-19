@@ -1,85 +1,89 @@
 <?php
 
-?>
+$id = $_GET['id'];
+$unidad = $_GET['unidad'];
+$bitacoras = array();
 
-<!DOCTYPE html>
-<html>
-     
-<head>
-    
-    <!-- start: Css -->
-    <link rel="stylesheet" type="text/css" href="asset/css/bootstrap.min.css">
-    <!-- plugins -->
-    <link rel="stylesheet" type="text/css" href="asset/css/plugins/font-awesome.min.css"/>
-    <link rel="stylesheet" type="text/css" href="asset/css/plugins/animate.min.css"/>
-    <link rel="stylesheet" type="text/css" href="asset/css/plugins/nouislider.min.css"/>
-    <link rel="stylesheet" type="text/css" href="asset/css/plugins/select2.min.css"/>
-    <link rel="stylesheet" type="text/css" href="asset/css/plugins/ionrangeslider/ion.rangeSlider.css"/>
-    <link rel="stylesheet" type="text/css" href="asset/css/plugins/ionrangeslider/ion.rangeSlider.skinFlat.css"/>
-    <link rel="stylesheet" type="text/css" href="asset/css/plugins/bootstrap-material-datetimepicker.css"/>
-    <link href="asset/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/flexselect.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="css/estilos.css" />
-    <!-- end: Css -->
-    <!-- start: sweetalert2 -->
-    <script src="scriprts/sweetalert2.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style/sweetalert2.min.css">
+//Solo en caso de que se tenga que eliminar la nueva Bitácora por algun error, verificamos si es la nueva para actualizar el km de al
+//unidad a cuando estaba antes de crear la bitacora, si es algo que ya se había creado antes, simplemente se elimina.
+$pdo = Database::connect();
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$sql = "SELECT * FROM bitacora WHERE NoUnidad = ? ORDER BY id_bitacora ASC;";
+$q = $pdo->prepare($sql);
 
+    try{
+        $q->execute(array($unidad));
+        $data = $q->fetchAll(PDO::FETCH_ASSOC);
+            foreach($data as $Solicitud):
+                $bitacoras[]=$Solicitud['id_bitacora'];
+            endforeach;
+    }catch (PDOException $e){
+        echo 'Error: ' . $e->getMessage();
+    }
 
-    <link rel="shortcut icon" href="img/logodifblanco.png">
-    <title>
-        Eliminar
-    </title>
-</head>
- 
-<body style="text-align:center;">
-     
-    
-    <h4 class="Titulos">¿ELIMINAR?</h4>
-     
-    <h4>
-        ¿Eliminar la bitacora?
-    </h4>
-
-    <form method="post">
-        <input class="btn-guardar" type="submit" name="button1"
-                class="button" value="Eliminar" />
-    </form>
-    <br>
-    <form action="Busqueda.php">
-        <input class="btn-guardar" type="submit" value="Cancelar" />
-    </form>
-</body>
- 
-</html>
-<?php
-
-        
-        if(array_key_exists('button1', $_POST)) {
-            eliminar();
-        }
-        
-        function eliminar(){
-            include 'config/conexion.php';
-            $id = $_GET['id'];
-
-            $pdo = Database::connect();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "DELETE FROM bitacora WHERE id_bitacora=$id";
+    if(busqueda_binaria($bitacoras, $id) == count($bitacoras)){
+        $km_total = 0;
+        try {
+            $pdo = Database::connect();//Para obtener el kilometraje anterior
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "SELECT * FROM recorrido WHERE bitacora = ?;";
             $q = $pdo->prepare($sql);
-            try {
-                $q->execute(array($sql));
-                Database::disconnect();
-                echo "<br><br>ELIMINADO<br><br>";
-                echo('<a href="Busqueda.php" style="font-size: 20px; text-decoration: none">Regresar</a>');
-                return true;
-            } catch (PDOException $e) {
-                Database::disconnect();
-                return "Error: " . $e;
-            }
-            
-            
-        }
-        
-    ?>
+            $q->execute(array($id));
+            $filas = $q->rowCount();
+            $data = $q->fetchall(PDO::FETCH_ASSOC);
+            $datos = array();
+
+            foreach($data as $Solicitud):
+                $km_inicial=$Solicitud['km_inicial'];
+                $km_final=$Solicitud['km_final'] ;
     
+                if($Solicitud["vacio"] == 0) //verificamos que el recorrido no esté vacío
+                    $km_total += $km_final - $km_inicial;
+            endforeach;
+            Database::disconnect();
+        }catch(PDOException $e){ echo 'Error: ' . $e->getMessage();}
+
+        try{
+            $pdo = Database::connect(); //Para obtener el kilometraje actual del vehiculo
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "SELECT kilometraje FROM vehiculo WHERE num_unidad= ?";
+            $q = $pdo->prepare($sql);
+            $q->execute(array($unidad));
+            $data = $q->fetch(PDO::FETCH_ASSOC);
+            $km_actual = $data['kilometraje'];
+            Database::disconnect();
+        }catch(PDOException $e){ echo 'Error: ' . $e->getMessage();}
+    
+        $kilometraje_anterior = $km_actual - $km_total;
+
+        $pdo = Database::connect(); //Para actualizar el kilometraje
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "UPDATE vehiculo SET kilometraje = ? WHERE num_unidad = $unidad;";
+        $params = array($kilometraje_anterior);
+        try{
+            $q = $pdo->prepare($sql);
+            $q->execute($params);
+            Database::disconnect();
+        }catch (PDOException $e){
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
+function busqueda_binaria($lista, $objetivo){
+    $izquierda = 0;
+    $derecha = count($lista) - 1;
+    
+    while ($izquierda <= $derecha){
+        $medio = ($izquierda + $derecha); // 2
+        $valor_medio = $lista[$medio];
+        
+        if ($valor_medio == $objetivo)
+            return $medio + 1;
+        else if ($valor_medio < $objetivo)
+            $izquierda = $medio + 1;
+        else
+            $derecha = $medio - 1;
+    }
+    return -1;  # El valor no se encontró
+}
+
+?>

@@ -91,10 +91,10 @@ function eliminar(id){
     });
 }
 
-function eliminar_bitacora(id){
+function eliminar_bitacora(id, unidad){
   swal({
     title: '¿Seguro que quiere eliminar?',
-    text: "La bitacora se eliminará",
+    text: "La bitácora se eliminará",
     type: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#d33',
@@ -105,13 +105,20 @@ function eliminar_bitacora(id){
         if (result){
             $.ajax({
                 type: "POST",
+                url: "eliminarBitacora.php",
+                data: {id: id, unidad: unidad},
+                cache: false
+		    });
+
+            $.ajax({
+                type: "POST",
                 url: "controller/controller.php",
                 data: {funcion:'eliminar_bitacora', id_bitacora:id},
                 cache: false,
                 success: function(result){
                     console.log(result);
                     swal({
-                        title:'Eliminado',
+                        title:'Bitácora eliminada',
                         type: 'success',
                         timer: 1000,
                         showConfirmButton: false
@@ -119,7 +126,7 @@ function eliminar_bitacora(id){
                         //confirmButtonText: 'Aceptar',
                     }).then(function(){document.location.href="Busqueda.php";});//Sirve para cuando hay opciones de aceptar en el swal
                     
-                    setTimeout(function() {document.location.href = 'Busqueda.php';}, 1100);
+                    //setTimeout(function() {document.location.href = 'Busqueda.php';}, 1100);
                 }
 		    });
         }

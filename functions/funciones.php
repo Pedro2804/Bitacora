@@ -597,8 +597,27 @@ function eliminar_auto() {
 
 function eliminar_bitacora() {
     $id = $_POST['id_bitacora'];
+    $ultimo = false;
 
     $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "SELECT MAX(id_bitacora) AS maximo FROM bitacora;";
+    $q = $pdo->prepare($sql);
+    try {
+        $q->execute();
+        $data = $q->fetch(PDO::FETCH_ASSOC);
+        
+        if($data["maximo"]==$id){
+            $sql = "ALTER TABLE bitacora AUTO_INCREMENT = $id";
+            $q = $pdo->prepare($sql);
+            $q->execute();
+         }   
+        Database::disconnect();
+    } catch (PDOException $e) {
+        Database::disconnect();
+    }
+
+    /*$pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "DELETE FROM bitacora WHERE id_bitacora=?";
     $q = $pdo->prepare($sql);
@@ -609,6 +628,6 @@ function eliminar_bitacora() {
     } catch (PDOException $e) {
         Database::disconnect();
         return "Error: " . $e;
-    }
+    }*/
 
 }

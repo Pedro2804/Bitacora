@@ -14,7 +14,7 @@ function validar_edicion(){
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "SELECT * FROM bitacora WHERE NoUnidad = ? ORDER BY id_bitacora ASC;";
     $q = $pdo->prepare($sql);
-    //OBTENCIÓN DE VALORES PARA AUTOCOMPLETADO DE TIPO
+
         try{
             $q->execute(array($unidad));
             $data = $q->fetchAll(PDO::FETCH_ASSOC);
@@ -68,8 +68,6 @@ function busqueda_binaria($lista, $objetivo){
   $fechainicio=null;
   $fechafin=null;
 
-
-
   //CONEXIÓN BD
   $pdo = Database::connect();
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -115,11 +113,11 @@ function busqueda_binaria($lista, $objetivo){
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $sql = "SELECT * FROM recorrido WHERE bitacora = ?";
-      $q = $pdo->prepare($sql);
-      $q->execute(array($id));
-      $filas = $q->rowCount();
-      $data = $q->fetchall(PDO::FETCH_ASSOC);
-      $datos = array();
+    $q = $pdo->prepare($sql);
+    $q->execute(array($id));
+    $filas = $q->rowCount();
+    $data = $q->fetchall(PDO::FETCH_ASSOC);
+    $datos = array();
 	    foreach($data as $Solicitud):
             $vacio=$Solicitud['vacio'];
             $id_recorrido=$Solicitud['id_recorrido'];

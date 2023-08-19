@@ -66,7 +66,7 @@ else{
 					<td>'.$Solicitud['NoUnidad'].'</td>
 					<td><a href="Imp_Bitacora.php?id='.$Solicitud['id_bitacora'].'"><img src="img/impresora.png" width="45" height="45" style="cursor:pointer" title="Imprimir Bitácora"></a></td>
 					<td><a href="editarBitacora.php?id='.$Solicitud['id_bitacora'].'&unidad='.$Solicitud['NoUnidad'].'"><img src="img/lapiz.png" style="cursor:pointer" title="Editar Bitácora"></a></td>
-					<td><img src="img/basura.png" style="cursor:pointer" onclick="eliminar_bitacora('.$Solicitud['id_bitacora'].');" title="Eliminar Bitacora"></td>
+					<td><img src="img/basura.png" style="cursor:pointer" onclick="eliminar_bitacora('.$Solicitud['id_bitacora'].', '.$Solicitud['NoUnidad'].');" title="Eliminar Bitácora"></td>
 
 				</tr>';
 		  endforeach;
