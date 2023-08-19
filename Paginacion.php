@@ -46,7 +46,7 @@ else{
 		  $sql="SELECT bitacora.*, DATE_FORMAT(fecha_recibido,'%d-%m-%Y') AS FechaRecibida, empleado.*, CONCAT(Nombre,' ',ApellidoPaterno, ' ', ApellidoMaterno)
 		  		AS empleado FROM bitacora INNER JOIN empleado ON bitacora.operador = empleado.NumeroControl
 				WHERE 1 $condicion
-				ORDER BY fecha_recibido DESC, Folio DESC LIMIT $RegistrosAEmpezar,$RegistrosAMostrar";
+				ORDER BY id_bitacora DESC, Folio DESC LIMIT $RegistrosAEmpezar,$RegistrosAMostrar";
 
 		  $q = $pdo->prepare($sql);
           $q->execute(array());
@@ -64,8 +64,8 @@ else{
 					<td>'.$Solicitud['empleado'].'</td>
 					<td>'.$Solicitud['operador'].'</td>
 					<td>'.$Solicitud['NoUnidad'].'</td>
-					<td><a href="Imp_Bitacora.php?id='.$Solicitud['id_bitacora'].'"><img src="img/impresora.png" width="45" height="45" style="cursor:pointer" title="Imprimir Solicitud"></a></td>
-					<td><a href="editarBitacora.php?id='.$Solicitud['id_bitacora'].'"><img src="img/lapiz.png" style="cursor:pointer" title="Editar Solicitud"></a></td>
+					<td><a href="Imp_Bitacora.php?id='.$Solicitud['id_bitacora'].'"><img src="img/impresora.png" width="45" height="45" style="cursor:pointer" title="Imprimir Bitácora"></a></td>
+					<td><a href="editarBitacora.php?id='.$Solicitud['id_bitacora'].'&unidad='.$Solicitud['NoUnidad'].'"><img src="img/lapiz.png" style="cursor:pointer" title="Editar Bitácora"></a></td>
 					<td><img src="img/basura.png" style="cursor:pointer" onclick="eliminar_bitacora('.$Solicitud['id_bitacora'].');" title="Eliminar Bitacora"></td>
 
 				</tr>';

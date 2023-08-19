@@ -88,7 +88,7 @@
                 <!--Lista de recorridos-->
                 <div class="col-md-6" style="width: 20%;">
                 <!--Text area-->
-                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos" placeholder="Recorridos (maximo 60 caracteres)" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
+                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos" placeholder="Recorridos (máximo 60 caracteres)" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
                 </div>
                 <!--Boton vaciar-->
                 <div class="col-md-6" style="width: 6%;">

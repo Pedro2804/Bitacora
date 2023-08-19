@@ -2,6 +2,62 @@
 include 'config/conexion.php';
   //OBTENER ID DEL URL PARA LA EDICIÓN
 $id = $_GET['id'];
+
+function validar_edicion(){
+    $id = $_GET['id'];
+    $unidad = $_GET['unidad'];
+    $bitacoras = array();
+
+    //Solo se puede aditar la bitacora más actual para que no se generen errores en la base de datos y aquií validamos esa parte.
+    //que la bitacora que se seleccionó sea nueva y no haya otra depues de él.
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "SELECT * FROM bitacora WHERE NoUnidad = ? ORDER BY id_bitacora ASC;";
+    $q = $pdo->prepare($sql);
+    //OBTENCIÓN DE VALORES PARA AUTOCOMPLETADO DE TIPO
+        try{
+            $q->execute(array($unidad));
+            $data = $q->fetchAll(PDO::FETCH_ASSOC);
+            foreach($data as $Solicitud):
+                $bitacoras[]=$Solicitud['id_bitacora'];
+            endforeach;
+        }catch (PDOException $e){
+            echo 'Error: ' . $e->getMessage();
+        }
+
+        if(busqueda_binaria($bitacoras, $id) != count($bitacoras)){
+            ?>
+            <script type="text/javascript">
+                swal({
+                    type: 'error',
+                    title: 'No se puede editar esta bitácora',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+                setTimeout(function() { document.location.href = 'Busqueda.php'; }, 1600);
+            </script>
+            <?php
+        }
+}
+
+//Busqueda binaria para que vaya rapido :)
+function busqueda_binaria($lista, $objetivo){
+    $izquierda = 0;
+    $derecha = count($lista) - 1;
+    
+    while ($izquierda <= $derecha){
+        $medio = ($izquierda + $derecha); // 2
+        $valor_medio = $lista[$medio];
+        
+        if ($valor_medio == $objetivo)
+            return $medio + 1;
+        else if ($valor_medio < $objetivo)
+            $izquierda = $medio + 1;
+        else
+            $derecha = $medio - 1;
+    }
+    return -1;  # El valor no se encontró
+}
 ?>
 <?php
   //DECLARACIÓN DE VALORES PARA AUTOCOMPLETADO
@@ -144,6 +200,9 @@ $id = $_GET['id'];
     <link rel="apple-touch-icon" sizes="144x144" href="img/favicon.ico" />
 </head>
 <body id="mimin" class="dashboard">
+    <?php
+        validar_edicion();
+    ?>
         <div class="jumbotron">
             <img src="img/logodifblanco.png" class="logo_dif">
         </div>

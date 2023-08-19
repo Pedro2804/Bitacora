@@ -47,7 +47,7 @@
                         $("#numero_control").val("");
                         swal({
                         type: 'error',
-                        title: 'El numero no existe en el sistema',
+                        title: 'El número no existe en el sistema',
                         timer: 1000,
                         showConfirmButton: false});
                         $("#recorridos").css("display", "none");
@@ -55,7 +55,7 @@
                     }else{
                         swal({
                             type: 'warning',
-                            title: 'Ingrese un Numero de control',
+                            title: 'Ingrese un número de control',
                             timer: 1000,
                             showConfirmButton: false});
                             $("#recorridos").css("display", "none");
@@ -88,7 +88,7 @@
                         $("#numero_control_e").val("");
                         swal({
                         type: 'error',
-                        title: 'El numero no existe en el sistema',
+                        title: 'El número no existe en el sistema',
                         timer: 1000,
                         showConfirmButton: false});
                         $("#recorridos_e").css("display", "none");
@@ -96,7 +96,7 @@
                     }else{
                         swal({
                             type: 'warning',
-                            title: 'Ingrese un Numero de control',
+                            title: 'Ingrese un número de control',
                             timer: 1000,
                             showConfirmButton: false});
                             $("#recorridos_e").css("display", "none");
@@ -303,7 +303,7 @@
                             $("#numero_control").val("");
                             swal({
                             type: 'error',
-                            title: 'La numero no existe en el sistema',
+                            title: 'La número no existe en el sistema',
                             timer: 1000,
                             showConfirmButton: false});
                             $("#recorridos").css("display", "none");
@@ -311,7 +311,7 @@
                         }else{
                             swal({
                                 type: 'warning',
-                                title: 'Ingrese un Numero de control',
+                                title: 'Ingrese un número de control',
                                 timer: 1000,
                                 showConfirmButton: false});
                                 $("#recorridos").css("display", "none");
@@ -418,7 +418,7 @@
                             $("#numero_control_e").val("");
                             swal({
                             type: 'error',
-                            title: 'La numero no existe en el sistema',
+                            title: 'La número no existe en el sistema',
                             timer: 1000,
                             showConfirmButton: false});
                             $("#recorridos_e").css("display", "none");
@@ -426,7 +426,7 @@
                         }else{
                             swal({
                                 type: 'warning',
-                                title: 'Ingrese un Numero de control',
+                                title: 'Ingrese un número de control',
                                 timer: 1000,
                                 showConfirmButton: false});
                                 $("#recorridos_e").css("display", "none");
