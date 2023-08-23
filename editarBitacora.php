@@ -24,7 +24,7 @@ function validar_edicion(){
         }catch (PDOException $e){
             echo 'Error: ' . $e->getMessage();
         }
-
+        Database::disconnect();
         if(busqueda_binaria($bitacoras, $id) != count($bitacoras)){
             ?>
             <script type="text/javascript">
@@ -103,6 +103,7 @@ function busqueda_binaria($lista, $objetivo){
   }catch (PDOException $e){
     echo 'Error: ' . $e->getMessage();
   }
+  Database::disconnect();
 ?>
 
 <?php 
@@ -144,9 +145,8 @@ function busqueda_binaria($lista, $objetivo){
             if($Solicitud["vacio"] == 0) //verificamos que el recorrido no esté vacío
                 $km_total += $km_final - $km_inicial;
         endforeach;
-        Database::disconnect();
     }catch(PDOException $e){ echo 'Error: ' . $e->getMessage();}
-
+    Database::disconnect();
     try{
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -154,10 +154,9 @@ function busqueda_binaria($lista, $objetivo){
         $q = $pdo->prepare($sql);
         $q->execute(array($NoUnidad));
         $data = $q->fetch(PDO::FETCH_ASSOC);
-        $km_actual = $data['kilometraje'];
-        Database::disconnect();
+        $km_actual = $data['kilometraje']; 
     }catch(PDOException $e){ echo 'Error: ' . $e->getMessage();}
-
+    Database::disconnect();
     $kilometraje_anterior = $km_actual - $km_total;
 ?>
 <!DOCTYPE html>

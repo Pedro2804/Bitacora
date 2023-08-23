@@ -72,7 +72,7 @@ if(isset($_SESSION['usuario'])){
                   <div class="form-group form-animate-text" style="margin-top:40px !important;">
                     <input id="txt_mail" type="text" class="form-text" data-error="Usuario no valido" required>
                     <span class="bar"></span>
-                    <label style="color: Gray !important;">Usuario</label>
+                    <label style="color: Gray !important;" >Usuario</label>
                        <div class="help-block with-errors"></div>
                   </div>
                   <div class="form-group form-animate-text" style="margin-top:40px !important;">
@@ -100,6 +100,7 @@ if(isset($_SESSION['usuario'])){
       <!-- custom -->
       <script src="asset/js/main.js"></script>
       <script type="text/javascript">
+        
        $(document).ready(function(){
          $('input').iCheck({
           checkboxClass: 'icheckbox_flat-aero',

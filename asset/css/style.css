@@ -593,7 +593,7 @@ p.quote{
 
 .form-control.android[type='text'],
 .form-control.android[type='password'] {
-  width: 100%%;
+  width: 100%;
   font-family: "Roboto", "Droid Sans", sans-serif;
   font-size: 16px;
   margin: 0;
@@ -1950,16 +1950,17 @@ ul li a:focus {
   left: 0;
   padding-top: 0px;
   position: relative;
-  margin-left: -2px;
+  margin-left: 0px;
 }
 
 
 #left-menu .sub-left-menu {
+  display: none;
   background-color: #fff;
   left: 0;
   padding-top: 5px;
   z-index: 222;
-  width: 230px;
+  width: 0px;
   height: 100%;
   position: fixed;
   overflow-y: hidden;
@@ -2252,7 +2253,7 @@ ul li a:focus {
   top: 50px;
   display: none;
   z-index: 222;
-  width: 230px;
+  width: 225px;
   background-color: #fff;
   height: 100%;
   border-left: 1px solid #dee5e7;
@@ -2688,7 +2689,7 @@ ul li a:focus {
   margin-top: 51px;
   padding: 0px;
   padding-bottom: 10px;
-  padding-left: 230px;
+  padding-left: 0px;
   width: 100%;
   color: #918C8C;
 }
@@ -5113,11 +5114,11 @@ ul li a:focus {
   -ms-transition: -webkit-transform 0.2s ease-in;
   -o-transition: -webkit-transform 0.2s ease-in;
   transition: -webkit-transform 0.2s ease-in;
-  -webkit-transition: transform: 0.2s ease-in;
-  -moz-transition: transform: 0.2s ease-in;
-  -ms-transition: transform: 0.2s ease-in;
-  -o-transition: transform: 0.2s ease-in;
-  transition: transform: 0.2s ease-in;
+  -webkit-transition: transform 0.2s ease-in;
+  -moz-transition: transform 0.2s ease-in;
+  -ms-transition: transform 0.2s ease-in;
+  -o-transition: transform 0.2s ease-in;
+  transition: transform 0.2s ease-in;
 }
 
 .nav-tabs.nav-tabs-v1 li a:focus {
