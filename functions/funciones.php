@@ -424,8 +424,7 @@ function guardar_recorrido(){
         
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
-        // Construir la consulta SQL y el array de parámetros dinámicamente
+
         $sql = "INSERT INTO recorrido (dia_semana, salida, recorrido, km_inicial, km_final, vacio, bitacora) VALUES (?, ?, ?, ?, ?, ?, ?);";
         $params = array($dia, $salida, $lista_rec, $k_i, $k_f, $vacio, $id_bitacora);
     
@@ -598,36 +597,55 @@ function eliminar_auto() {
 function eliminar_bitacora() {
     $id = $_POST['id_bitacora'];
     $ultimo = false;
+    $aux = 1;
 
-    $pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT MAX(id_bitacora) AS maximo FROM bitacora;";
-    $q = $pdo->prepare($sql);
     try {
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT MAX(id_bitacora) AS maximo FROM bitacora;";
+        $q = $pdo->prepare($sql);
         $q->execute();
         $data = $q->fetch(PDO::FETCH_ASSOC);
-        
-        if($data["maximo"]==$id){
-            $sql = "ALTER TABLE bitacora AUTO_INCREMENT = $id";
-            $q = $pdo->prepare($sql);
-            $q->execute();
-         }   
+        $aux = $data["maximo"];
+         Database::disconnect();
+    } catch (PDOException $e) {
+        Database::disconnect();
+        return "Error: " . $e;
+    }
+
+    try {
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "DELETE FROM bitacora WHERE id_bitacora=?";
+        $q = $pdo->prepare($sql);
+        $q->execute(array($id));
         Database::disconnect();
     } catch (PDOException $e) {
         Database::disconnect();
+        return "Error: " . $e;
     }
 
-    /*$pdo = Database::connect();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "DELETE FROM bitacora WHERE id_bitacora=?";
-    $q = $pdo->prepare($sql);
-    try {
+    if($aux==$id){
+        $res = AUTO_INCREMENT($id);
+        if($res!=true)
+            return $res;
+     }
+     return true; 
+}
+
+function AUTO_INCREMENT($id){
+
+    try{
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "ALTER TABLE bitacora AUTO_INCREMENT = ?;";
+        $q = $pdo->prepare($sql);
         $q->execute(array($id));
         Database::disconnect();
         return true;
     } catch (PDOException $e) {
         Database::disconnect();
         return "Error: " . $e;
-    }*/
-
+    }
+    
 }

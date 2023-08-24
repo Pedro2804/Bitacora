@@ -103,11 +103,14 @@ function eliminar_bitacora(id, unidad){
     confirmButtonText: 'Si'
     }).then((result) =>{
         if (result){
-            $.ajax({
+            $.ajax({ //Actualizar el km al anterior
                 type: "POST",
                 url: "eliminarBitacora.php",
                 data: {id: id, unidad: unidad},
                 cache: false
+                /*success: function(result){
+                    console.log(result);
+                }*/
 		    });
 
             $.ajax({
