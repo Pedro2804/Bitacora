@@ -209,7 +209,6 @@ if (!isset($_SESSION['usuario'])) {
         <!-- end Modal -->
     </div>
     <!-- end: content -->
-    </div><th>Modelo</th>
 
     <!-- start: Javascript -->
     <script src="../asset/js/jquery.min.js"></script>
