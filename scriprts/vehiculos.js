@@ -129,7 +129,7 @@ function eliminar_bitacora(id, unidad){
                         //confirmButtonText: 'Aceptar',
                     }).then(function(){document.location.href="Busqueda.php";});//Sirve para cuando hay opciones de aceptar en el swal
                     
-                    //setTimeout(function() {document.location.href = 'Busqueda.php';}, 1100);
+                    setTimeout(function() {document.location.href = 'Busqueda.php';}, 1100);
                 }
 		    });
         }

@@ -166,47 +166,63 @@
         event.preventDefault();
         var idVehiculo = $("#idVehiculo_e").val();
         if(idVehiculo!=''){
-            obtenerResultados();
             $.ajax({
                 method: "POST",
                 url: "controller/controller.php",
-                data: {id: idVehiculo, funcion: "vehiculo"},
+                data: {id_bitacora: id_bitacora,unidad: idVehiculo, funcion: "bitacora_existente"},
                 cache: false,
                 success: function(result){
-                    //console.log(result);
-                    if(result!=0){
-                        var resultados = JSON.parse(result);
+                    if(result==1){
+                        obtenerResultados();
+                        $.ajax({
+                            method: "POST",
+                            url: "controller/controller.php",
+                            data: {id: idVehiculo, funcion: "vehiculo"},
+                            cache: false,
+                            success: function(result){
+                                //console.log(result);
+                                if(result!=0){
+                                    var resultados = JSON.parse(result);
 
-                        var j=0;
-                        while(j<dias_recorrido.length){
-                            document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
-                            j++;
-                        }
-                        $("#M_m_e").css("opacity", 1);
-                        $("#marca_modelo_e").val(resultados.modelo);
+                                    var j=0;
+                                    while(j<dias_recorrido.length){
+                                        document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
+                                        j++;
+                                    }
+                                    $("#M_m_e").css("opacity", 1);
+                                    $("#marca_modelo_e").val(resultados.modelo);
 
-                        $("#p_e").css("opacity", 1);
-                        $("#placas_e").val(resultados.placas);
-                        $("#comb_e").css("opacity", 1);
-                        $("#combustible_e").val(resultados.comb);
-                        $("#km_I_e0").val(resultados.km);
-                    }else{
-                        $("#M_m_e").css("opacity", 0);
-                        $("#p_e").css("opacity", 0);
-                        $("#comb_e").css("opacity", 0);
+                                    $("#p_e").css("opacity", 1);
+                                    $("#placas_e").val(resultados.placas);
+                                    $("#comb_e").css("opacity", 1);
+                                    $("#combustible_e").val(resultados.comb);
+                                    $("#km_I_e0").val(resultados.km);
+                                }else{
+                                    $("#M_m_e").css("opacity", 0);
+                                    $("#p_e").css("opacity", 0);
+                                    $("#comb_e").css("opacity", 0);
 
-                        $("#idVehiculo_e").val("");
-                        swal({
-                            type: 'error',
-                            title: 'La unidad no existe en el sistema',
-                            timer: 1000,
-                            showConfirmButton: false
+                                    $("#idVehiculo_e").val("");
+                                    swal({
+                                        type: 'error',
+                                        title: 'La unidad no existe en el sistema',
+                                        timer: 1000,
+                                        showConfirmButton: false
+                                    });
+                                    $("#recorridos_e").css("display", "none");
+                                    $("#sig_bitacora_e").css("display", "block");
+                                }
+                            }
                         });
-                        $("#recorridos_e").css("display", "none");
-                        $("#sig_bitacora_e").css("display", "block");
-                    }
-                }
-            }); 
+                    }else{
+                        swal({
+                            type: 'warning',
+                            title: 'El vehículo ya tiene registrado una bitácora más actual',
+                            timer: 1500,
+                            showConfirmButton: false});
+                            setTimeout(function() {$("#idVehiculo_e").val(NoUnidad);}, 1500);
+                        }
+                }}); 
         }else{
             $("#M_m_e").css("opacity", 0);
             $("#p_e").css("opacity", 0);
@@ -258,6 +274,7 @@
                                 data: {id: 0, funcion: "num_bitacoras"},
                                 cache: false,
                                 success: function (result) {
+                                    document.getElementById("sig").value = result;
                                     var j = 0;
                                     while (j < dias_recorrido.length) {$("#num_bitacoras"+j).val(result); j++;}
                                 }
@@ -358,32 +375,38 @@
                             for(i=0; i<dias_recorrido.length; i++)
                                 dias_recorrido[i].disabled = true;
                             dias_recorrido[0].className += " active";
-                            var j=0;
-                            while(j<dias_recorrido.length){
-                                if(dias_recorrido[j].value in datos[0] && datos[0][dias_recorrido[j].value]["vacio"] == 0){
-                                    document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
 
-                                    if(datos[0][dias_recorrido[j].value]["km_inicial"])
-                                        document.getElementById("km_I_e"+j).value = datos[0][dias_recorrido[j].value]["km_inicial"];
-                                    else
-                                        document.getElementById("km_I_e"+j).value = km_ant;
-                                    document.getElementById("km_F_e"+j).value = datos[0][dias_recorrido[j].value]["km_final"];
-                                    document.getElementById("salida_e"+j).value = datos[0][dias_recorrido[j].value]["salida"];
-                                    document.getElementById("listaR_e"+j).value = datos[0][dias_recorrido[j].value]["recorrido"];
-                                }else{
-                                    document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
-                                    document.getElementById("vacio_e"+j).checked = true;
-                                    if(j == 0)
-                                        document.getElementById("km_I_e"+j).value = km_ant;
-                                    document.getElementById("km_I_e"+j).disabled = true;
-                                    document.getElementById("km_F_e"+j).disabled = true;
-                                    document.getElementById("salida_e"+j).disabled = true;
-                                    document.getElementById("recorrido_e"+j).disabled = true;
-                                    document.getElementById("btn_vaciar_e"+j).style.pointerEvents = "none";
-                                    document.getElementById("btn_agregar_e"+j).style.pointerEvents = "none";
-                                 }   
-                                j++;
+                            if (NoUnidad == unidad.value) {
+                                var j=0;
+                                while(j<dias_recorrido.length){
+                                    if(dias_recorrido[j].value in datos[0] && datos[0][dias_recorrido[j].value]["vacio"] == 0){
+                                        document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
+
+                                        if(datos[0][dias_recorrido[j].value]["km_inicial"])
+                                            document.getElementById("km_I_e"+j).value = datos[0][dias_recorrido[j].value]["km_inicial"];
+                                        else
+                                            document.getElementById("km_I_e"+j).value = km_ant;
+                                        document.getElementById("km_F_e"+j).value = datos[0][dias_recorrido[j].value]["km_final"];
+                                        document.getElementById("salida_e"+j).value = datos[0][dias_recorrido[j].value]["salida"];
+                                        document.getElementById("listaR_e"+j).value = datos[0][dias_recorrido[j].value]["recorrido"];
+                                    }else{
+                                        document.getElementById("id_recorrido"+j).value = datos[0][dias_recorrido[j].value]["id_recorrido"];
+                                        document.getElementById("vacio_e"+j).checked = true;
+                                        if(j == 0)
+                                            document.getElementById("km_I_e"+j).value = km_ant;
+                                        document.getElementById("km_I_e"+j).disabled = true;
+                                        document.getElementById("km_F_e"+j).disabled = true;
+                                        document.getElementById("salida_e"+j).disabled = true;
+                                        document.getElementById("recorrido_e"+j).disabled = true;
+                                        document.getElementById("btn_vaciar_e"+j).style.pointerEvents = "none";
+                                        document.getElementById("btn_agregar_e"+j).style.pointerEvents = "none";
+                                    }   
+                                    j++;
+                                }
+                            }else{
+                                document.getElementById("km_I_e0").value = resultados.km;
                             }
+                            
                     }else{
                         swal({
                             type: 'error',

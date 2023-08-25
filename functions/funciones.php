@@ -203,7 +203,7 @@ function num_bitacoras(){
     } catch (PDOException $e) {
         Database::disconnect();
         return "Error: " . $e;
-    }
+    }    
 }
 
 function repetido($tabla, $columna, $lugar){
@@ -248,12 +248,14 @@ function guardar_bitacora(){
     $fechalDel = null;
     $fechalAl = null;
     $combustible = null;
-    $vale = null;
+    $sig = null;
     $fechaCarga = null;
     $monto = null;
     $folio = null;
 
-
+    if (isset($_POST['sig'])) {
+        $sig = $_POST['sig'];
+    }
     if (isset($_POST['numero_control'])) {
         $empleado = $_POST['numero_control'];
     }
@@ -283,8 +285,8 @@ function guardar_bitacora(){
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Construir la consulta SQL y el array de parámetros dinámicamente
-    $sql = "INSERT INTO bitacora (operador, NoUnidad, periodo_de, periodo_al";
-    $params = array($empleado, $idVehiculo, $fechalDel, $fechalAl);
+    $sql = "INSERT INTO bitacora (id_bitacora, operador, NoUnidad, periodo_de, periodo_al";
+    $params = array($sig, $empleado, $idVehiculo, $fechalDel, $fechalAl);
 
     if (!empty($combustible)) {
         $sql .= ", combustible";
@@ -596,22 +598,6 @@ function eliminar_auto() {
 
 function eliminar_bitacora() {
     $id = $_POST['id_bitacora'];
-    $ultimo = false;
-    $aux = 1;
-
-    try {
-        $pdo = Database::connect();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT MAX(id_bitacora) AS maximo FROM bitacora;";
-        $q = $pdo->prepare($sql);
-        $q->execute();
-        $data = $q->fetch(PDO::FETCH_ASSOC);
-        $aux = $data["maximo"];
-         Database::disconnect();
-    } catch (PDOException $e) {
-        Database::disconnect();
-        return "Error: " . $e;
-    }
 
     try {
         $pdo = Database::connect();
@@ -620,32 +606,31 @@ function eliminar_bitacora() {
         $q = $pdo->prepare($sql);
         $q->execute(array($id));
         Database::disconnect();
+        return true; 
     } catch (PDOException $e) {
         Database::disconnect();
         return "Error: " . $e;
-    }
-
-    if($aux==$id){
-        $res = AUTO_INCREMENT($id);
-        if($res!=true)
-            return $res;
-     }
-     return true; 
+    }     
 }
 
-function AUTO_INCREMENT($id){
+function bitacora_existente(){
+    $id = $_POST['id_bitacora'];
+    $unidad = $_POST['unidad'];
 
-    try{
-        $pdo = Database::connect();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "ALTER TABLE bitacora AUTO_INCREMENT = ?;";
-        $q = $pdo->prepare($sql);
-        $q->execute(array($id));
+
+    $pdo = Database::connect();
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "SELECT MAX(id_bitacora) AS bitacoras FROM bitacora WHERE NoUnidad = ?;";
+    $q = $pdo->prepare($sql);
+    try {
+        $q->execute(array($unidad));
+        $data = $q->fetch(PDO::FETCH_ASSOC);
         Database::disconnect();
-        return true;
+        if($data["bitacoras"] && $id < $data["bitacoras"])
+            return false;
+        else return true;
     } catch (PDOException $e) {
         Database::disconnect();
         return "Error: " . $e;
-    }
-    
+    } 
 }

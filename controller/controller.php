@@ -82,6 +82,10 @@ switch ($funcion)
         $respuesta=nombreempl();
         if ($respuesta == false) echo '0';
         else echo json_encode($respuesta);
-	break;      
+	break;
+    case 'bitacora_existente':   
+        $respuesta=bitacora_existente();
+        echo $respuesta;
+	break;  
 }
 ?> 

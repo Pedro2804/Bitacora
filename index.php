@@ -66,6 +66,7 @@
                     <div class="col-md-12">
                         <form class="cmxform" id="form_solicitud" method="get" action="">
                             <input type="hidden" value="guardar_bitacora" id="funcion" name="funcion">
+                            <input type="hidden" id="sig" name="sig">
                             <div class="col-md-12" style="margin-top:40px !important;">
                                 <!--Numero de control 1-->
                                 <div class="col-md-6" style="width: 16%;">
