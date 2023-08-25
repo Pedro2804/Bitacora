@@ -136,22 +136,21 @@ function datos_vehiculo($idvehiculo){
 
 function mostrar_vehiculos(){
     $columns = array(
-        array('db' => 'id_vehiculo', 'dt' => 0),
-        array('db' => 'num_unidad', 'dt' => 1),
-        array('db' => 'marca', 'dt' => 2),
-        array('db' => 'modelo', 'dt' => 3),
-        array('db' => 'tipo', 'dt' => 4),
-        array('db' => 'placas', 'dt' => 5),
-        array('db' => 'NoSerie', 'dt' => 6),
-        array('db' => 'tipo_combustible', 'dt' => 7),
-        array('db' => 'kilometraje', 'dt' => 8),
-        array('db' => 'transmision', 'dt' => 9),
+        //array('db' => 'id_vehiculo', 'dt' => 0),
+        array('db' => 'num_unidad', 'dt' => 0),
+        array('db' => 'marca', 'dt' => 1),
+        array('db' => 'modelo', 'dt' => 2),
+        array('db' => 'tipo', 'dt' => 3),
+        array('db' => 'placas', 'dt' => 4),
+        array('db' => 'NoSerie', 'dt' => 5),
+        //array('db' => 'tipo_combustible', 'dt' => 7),
+        array('db' => 'kilometraje', 'dt' => 6),
+        array('db' => 'transmision', 'dt' => 7),
         /*array('db' => 'auto_direccion', 'dt' => 10),
         array('db' => 'direccion', 'dt' => 11),
-        array('db' => 'estado', 'dt' => 13),
         array('db' => 'logo', 'dt' => 14),*/
-        array('db' => 'ubicacion', 'dt' => 10),
-        array('db' => 'resguardante', 'dt' => 11)
+        array('db' => 'ubicacion', 'dt' => 8),
+        array('db' => 'resguardante', 'dt' => 9)
     );
     $salida = array();
     $pdo = new PDO('mysql:host=localhost;dbname=Bitacora', 'root', 'DIFinformatica.03', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));

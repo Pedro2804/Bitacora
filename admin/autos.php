@@ -115,14 +115,14 @@ if (!isset($_SESSION['usuario'])) {
                                 <table id="datatables-example" class="table table-striped table-bordered" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <!--<th>ID</th>-->
                                             <th>Numero de unidad</th>
                                             <th>Marca </th>
                                             <th>Modelo </th>
                                             <th>Tipo </th>
                                             <th>Placas </th>
-                                            <th>Serie </th>
-                                            <th>Combustible </th>
+                                            <th>Num Serie </th>
+                                            <!--<th>Combustible </th>-->
                                             <th>Kilometraje </th>
                                             <th>Transmisión </th>
                                             <!--<th>Auto dirección </th>
