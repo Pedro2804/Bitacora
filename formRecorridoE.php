@@ -59,7 +59,7 @@
                 </div>
 
                 <!--Salida-->
-                <div class="col-md-6" style="width: 18%;">
+                <!--<div class="col-md-6" style="width: 18%;">
                     <?php $opciones = array('SECATI', 'Particular', 'Estacionamiento', 'Centro de día', 'CMERI', 'UMI', 'Almacen'); ?>
                     <label style="font-size: 17px;">Salida:</label><br>
                     <select id="salida_e<?php echo $j ?>" name="salida_e" required>
@@ -70,6 +70,12 @@
                             }
                         ?>
                     </select>
+                </div>-->
+                <div class="col-md-6" style="width: 20%;">
+                    <div class="form-group form-animate-text" style="margin: 0px;">
+                        <input type="text" oninput="this.value = this.value.toUpperCase();" maxlength="60" id="salida_e<?php echo $j ?>" class="form-text" name="salida_e" required>
+                        <span class="bar"></span><label>Salida</label>
+                    </div>
                 </div>
 
                 <div class="col-md-6" style="width: 20%;">
