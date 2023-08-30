@@ -28,6 +28,7 @@ function editar(id){
                 var marca=obj['marca'];
                 var modelo=obj['modelo'];
                 var placas=obj['placas'];
+                var tipo=obj['tipo'];
                 var combustible=obj['tipo_combustible'];
                 var kilometraje=obj['kilometraje'];     
                 
@@ -35,6 +36,7 @@ function editar(id){
                 $('#num_unidad').val(obj['num_unidad']);
                 $('#marca').val(marca);
                 $('#modelo').val(modelo);
+                $('#tipo').val(tipo);
                 $('#placas').val(placas);
                 $('#tipo_combustible').val(combustible);
                 $('#kilometraje').val(kilometraje);
@@ -198,7 +200,13 @@ $(document).ready(function(){
                         }).then(function(){document.location.href="../admin/autos.php";});
                         
                         setTimeout(function() {document.location.href = '../admin/autos.php';}, 1100);
-				}
+				}else
+                    swal({
+                        type: 'warning',
+                        title: 'Vehiculo repetido',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
 				//else console.log(result);
 			}
 		});

@@ -136,21 +136,21 @@ function datos_vehiculo($idvehiculo){
 
 function mostrar_vehiculos(){
     $columns = array(
-        //array('db' => 'id_vehiculo', 'dt' => 0),
-        array('db' => 'num_unidad', 'dt' => 0),
-        array('db' => 'marca', 'dt' => 1),
-        array('db' => 'modelo', 'dt' => 2),
-        array('db' => 'tipo', 'dt' => 3),
-        array('db' => 'placas', 'dt' => 4),
-        array('db' => 'NoSerie', 'dt' => 5),
+        array('db' => 'id_vehiculo', 'dt' => 0),
+        array('db' => 'num_unidad', 'dt' => 1),
+        array('db' => 'marca', 'dt' => 2),
+        array('db' => 'modelo', 'dt' => 3),
+        array('db' => 'tipo', 'dt' => 4),
+        array('db' => 'placas', 'dt' => 5),
+        array('db' => 'NoSerie', 'dt' => 6),
         //array('db' => 'tipo_combustible', 'dt' => 7),
-        array('db' => 'kilometraje', 'dt' => 6),
-        array('db' => 'transmision', 'dt' => 7),
+        array('db' => 'kilometraje', 'dt' => 7),
+        array('db' => 'transmision', 'dt' => 8),
         /*array('db' => 'auto_direccion', 'dt' => 10),
         array('db' => 'direccion', 'dt' => 11),
         array('db' => 'logo', 'dt' => 14),*/
-        array('db' => 'ubicacion', 'dt' => 8),
-        array('db' => 'resguardante', 'dt' => 9)
+        array('db' => 'ubicacion', 'dt' => 9),
+        array('db' => 'resguardante', 'dt' => 10)
     );
     $salida = array();
     $pdo = new PDO('mysql:host=localhost;dbname=Bitacora', 'root', 'DIFinformatica.03', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -180,7 +180,7 @@ function get_vehiculo($id){
     try {
         $q->execute(array($id));
         $data = $q->fetch(PDO::FETCH_ASSOC);
-        return json_encode($data);
+        return $data;
     } catch (PDOException $e) {
         Database::disconnect();
         return "Error: " . $e;
@@ -534,18 +534,72 @@ function editar_recorrido(){
 
 function nuevo_auto(){
     $unidad = $_POST['num_unidad'];
-    $marca = strtoupper($_POST['marca']);
-    $modelo = strtoupper($_POST['modelo']);
-    $placas = strtoupper($_POST['placas']);
-    $combustible = strtoupper($_POST['tipo_combustible']);
-    $kilometraje = $_POST['kilometraje'];
-    $sql_ = array($unidad, $marca, $modelo, $placas, $combustible, $kilometraje);
+    $marca = null;
+    $modelo = null;
+    $tipo = null;
+    $placas = null;
 
     $aux = repetido("vehiculo", "num_unidad", $unidad);
     if($aux == false){
+        $marca = $_POST['marca'];
+        $modelo = $_POST['modelo'];
+        $tipo = $_POST['tipo'];
+        $placas = $_POST['placas'];
+        
+        $sql_ = array($unidad, $marca, $modelo, $tipo, $placas);
+
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "INSERT INTO vehiculo (num_unidad, marca, modelo, placas, tipo_combustible, kilometraje) VALUES (?,?,?,?,?,?);";
+
+        $sql = "INSERT INTO vehiculo (num_unidad, marca, modelo, tipo, placas";
+        $sql2 = " VALUES(?,?,?,?,?";
+
+        if (isset($_POST['serie'])  && !empty($_POST['serie'])) {
+            $sql .= ", NoSerie";
+            $sql2 .= ",?";
+            $sql_[] = $_POST['serie'];
+        }
+
+        $sql .= ", tipo_combustible";
+        $sql2 .= ",?";
+        $sql_[] = $_POST['tipo_combustible'];
+
+        if (isset($_POST['transmision'])  && !empty($_POST['transmision'])) {
+            $sql .= ", transmision";
+            $sql2 .= ",?";
+            $sql_[] = $_POST['transmision'];
+        }
+        if (isset($_POST['logo'])  && !empty($_POST['logo'])) {
+            $sql .= ", logo";
+            $sql2 .= ",?";
+            $sql_[] = $_POST['logo'];
+        }
+        if (isset($_POST['auto_dir'])  && !empty($_POST['auto_dir'])) {
+            $sql .= ", auto_direccion";
+            $sql2 .= ",?";
+            $sql_[] = $_POST['auto_dir'];
+        }
+        if (isset($_POST['direccion'])  && !empty($_POST['direccion'])) {
+            $sql .= ", direccion";
+            $sql2 .= ",?";
+            $sql_[] = $_POST['direccion'];
+        }
+        if (isset($_POST['resguardante'])  && !empty($_POST['resguardante'])) {
+            $sql .= ", resguardante";
+            $sql2 .= ",?";
+            $sql_[] = $_POST['resguardante'];
+        }
+        if (isset($_POST['ubicacion'])  && !empty($_POST['ubicacion'])) {
+            $sql .= ", ubicacion";
+            $sql2 .= ",?";
+            $sql_[] = $_POST['ubicacion'];
+        }
+
+        $sql .= ", kilometraje)";
+        $sql2 .= ",?);";
+        $sql_[] = $_POST['kilometraje'];
+        
+        $sql .= $sql2;
         $q = $pdo->prepare($sql);
         try {
             $q->execute($sql_);
@@ -563,18 +617,19 @@ function editar_auto(){
     $unidad = $_POST['num_unidad'];
     $marca = $_POST['marca'];
     $modelo = $_POST['modelo'];
+    $tipo = $_POST['tipo'];
     $placas = $_POST['placas'];
     $combustible = $_POST['tipo_combustible'];
     $kilometraje = $_POST['kilometraje'];
-    $sql_ = "num_unidad='$unidad', marca='$marca', modelo='$modelo', placas='$placas', tipo_combustible='$combustible', kilometraje='$kilometraje'";
+    $sql_ = "num_unidad='$unidad', marca='$marca', modelo='$modelo', tipo='$tipo', placas='$placas', tipo_combustible='$combustible', kilometraje='$kilometraje'";
 
-    if(repetido("vehiculo", "num_unidad", $unidad) == false){
+    if(repetido("vehiculo", "num_unidad", $unidad) == false || get_vehiculo($id)["num_unidad"] == $unidad){
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "UPDATE vehiculo SET " . $sql_ . " WHERE id_vehiculo=?";
+        $sql = "UPDATE vehiculo SET " . $sql_ . " WHERE id_vehiculo=$id";
         $q = $pdo->prepare($sql);
         try {
-            $q->execute(array($id));
+            $q->execute();
             Database::disconnect();
             return true;
         } catch (PDOException $e) {

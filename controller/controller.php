@@ -32,7 +32,7 @@ switch ($funcion)
 	break;
     case 'get_vehiculo':
         $respuesta=get_vehiculo($vehiculo);
-        echo $respuesta;
+        echo json_encode($respuesta);
 	break;
     case 'editar_auto':
         $respuesta=editar_auto();

@@ -109,48 +109,105 @@ if (!isset($_SESSION['usuario'])) {
                     <div class="col-md-12 panel-body">
                         <form id="form_nuevo_auto" class="">
                             <input type="hidden" id="funcion" name="funcion" value="nuevo_auto">
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="width: 25%;" >
                                 <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                    <input id="num_unidad" name="num_unidad" type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" required>
+                                    <input id="num_unidad" name="num_unidad" type="text" class="form-text" required>
                                     <span class="bar"></span>
-                                    <label>Numero de unidad</label>
+                                    <label>Numero de unidad *</label>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="width: 25%;">
                                 <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                    <input id="marca" name="marca" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                    <input id="marca" name="marca" type="text" class="form-text" required>
                                     <span class="bar"></span>
-                                    <label>Marca</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                    <input id="modelo" name="modelo" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                    <span class="bar"></span>
-                                    <label>Modelo</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                    <input id="placas"name="placas" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                    <span class="bar"></span>
-                                    <label>Placas</label>
+                                    <label>Marca *</label>
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="width: 25%;">
                                 <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                    <input id="tipo_combustible"name="tipo_combustible" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                    <input id="modelo" name="modelo" type="text" class="form-text" required>
                                     <span class="bar"></span>
-                                    <label>Tipo de combustible</label>
+                                    <label>Modelo *</label>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="width: 25%;">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="tipo" name="tipo" type="text" class="form-text" required>
+                                    <span class="bar"></span>
+                                    <label>Tipo *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="width: 25%;">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="placas"name="placas" type="text" class="form-text" required>
+                                    <span class="bar"></span>
+                                    <label>Placas *</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6" style="width: 25%;">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="serie" name="serie" type="text" class="form-text">
+                                    <span class="bar"></span>
+                                    <label>Serie</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6" style="width: 25%;">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="tipo_combustible"name="tipo_combustible" type="text" class="form-text" required>
+                                    <span class="bar"></span>
+                                    <label>Tipo de combustible *</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="width: 25%;">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="transmision"name="transmision" type="text" class="form-text">
+                                    <span class="bar"></span>
+                                    <label>Transmisión</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="width: 10%;">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="logo"name="logo" type="text" class="form-text">
+                                    <span class="bar"></span>
+                                    <label>Logo</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="width: 10%;">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="auto_dir"name="auto_dir" type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');">
+                                    <span class="bar"></span>
+                                    <label>Auto Dirección</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="width: 20%;">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="direccion"name="direccion" type="text" class="form-text">
+                                    <span class="bar"></span>
+                                    <label>Dirección</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="width: 25%;">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="resguardante"name="resguardante" type="text" class="form-text">
+                                    <span class="bar"></span>
+                                    <label>Resguardante</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="width: 20%;">
+                                <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                    <input id="ubicacion"name="ubucacion" type="text" class="form-text">
+                                    <span class="bar"></span>
+                                    <label>Ubicación</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="width: 15%;">
                                 <div class="form-group form-animate-text" style="margin-top:40px !important;">
                                     <input id="kilometrake"name="kilometraje" type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" required>
                                     <span class="bar"></span>
-                                    <label>kilometraje</label>
+                                    <label>kilometraje *</label>
                                 </div>
                             </div>
                             <div class="col-md-12">

@@ -115,7 +115,7 @@ if (!isset($_SESSION['usuario'])) {
                                 <table id="datatables-example" class="table table-striped table-bordered" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <!--<th>ID</th>-->
+                                            <th>ID</th>
                                             <th>Numero de unidad</th>
                                             <th>Marca </th>
                                             <th>Modelo </th>
@@ -152,33 +152,39 @@ if (!isset($_SESSION['usuario'])) {
                         <div class="col-md-12">
                             <form id="form_editar" class="">
                                 <input type="hidden" value="editar_auto" id="funcion" name="funcion">
-                                <input type="hidden" id="id" name="id" value="0">
+                                <input type="hidden" id="id" name="id" value="">
                                 <div class="col-md-12">
                                     <div class="col-md-12">
                                         <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                            <input id="num_unidad" name="num_unidad" type="text" class="form-text" oninput="this.value = this.value.replace(/\D/g, '');" required>
+                                            <input id="num_unidad" name="num_unidad" type="text" class="form-text" required>
                                             <span class="bar"></span>
                                             <label>Numero de unidad</label>
                                         </div>
 
                                         <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                            <input id="marca" name="marca" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input id="marca" name="marca" type="text" class="form-text" required>
                                             <span class="bar"></span>
                                             <label>Marca</label>
                                         </div>
                                         <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                            <input id="modelo" name="modelo" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input id="modelo" name="modelo" type="text" class="form-text" required>
                                             <span class="bar"></span>
                                             <label>Modelo</label>
                                         </div>
 
                                         <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                            <input id="placas" name="placas" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input id="tipo" name="tipo" type="text" class="form-text" required>
+                                            <span class="bar"></span>
+                                            <label>Tipo</label>
+                                        </div>
+
+                                        <div class="form-group form-animate-text" style="margin-top:40px !important;">
+                                            <input id="placas" name="placas" type="text" class="form-text" required>
                                             <span class="bar"></span>
                                             <label>Placas</label>
                                         </div>
                                         <div class="form-group form-animate-text" style="margin-top:40px !important;">
-                                            <input id="tipo_combustible" name="tipo_combustible" type="text" class="form-text" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input id="tipo_combustible" name="tipo_combustible" type="text" class="form-text" required>
                                             <span class="bar"></span>
                                             <label>Tipo de combustible</label>
                                         </div>
@@ -202,10 +208,6 @@ if (!isset($_SESSION['usuario'])) {
                 </div>
             </div>
         </div>
-        <form id="form_eliminar" class="">
-            <input type="hidden" value="eliminar_sello" id="funcion" name="funcion">
-            <input type="hidden" id="id" name="id" value="0">
-        </form>
         <!-- end Modal -->
     </div>
     <!-- end: content -->
