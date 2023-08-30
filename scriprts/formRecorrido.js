@@ -289,7 +289,10 @@
                             type: "POST",
                             url: "controller/controller.php",
                             data: $("#formulario_recorrido"+i).serialize(),
-                            cache: false
+                            cache: false,
+                            success: function(result){
+                                //console.log(result);
+                            }
                         });
                         i++;
                     }
@@ -300,7 +303,7 @@
                         data: {unidad: document.getElementById("idVehiculo").value, km: km_f_aux , funcion: "editar_km"},
                         cache: false,
                         success: function(result) {
-                            console.log(result);
+                            //console.log(result);
                         }
                     });
                     setTimeout(function() { document.location.href = 'index.php'; }, 1100);

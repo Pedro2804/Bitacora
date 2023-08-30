@@ -1,4 +1,5 @@
 <?php
+$sig;
 include '../config/conexion.php';
 session_start();
 if (empty($_POST)) {
@@ -243,11 +244,11 @@ function editar_km(){
 function guardar_bitacora(){
 
     $empleado = null;
+    global $sig;
     $idVehiculo = null;
     $fechalDel = null;
     $fechalAl = null;
     $combustible = null;
-    $sig = null;
     $fechaCarga = null;
     $monto = null;
     $folio = null;
@@ -279,6 +280,9 @@ function guardar_bitacora(){
     if (isset($_POST['folio']) && !empty($_POST['folio'])) {
         $folio = $_POST['folio'];
     }
+
+    if(($sig - num_bitacoras())<0)
+        $sig = num_bitacoras();
 
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -397,6 +401,7 @@ function editar_bitacora(){
 
 function guardar_recorrido(){
     $vacio = null;
+    global $sig;
     $dia = null;
     $k_i = null;
     $k_f = null;
@@ -421,7 +426,10 @@ function guardar_recorrido(){
         }
         
         $vacio = 0;
-        $id_bitacora = $_POST['id_bitacora'];
+        $id_bitacora = $sig;
+
+        //if(($id_bitacora - num_bitacoras())<0)
+            //$id_bitacora = $sig;
         
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -442,7 +450,7 @@ function guardar_recorrido(){
     }else{
         $vacio = 1;
         $dia = $_POST['dia_semana'];
-        $id_bitacora = $_POST['id_bitacora'];
+        $id_bitacora = $sig;
         
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -613,12 +621,10 @@ function eliminar_bitacora() {
 }
 
 function bitacora_existente(){
-    $id = $_POST['id_bitacora'];
-    $unidad = $_POST['unidad'];
-
-
     $pdo = Database::connect();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $id = $_POST['id_bitacora'];
+    $unidad = $_POST['unidad'];
     $sql = "SELECT MAX(id_bitacora) AS bitacoras FROM bitacora WHERE NoUnidad = ?;";
     $q = $pdo->prepare($sql);
     try {
@@ -631,5 +637,5 @@ function bitacora_existente(){
     } catch (PDOException $e) {
         Database::disconnect();
         return "Error: " . $e;
-    } 
+    }
 }

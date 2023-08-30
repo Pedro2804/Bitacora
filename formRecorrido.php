@@ -36,7 +36,7 @@
         <form id="formulario_recorrido<?php echo $j ?>" method="get" action="">
             
             <input type="hidden" value="guardar_recorrido" id="funcion" name="funcion">
-            <input type="hidden" value="" id="num_bitacoras<?php echo $j ?>" name="id_bitacora">
+            <input type="text" id="num_bitacoras<?php echo $j ?>" name="id_bitacora">
             <!--<input type="hidden" name="bitacora" value="12" />-->
             <input type="hidden" name="dia_semana" value="<?php echo $nombreDia ?>" />
 
