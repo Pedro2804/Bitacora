@@ -274,9 +274,9 @@
                                 data: {id: 0, funcion: "num_bitacoras"},
                                 cache: false,
                                 success: function (result) {
-                                    document.getElementById("sig").value = result;
-                                    var j = 0;
-                                    while (j < dias_recorrido.length) {$("#num_bitacoras"+j).val(result); j++;}
+                                    document.getElementById("sig").value = JSON.parse(result);
+                                    //var j = 0;
+                                    //while (j < dias_recorrido.length) {$("#num_bitacoras"+j).val(0); j++;}
                                 }
                             });
 

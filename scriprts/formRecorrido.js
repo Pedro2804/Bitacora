@@ -213,41 +213,43 @@
                                 cache: false,
                                 success: function(result) {
                                     //console.log(result);
-                                    if (result == 1) {
+                                    var resultados = JSON.parse(result);
+                                    if (resultados[0] == 1) {
                                         swal({
                                             type: 'success',
                                             title: 'Solicitud Generada',
                                             timer: 1000,
                                             showConfirmButton: false
                                         });
-                                        //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+
+                                        var i = 0;
+                                        while (i < dias_recorrido.length) {
+                                            document.getElementById("num_bitacoras"+i).value = resultados[1];
+                                            document.getElementById("listaR"+i).disabled = false;
+                                            document.getElementById("km_I"+i).disabled = false;
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "controller/controller.php",
+                                                data: $("#formulario_recorrido"+i).serialize(),
+                                                cache: false
+                                            });
+                                            i++;
+                                        }
+
+                                        $.ajax({ //Actualizamos el kilometraje del vehiculo cada vez que se crea una nueva bitacora
+                                            type: "POST",
+                                            url: "controller/controller.php",
+                                            data: {unidad: document.getElementById("idVehiculo").value, km: document.getElementById("km_F"+(i-1)).value , funcion: "editar_km"},
+                                            cache: false,
+                                            success: function(result) {
+                                                //console.log(result);
+                                            }
+                                        });
+                                        setTimeout(function() { document.location.href = 'index.php'; }, 1100);
                                     }
                                 }
                             });
-
-                            var i = 0;
-                            while (i < dias_recorrido.length) {
-                                document.getElementById("listaR"+i).disabled = false;
-                                document.getElementById("km_I"+i).disabled = false;
-                                $.ajax({
-                                    type: "POST",
-                                    url: "controller/controller.php",
-                                    data: $("#formulario_recorrido"+i).serialize(),
-                                    cache: false
-                                });
-                                i++;
-                            }
-
-                            $.ajax({ //Actualizamos el kilometraje del vehiculo cada vez que se crea una nueva bitacora
-                                type: "POST",
-                                url: "controller/controller.php",
-                                data: {unidad: document.getElementById("idVehiculo").value, km: document.getElementById("km_F"+(i-1)).value , funcion: "editar_km"},
-                                cache: false,
-                                success: function(result) {
-                                    console.log(result);
-                                }
-                            });
-                            setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+                            //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
                         }else
                             swal({
                                 type: 'warning',
@@ -264,49 +266,51 @@
                         cache: false,
                         success: function(result) {
                             //console.log(result);
-                            if (result == 1) {
+                            var resultados = JSON.parse(result);
+                            if (resultados[0] == 1) {
                                 swal({
                                     type: 'success',
                                     title: 'Solicitud Generada',
                                     timer: 1000,
                                     showConfirmButton: false
                                 });
-                                //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+
+                                var i = 0;
+                                var km_f_aux = 0;
+                                while (i < dias_recorrido.length) { //Para Guardar los recorridos que se hizo, haciendo referencia de la solicitud anterios 
+                                    document.getElementById("num_bitacoras"+i).value = resultados[1];
+                                    document.getElementById("listaR"+i).disabled = false;
+                                    document.getElementById("km_I"+i).disabled = false;
+
+                                    if (document.getElementById("km_F"+i).value != "")
+                                        km_f_aux = document.getElementById("km_F"+i).value;
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "controller/controller.php",
+                                        data: $("#formulario_recorrido"+i).serialize(),
+                                        cache: false,
+                                        success: function(result){
+                                            //console.log(result);
+                                        }
+                                    });
+                                    i++;
+                                }
+
+                                $.ajax({ //Actualizamos el kilometraje del vehiculo cada vez que se crea una nueva bitacora
+                                    type: "POST",
+                                    url: "controller/controller.php",
+                                    data: {unidad: document.getElementById("idVehiculo").value, km: km_f_aux , funcion: "editar_km"},
+                                    cache: false,
+                                    success: function(result) {
+                                        //console.log(result);
+                                    }
+                                });
+                                setTimeout(function() { document.location.href = 'index.php'; }, 1100);
                             }
                         }
                     });
-
-                    var i = 0;
-                    var km_f_aux = 0;
-                    while (i < dias_recorrido.length) { //Para Guardar los recorridos que se hizo haciendo referencia de la solicitud anterios 
-                        document.getElementById("listaR"+i).disabled = false;
-                        document.getElementById("km_I"+i).disabled = false;
-
-                        if (document.getElementById("km_F"+i).value != "")
-                            km_f_aux = document.getElementById("km_F"+i).value;
-
-                        $.ajax({
-                            type: "POST",
-                            url: "controller/controller.php",
-                            data: $("#formulario_recorrido"+i).serialize(),
-                            cache: false,
-                            success: function(result){
-                                //console.log(result);
-                            }
-                        });
-                        i++;
-                    }
-
-                    $.ajax({ //Actualizamos el kilometraje del vehiculo cada vez que se crea una nueva bitacora
-                        type: "POST",
-                        url: "controller/controller.php",
-                        data: {unidad: document.getElementById("idVehiculo").value, km: km_f_aux , funcion: "editar_km"},
-                        cache: false,
-                        success: function(result) {
-                            //console.log(result);
-                        }
-                    });
-                    setTimeout(function() { document.location.href = 'index.php'; }, 1100);
+                    //setTimeout(function() { document.location.href = 'index.php'; }, 1100);
                 }
             }
         }
@@ -411,7 +415,7 @@ function siguiente_dia_e(dia){
         openTab_e(dias_recorrido[i].value);
         dias_recorrido[i].className += " active";
 
-        if (!document.getElementById("vacio_e"+(i-1)).checked) {
+        //if (!document.getElementById("vacio_e"+(i-1)).checked) {
             var km_aux = "";
             for (let j = 0; j < i-1; j++) {
                 if (document.getElementById("km_F_e"+j).value != "") {
@@ -421,10 +425,12 @@ function siguiente_dia_e(dia){
             }
             if (km_aux != "") {
                 document.getElementById("km_I_e"+i).value = km_aux;
-            }
-        }else{
-             document.getElementById("km_I_e"+i).value = document.getElementById("km_I_e"+(i-1)).value;
-        }
+            }else if(document.getElementById("km_F_e"+i).value == ""){
+                document.getElementById("km_I_e"+i).value = document.getElementById("km_I_e"+(i-1)).value;
+           }
+        //}else{
+             //document.getElementById("km_I_e"+i).value = document.getElementById("km_I_e"+(i-1)).value;
+        //}
         
         if(i != 0){
             document.getElementById(dias_recorrido[i].value).querySelector('#btn_ant_e'+i).style.visibility = "visible";

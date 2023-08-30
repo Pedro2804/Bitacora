@@ -66,7 +66,7 @@
                     <div class="col-md-12">
                         <form class="cmxform" id="form_solicitud" method="get" action="">
                             <input type="hidden" value="guardar_bitacora" id="funcion" name="funcion">
-                            <input type="text" id="sig" name="sig">
+                            <input type="hidden" value="" id="sig" name="sig">
                             <div class="col-md-12" style="margin-top:40px !important;">
                                 <!--Numero de control 1-->
                                 <div class="col-md-6" style="width: 16%;">
@@ -303,7 +303,7 @@
                 if(document.getElementsByClassName("tablinks").length>1){
                     openTab(document.getElementsByClassName("tablinks")[0].value);
                     document.getElementsByClassName("tablinks")[0].className += " active";
-                    $.ajax({
+                    /*$.ajax({
                         method: "POST",
                         url: "controller/controller.php",
                         data: {id: 0, funcion: "num_bitacoras"},
@@ -312,14 +312,14 @@
                             var j = 0;
                             while (j < document.getElementsByClassName("tablinks").length) {$("#num_bitacoras"+j).val(result); j++;}
                         }
-                    });
+                    });*/
                     km_inicial();
                 }else if(document.getElementsByClassName("tablinks").length==1){
                     document.getElementById("boton_guardar0").style.display = "block";
                     document.getElementById("btn_sig0").style.display = "none";
                     openTab(document.getElementsByClassName("tablinks")[0].value);
                     document.getElementsByClassName("tablinks")[0].className += " active";
-                    $.ajax({
+                    /*$.ajax({
                         method: "POST",
                         url: "controller/controller.php",
                         data: {id: 0, funcion: "num_bitacoras"},
@@ -327,7 +327,7 @@
                         success: function (result) {
                             $("#num_bitacoras0").val(result);
                         }
-                    });
+                    });*/
                     km_inicial();
                 }else{
                     $('#sig_bitacora').css("display", "block");

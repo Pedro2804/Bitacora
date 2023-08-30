@@ -1,5 +1,4 @@
 <?php
-$sig;
 include '../config/conexion.php';
 session_start();
 if (empty($_POST)) {
@@ -244,7 +243,7 @@ function editar_km(){
 function guardar_bitacora(){
 
     $empleado = null;
-    global $sig;
+    $sig = null;
     $idVehiculo = null;
     $fechalDel = null;
     $fechalAl = null;
@@ -322,7 +321,7 @@ function guardar_bitacora(){
     try {
         $q->execute($params);
         Database::disconnect();
-        return true;
+        return array(true,$sig);
     } catch (PDOException $e) {
         Database::disconnect();
         return "Error: " . $e;
@@ -401,7 +400,6 @@ function editar_bitacora(){
 
 function guardar_recorrido(){
     $vacio = null;
-    global $sig;
     $dia = null;
     $k_i = null;
     $k_f = null;
@@ -426,7 +424,7 @@ function guardar_recorrido(){
         }
         
         $vacio = 0;
-        $id_bitacora = $sig;
+        $id_bitacora = $_POST["id_bitacora"];
 
         //if(($id_bitacora - num_bitacoras())<0)
             //$id_bitacora = $sig;
@@ -450,7 +448,7 @@ function guardar_recorrido(){
     }else{
         $vacio = 1;
         $dia = $_POST['dia_semana'];
-        $id_bitacora = $sig;
+        $id_bitacora = $_POST["id_bitacora"];
         
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

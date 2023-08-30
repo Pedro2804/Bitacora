@@ -56,7 +56,7 @@ switch ($funcion)
 	break;
     case 'guardar_bitacora':   
         $respuesta=guardar_bitacora();
-        echo $respuesta;
+        echo json_encode($respuesta);
 	break;
     case 'editar_bitacora':   
         $respuesta=editar_bitacora();
@@ -76,7 +76,7 @@ switch ($funcion)
 	break;
     case 'num_bitacoras':
         $respuesta=num_bitacoras();
-        echo $respuesta;
+        echo json_encode($respuesta);
 	break;
     case 'nombre_empleado':
         $respuesta=nombreempl();
