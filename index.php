@@ -282,7 +282,12 @@
                             //console.log(result);
                             if(result!=0){
                                 var resultados = JSON.parse(result);
-                                document.getElementById('km_I0').value = resultados.km;
+                                if(resultados.km != 0){
+                                    document.getElementById('km_I0').value = resultados.km;
+                                }else{
+                                    document.getElementById('km_I0').value = 0;
+                                    document.getElementById('km_I0').disabled = false;
+                                }
                             }
                         }
                     });

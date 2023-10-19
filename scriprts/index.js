@@ -285,7 +285,13 @@
                                 //dias_recorrido[i].disabled = true;
                             dias_recorrido[0].className += " active";
 
-                            document.getElementById('km_I0').value = resultados.km;
+                            if(resultados.km){
+                                document.getElementById('km_I0').value = resultados.km;
+                            }else{
+                                document.getElementById('km_I0').value = 0;
+                                document.getElementById('km_I0').disabled = false;
+                            }
+                            
                     }else{
                         swal({
                             type: 'error',
