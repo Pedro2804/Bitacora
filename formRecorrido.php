@@ -82,7 +82,7 @@
 
                 <div class="col-md-6" style="width: 18%;">
                     <div class="form-group form-animate-text" style="margin: 0px;">
-                        <input type="text" oninput="this.value = this.value.toUpperCase();" onkeydown="if(event.keyCode === 13){nuevoRecorrido(this);}" maxlength="60" id="recorrido<?php echo $j ?>" class="form-text" name="recorrido" required>
+                        <input type="text" oninput="this.value = this.value.toUpperCase();" onkeydown="if(event.keyCode === 13){nuevoRecorrido(this);}" id="recorrido<?php echo $j ?>" class="form-text" name="recorrido" required>
                         <span class="bar"></span><label>Nuevo recorrido</label>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                 <!--Lista de recorridos-->
                 <div class="col-md-6" style="width: 20%;">
                 <!--Text area-->
-                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos" placeholder="Recorridos (máximo 60 caracteres)" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
+                    <textarea id="listaR<?php echo $j ?>" name="listaRecorridos" placeholder="Recorridos" style="width: 100%; height: 80px; resize: none; border-style: outset;" disabled></textarea>
                 </div>
                 <!--Boton vaciar-->
                 <div class="col-md-6" style="width: 6%;">
