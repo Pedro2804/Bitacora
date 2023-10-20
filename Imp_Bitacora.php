@@ -9,6 +9,7 @@ require_once 'libexportar/PHPExcel/Cell/AdvancedValueBinder.php';
 $objReader = PHPExcel_IOFactory::createReader('Excel2007');
 $objPHPExcel = $objReader->load("Bitacora.xlsx");
 
+
 include 'config/conexion.php';
 
 if(!empty($_GET['id'])) $Solicitud =$_GET['id'];
@@ -63,7 +64,7 @@ $meses = array(
 
 $HojaIndex = 0;
 $pageIndex=2;
-$num = 1;
+$num = 0;
 //foreach ($Solicitud as $Bitacora):
 	$objPHPExcel->setActiveSheetIndex($HojaIndex);
 	
@@ -83,7 +84,6 @@ $num = 1;
         $q->execute(array());
         $data = $q->fetchall(PDO::FETCH_ASSOC);
 		llenar_bitacora($data, $objPHPExcel, $meses);
-		$tempSheet = $objPHPExcel->getSheet(0)->copy();
 
 		$pdo = Database::connect();
 		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -93,25 +93,49 @@ $num = 1;
 		$q->execute(array());
 		$data = $q->fetchall(PDO::FETCH_ASSOC);
 
-		$i = 13;
-		$km_total = 0;
 		foreach($data as $MostrarFila):
 			if($MostrarFila['vacio'] == 0){
 				$aux = wordwrap($MostrarFila['recorrido'], 30, "\n");
 				$aux2 = explode("\n",$aux);
-					
+				if(count($aux2)>1){
+					//add_sheet($objPHPExcel, $aux2, $pageIndex);
+
+					$b=0;
+					$a=0;
+					while ($a < count($aux2)) {
+						$b++;
+						$a++;
+						if($b==2){
+							$tempSheet = $objPHPExcel->getSheet(0)->copy();
+							$tempSheet->setTitle('Hoja'.$pageIndex);
+							$objPHPExcel->addSheet($tempSheet);
+							unset($tempSheet);
+							$b=0;
+							$pageIndex++;
+						}
+					}
+				}
+			}
+		endforeach;
+
+		$i = 13;
+		$km_total = 0;
+		foreach($data as $MostrarFila):
+			if($MostrarFila['vacio'] == 0){
+				$objPHPExcel->setActiveSheetIndex($HojaIndex);
+				$aux = wordwrap($MostrarFila['recorrido'], 30, "\n");
+				$aux2 = explode("\n",$aux);
+
 				if(count($aux2)>1){
 					$a=0;
 					while ($a < count($aux2)) {
 						$objPHPExcel->getActiveSheet()->setCellValue('K'.$i, $aux2[$a], PHPExcel_Cell_DataType::TYPE_STRING);
 						$i++;
 						$a++;
-						if($i==18){
-							$tempSheet->setTitle('Hoja'.$pageIndex);
-							$objPHPExcel->addSheet($tempSheet);
-							$objPHPExcel->setActiveSheetIndex($pageIndex-1);
+						if($i == 16){
+							$HojaIndex++;
+							$objPHPExcel->setActiveSheetIndex($HojaIndex);
 							$i=13;
-							$pageIndex++;
 						}
 					}
 					$i--;
@@ -166,8 +190,7 @@ $num = 1;
 		endforeach;
 		$objPHPExcel->getActiveSheet()->setCellValue('O27', $km_total);
 
-		$HojaIndex++;
-		$num++;
+		//$HojaIndex++;
 		
 		for ($x=0; $x < ($pageIndex-1); $x++) { 
 			$objPHPExcel->setActiveSheetIndex($x);
@@ -199,6 +222,12 @@ header('Cache-Control: max-age=0');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter->save('php://output');
 exit;
+
+function add_sheet($objPHPExcel, $aux2, $pageIndex){
+	//$pageIndex = 2;
+	
+	//$objPHPExcel->setActiveSheetIndex($HojaIndex);
+}
 
 function llenar_bitacora($data, $objPHPExcel1, $meses){
 	foreach($data as $MostrarFila):
