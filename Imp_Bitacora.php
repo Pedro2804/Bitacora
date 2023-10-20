@@ -93,30 +93,32 @@ $num = 0;
 		$q->execute(array());
 		$data = $q->fetchall(PDO::FETCH_ASSOC);
 
+		$n = 0;
 		foreach($data as $MostrarFila):
 			if($MostrarFila['vacio'] == 0){
 				$aux = wordwrap($MostrarFila['recorrido'], 30, "\n");
 				$aux2 = explode("\n",$aux);
-				if(count($aux2)>1){
-					//add_sheet($objPHPExcel, $aux2, $pageIndex);
-
-					$b=0;
-					$a=0;
-					while ($a < count($aux2)) {
-						$b++;
-						$a++;
-						if($b==2){
-							$tempSheet = $objPHPExcel->getSheet(0)->copy();
-							$tempSheet->setTitle('Hoja'.$pageIndex);
-							$objPHPExcel->addSheet($tempSheet);
-							unset($tempSheet);
-							$b=0;
-							$pageIndex++;
-						}
-					}
-				}
+				$n += count($aux2);
 			}
 		endforeach;
+		
+		if($n>14){
+			$b=0;
+			$a=0;
+			while ($a < $n) {
+				$b++;
+				$a++;
+				if($b==14){
+					$tempSheet = $objPHPExcel->getSheet(0)->copy();
+					$tempSheet->setTitle('Hoja'.$pageIndex);
+					$objPHPExcel->addSheet($tempSheet);
+					unset($tempSheet);
+					$b=0;
+					$pageIndex++;
+					$b=0;
+				}
+			}
+		}
 
 		$i = 13;
 		$km_total = 0;
@@ -132,7 +134,7 @@ $num = 0;
 						$objPHPExcel->getActiveSheet()->setCellValue('K'.$i, $aux2[$a], PHPExcel_Cell_DataType::TYPE_STRING);
 						$i++;
 						$a++;
-						if($i == 16){
+						if($i == 27){
 							$HojaIndex++;
 							$objPHPExcel->setActiveSheetIndex($HojaIndex);
 							$i=13;
@@ -189,8 +191,6 @@ $num = 0;
 			}
 		endforeach;
 		$objPHPExcel->getActiveSheet()->setCellValue('O27', $km_total);
-
-		//$HojaIndex++;
 		
 		for ($x=0; $x < ($pageIndex-1); $x++) { 
 			$objPHPExcel->setActiveSheetIndex($x);
@@ -223,58 +223,52 @@ $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
 $objWriter->save('php://output');
 exit;
 
-function add_sheet($objPHPExcel, $aux2, $pageIndex){
-	//$pageIndex = 2;
-	
-	//$objPHPExcel->setActiveSheetIndex($HojaIndex);
-}
-
-function llenar_bitacora($data, $objPHPExcel1, $meses){
+function llenar_bitacora($data, $objPHPExcel, $meses){
 	foreach($data as $MostrarFila):
-		$objPHPExcel1->getActiveSheet()->setCellValue('C6', $MostrarFila['empleado']);
-		$objPHPExcel1->getActiveSheet()->setCellValue('A30', $MostrarFila['empleado']);
-		$objPHPExcel1->getActiveSheet()->setCellValue('I30', $MostrarFila['empleado']);
-		$objPHPExcel1->getActiveSheet()->setCellValueExplicit('K6', $MostrarFila['operador']);
-		$objPHPExcel1->getActiveSheet()->setCellValue('N6', $MostrarFila['marca']);
-		$objPHPExcel1->getActiveSheet()->setCellValueExplicit('F7', $MostrarFila['NoUnidad']);
-		$objPHPExcel1->getActiveSheet()->setCellValue('N7', $MostrarFila['placas']);
+		$objPHPExcel->getActiveSheet()->setCellValue('C6', $MostrarFila['empleado']);
+		$objPHPExcel->getActiveSheet()->setCellValue('A30', $MostrarFila['empleado']);
+		$objPHPExcel->getActiveSheet()->setCellValue('I30', $MostrarFila['empleado']);
+		$objPHPExcel->getActiveSheet()->setCellValueExplicit('K6', $MostrarFila['operador']);
+		$objPHPExcel->getActiveSheet()->setCellValue('N6', $MostrarFila['marca']);
+		$objPHPExcel->getActiveSheet()->setCellValueExplicit('F7', $MostrarFila['NoUnidad']);
+		$objPHPExcel->getActiveSheet()->setCellValue('N7', $MostrarFila['placas']);
 
 		$de = new DateTime($MostrarFila['periodo_de']);
 		$al = new DateTime($MostrarFila['periodo_al']);
 		if(date('n', strtotime($MostrarFila['periodo_de'])) == date('n', strtotime($MostrarFila['periodo_al'])))
-			$objPHPExcel1->getActiveSheet()->setCellValue('B8', $meses[$de->format('n')]);
+			$objPHPExcel->getActiveSheet()->setCellValue('B8', $meses[$de->format('n')]);
 		else
-			$objPHPExcel1->getActiveSheet()->setCellValue('B8', $meses[$de->format('n')].'-'.$meses[$al->format('n')]);
+			$objPHPExcel->getActiveSheet()->setCellValue('B8', $meses[$de->format('n')].'-'.$meses[$al->format('n')]);
 		
 
-		$objPHPExcel1->getActiveSheet()->setCellValueExplicit('L8', $MostrarFila['folio']);
-		$objPHPExcel1->getActiveSheet()->setCellValue('D9', $de->format('d'));
-		$objPHPExcel1->getActiveSheet()->setCellValue('F9', $al->format('d'));
+		$objPHPExcel->getActiveSheet()->setCellValueExplicit('L8', $MostrarFila['folio']);
+		$objPHPExcel->getActiveSheet()->setCellValue('D9', $de->format('d'));
+		$objPHPExcel->getActiveSheet()->setCellValue('F9', $al->format('d'));
 
 		if(date('Y', strtotime($MostrarFila['periodo_de'])) == date('Y', strtotime($MostrarFila['periodo_al'])))
-			$objPHPExcel1->getActiveSheet()->setCellValue('H9', $de->format('Y'));
+			$objPHPExcel->getActiveSheet()->setCellValue('H9', $de->format('Y'));
 		else
-			$objPHPExcel1->getActiveSheet()->setCellValue('H9', $de->format('Y').'-'.$al->format('Y'));
+			$objPHPExcel->getActiveSheet()->setCellValue('H9', $de->format('Y').'-'.$al->format('Y'));
 
 		if($MostrarFila['fecha_carga']){
 			$fecha_carga = new DateTime($MostrarFila['fecha_carga']);
-			$objPHPExcel1->getActiveSheet()->setCellValue('E10', $fecha_carga->format('d').' de '.$meses[$fecha_carga->format('n')].' de '.$fecha_carga->format('Y'));
+			$objPHPExcel->getActiveSheet()->setCellValue('E10', $fecha_carga->format('d').' de '.$meses[$fecha_carga->format('n')].' de '.$fecha_carga->format('Y'));
 		}
 
 		switch ($MostrarFila['tipo_combustible']) {
 			case 'Gasolina':
-				$objPHPExcel1->getActiveSheet()->setCellValue('M10', "X");
-				$objPHPExcel1->getActiveSheet()->setCellValue('K10', $MostrarFila['combustible'] != null ? $MostrarFila['combustible']:"");
+				$objPHPExcel->getActiveSheet()->setCellValue('M10', "X");
+				$objPHPExcel->getActiveSheet()->setCellValue('K10', $MostrarFila['combustible'] != null ? $MostrarFila['combustible']:"");
 				break;
 			case 'Diesel':
-				$objPHPExcel1->getActiveSheet()->setCellValue('O10', "X");
-				$objPHPExcel1->getActiveSheet()->setCellValue('K10', $MostrarFila['combustible'] != null ? $MostrarFila['combustible']:"");
+				$objPHPExcel->getActiveSheet()->setCellValue('O10', "X");
+				$objPHPExcel->getActiveSheet()->setCellValue('K10', $MostrarFila['combustible'] != null ? $MostrarFila['combustible']:"");
 			break;
 			case 'Gas':
-				$objPHPExcel1->getActiveSheet()->setCellValue('K10', "GAS");
+				$objPHPExcel->getActiveSheet()->setCellValue('K10', "GAS");
 			break;
 			case 'No aplica':
-				$objPHPExcel1->getActiveSheet()->setCellValue('K10', "N/A");
+				$objPHPExcel->getActiveSheet()->setCellValue('K10', "N/A");
 			break;
 		}
 	endforeach;
