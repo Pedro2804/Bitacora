@@ -5,8 +5,8 @@ class Database
     private static $dbName = 'Bitacora';
 	private static $dbHost = 'localhost';
 	private static $dbUserName = 'root';
-	//private static $dbPassword = 'DIFinformatica.03';
-	private static $dbPassword = '';
+	private static $dbPassword = 'DIFinformatica.03';
+	//private static $dbPassword = '';
 
 	private static $cont  = null;
 	

@@ -153,8 +153,8 @@ function mostrar_vehiculos(){
         array('db' => 'resguardante', 'dt' => 10)
     );
     $salida = array();
-    //$pdo = new PDO('mysql:host=localhost;dbname=Bitacora', 'root', 'DIFinformatica.03', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-    $pdo = new PDO('mysql:host=localhost;dbname=Bitacora', 'root', '', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $pdo = new PDO('mysql:host=localhost;dbname=Bitacora', 'root', 'DIFinformatica.03', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    //$pdo = new PDO('mysql:host=localhost;dbname=Bitacora', 'root', '', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $query = "SELECT * FROM vehiculo";
     $q = $pdo->prepare($query);
